@@ -2,11 +2,12 @@ package logic;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.androidudvikling.zeengoone.planpenny.entities.Category;
-import com.androidudvikling.zeengoone.planpenny.entities.Plan;
-import com.androidudvikling.zeengoone.planpenny.entities.Project;
 
 import java.util.Date;
+
+import entities.Category;
+import entities.Plan;
+import entities.Project;
 
 
 /**
