@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Plan Penny v.0.4</string>
+    <string name="drawer_open">Open project drawer</string>
+    <string name="drawer_close">Close project drawer</string>
+</resources>
