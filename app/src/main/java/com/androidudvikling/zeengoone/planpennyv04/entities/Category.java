@@ -1,10 +1,9 @@
-package entities;
+package com.androidudvikling.zeengoone.planpennyv04.entities;
 
+import com.androidudvikling.zeengoone.planpennyv04.exceptions.PlanException;
 
 import java.util.ArrayList;
 import java.util.Date;
-
-import exceptions.PlanException;
 
 /**
  * Created by jonasandreassen on 16/11/15.
@@ -14,7 +13,7 @@ public class Category {
     public ArrayList<Plan> plans;
 
     public Category(String categoryTitle) {plans = new ArrayList<Plan>(); this.categoryTitle = categoryTitle;}
-    public void createPlan(Date startDate, Date endDate) throws PlanException {
+    public void createPlan(Date startDate, Date endDate) throws PlanException{
         for (Plan temp:plans){
             // if date is occupied
             if(temp.getStart_date().after(startDate)&&temp.getStart_date().before(endDate)) throw new PlanException();

@@ -1,12 +1,11 @@
-package logic;
+package com.androidudvikling.zeengoone.planpennyv04.logic;
 
+import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
+import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
+import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
+import com.androidudvikling.zeengoone.planpennyv04.entities.ProjectList;
 
 import java.util.Date;
-
-import entities.Category;
-import entities.Plan;
-import entities.Project;
-import entities.ProjectList;
 
 /**
  * Created by jonasandreassen on 16/11/15.

@@ -1,4 +1,4 @@
-package test;
+package com.androidudvikling.zeengoone.planpennyv04.test;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -12,13 +12,12 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import com.androidudvikling.zeengoone.planpennyv04.R;
+import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
+import com.androidudvikling.zeengoone.planpennyv04.logic.FileHandler;
 
 import java.util.ArrayList;
 import java.util.Date;
-
-import entities.Plan;
-import logic.FileHandler;
 
 /**
  * Created by alexandervpedersen on 23/11/15.
@@ -57,7 +56,7 @@ public class testLayout extends AppCompatActivity implements NavigationView.OnNa
         String[] projectnames = new String[projects.length];
         */
 
-        // Kategori test
+        // Kategori com.androidudvikling.zeengoone.planpennyv04.test
         /*
         filehandler.makeCategory("Project 1", "Projekt 1 kategori");
         filehandler.makeCategory("Project 0", "Projekt 0 kategori");
@@ -67,7 +66,7 @@ public class testLayout extends AppCompatActivity implements NavigationView.OnNa
         */
 
 
-        // Plan test
+        // Plan com.androidudvikling.zeengoone.planpennyv04.test
 
         Date date1 = new Date(2015,04,25);
         Date date2 = new Date(2015,07,17);

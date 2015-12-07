@@ -1,4 +1,4 @@
-package entities;
+package com.androidudvikling.zeengoone.planpennyv04.entities;
 
 import java.util.ArrayList;
 import java.util.Date;
