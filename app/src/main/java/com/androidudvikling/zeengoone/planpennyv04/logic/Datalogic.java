@@ -3,7 +3,6 @@ package com.androidudvikling.zeengoone.planpennyv04.logic;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
-import com.androidudvikling.zeengoone.planpennyv04.entities.ProjectList;
 
 import java.util.Date;
 
