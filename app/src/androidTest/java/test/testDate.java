@@ -1,9 +1,10 @@
 package test;
 
-import com.androidudvikling.zeengoone.planpenny.entities.Project;
-import com.androidudvikling.zeengoone.planpenny.exceptions.PlanException;
 
 import java.util.Date;
+
+import entities.Project;
+import exceptions.PlanException;
 
 /**
  * Created by jonasandreassen on 16/11/15.

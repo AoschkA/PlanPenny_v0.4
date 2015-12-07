@@ -13,12 +13,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.androidudvikling.zeengoone.planpenny.R;
-import com.androidudvikling.zeengoone.planpenny.entities.Plan;
-import com.androidudvikling.zeengoone.planpenny.logic.FileHandler;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import entities.Plan;
+import logic.FileHandler;
 
 /**
  * Created by alexandervpedersen on 23/11/15.
