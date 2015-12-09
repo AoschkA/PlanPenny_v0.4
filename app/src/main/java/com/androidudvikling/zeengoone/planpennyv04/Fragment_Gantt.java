@@ -16,11 +16,13 @@ import java.util.ArrayList;
  */
 public class Fragment_Gantt extends Fragment {
     private static ArrayList testList;
+    private static int testPage;
 
     public static Fragment_Gantt newInstance(int page, ArrayList kategoriList) {
         Bundle args = new Bundle();
         Fragment_Gantt fragment = new Fragment_Gantt();
         testList = kategoriList;
+        testPage = page;
         return fragment;
     }
 
@@ -29,24 +31,53 @@ public class Fragment_Gantt extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content_controller, container, false);
         // Læg listen ind i arrayadapteren
-        //ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, testList);
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.pil_liste_venstre, R.id.listeelem_overskrift, testList) {
-            @Override
-            public View getView(int position, View cachedView, ViewGroup parent) {
-                View view = super.getView(position, cachedView, parent);
-                ImageView billede = (ImageView) view.findViewById(R.id.listeelem_billede);
-                if (position % 3 == 2) {
-                    billede.setImageResource(android.R.drawable.sym_action_call);
-                } else {
-                    billede.setImageResource(android.R.drawable.sym_action_email);
-                }
+        if(testPage %3 == 0){
+            ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, testList);
 
-                return view;
-            }
-        };
-        // Lav listviewet og setadapter til adapteren lavet herover
-        ListView listview = (ListView) view;
-        listview.setAdapter(adapter);
+            // Lav listviewet og setadapter til adapteren lavet herover
+            ListView listview = (ListView) view;
+            listview.setAdapter(adapter);
+        }
+        else if(testPage %3 == 1){
+            ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.pil_liste_venstre, R.id.listeelem_overskrift, testList) {
+                @Override
+                public View getView(int position, View cachedView, ViewGroup parent) {
+                    View view = super.getView(position, cachedView, parent);
+                    ImageView billede = (ImageView) view.findViewById(R.id.listeelem_billede);
+                    if (position % 3 == 2) {
+                        billede.setImageResource(android.R.drawable.sym_action_call);
+                    } else {
+                        billede.setImageResource(android.R.drawable.sym_action_email);
+                    }
+
+                    return view;
+                }
+            };
+
+            // Lav listviewet og setadapter til adapteren lavet herover
+            ListView listview = (ListView) view;
+            listview.setAdapter(adapter);
+        }
+        else{
+            ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.pil_liste_hoejre, R.id.listeelem_overskrift, testList) {
+                @Override
+                public View getView(int position, View cachedView, ViewGroup parent) {
+                    View view = super.getView(position, cachedView, parent);
+                    ImageView billede = (ImageView) view.findViewById(R.id.listeelem_billede);
+                    if (position % 3 == 2) {
+                        billede.setImageResource(android.R.drawable.sym_action_call);
+                    } else {
+                        billede.setImageResource(android.R.drawable.sym_action_email);
+                    }
+
+                    return view;
+                }
+            };
+
+            // Lav listviewet og setadapter til adapteren lavet herover
+            ListView listview = (ListView) view;
+            listview.setAdapter(adapter);
+        }
         return view;
     }
 

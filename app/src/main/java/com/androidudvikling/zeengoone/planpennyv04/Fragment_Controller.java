@@ -36,34 +36,21 @@ public class Fragment_Controller extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_controller);
 
-        // Sikre der ikke eksisterer en instans af denne aktivitet allerede
-        //if(savedInstanceState != null){ return; }
         // Læs projektlister fra disken
         try {
-            projekter_test = readProjects();
+            projekt_liste = readProjects();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        populateTabList(2);
-        // Få fat i ViewPager og set dens pageradapter så den kan vise items
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
-                Fragment_Controller.this, tabMaaneder, projekter_test));
-
-        // Sender tabLayoutet videre til viewpageren
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
         // Gør listen klar og smid den i projekt listen
-        projekt_liste = projekter_test;
         projekt_liste_view = (ListView) findViewById(R.id.penny_projekt_drawer_list);
         projekt_liste_view.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.penny_drawer_listview_item, projekt_liste));
 
         // Opsæt actionbar
-        //getSupportActionBar().setLogo(R.drawable.penny_logo);
-        //getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.penny_logo);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -79,10 +66,27 @@ public class Fragment_Controller extends AppCompatActivity {
 
         // Onclick listener til projektlistemenuen
         projekt_liste_view.setOnItemClickListener(new DrawerItemClickListener());
+
+
+        // Læg to års måneder ind i tab-listen
+        startKategorier();
+        populateTabList(2);
+        // Få fat i ViewPager og set dens pageradapter så den kan vise items
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
+                Fragment_Controller.this, tabMaaneder, projekter_test));
+
+        // Sender tabLayoutet videre til viewpageren
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+
     }
 
-    private void start(){
-
+    private void startKategorier(){
+        for(int i = 0;i < 30;i++){
+            projekter_test.add("kategori" + i);
+        }
     }
     private void populateTabList(int years){
         for(int i = 0;i < years;i++){
