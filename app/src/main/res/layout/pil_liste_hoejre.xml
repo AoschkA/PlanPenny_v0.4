@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/listeelem_overskrift"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/listeelem_billede"
+        android:layout_toEndOf="@+id/listeelem_billede"
+        android:layout_toLeftOf="@+id/listeelem_billede"
+        android:text="overskrift"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+    <ImageView
+        android:id="@+id/listeelem_billede"
+        android:layout_width="60dip"
+        android:layout_height="40dip"
+        android:layout_margin="5dip"
+        android:scaleType="centerCrop"
+        android:src="@drawable/penny_projekt_pil"/>
+
+</RelativeLayout>

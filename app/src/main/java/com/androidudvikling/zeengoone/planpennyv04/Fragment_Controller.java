@@ -36,6 +36,8 @@ public class Fragment_Controller extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_controller);
 
+        // Sikre der ikke eksisterer en instans af denne aktivitet allerede
+        //if(savedInstanceState != null){ return; }
         // Læs projektlister fra disken
         try {
             projekter_test = readProjects();
@@ -53,9 +55,6 @@ public class Fragment_Controller extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        // Sikre der ikke eksisterer en instans af denne aktivitet allerede
-        if(savedInstanceState != null){ return; }
-
         // Gør listen klar og smid den i projekt listen
         projekt_liste = projekter_test;
         projekt_liste_view = (ListView) findViewById(R.id.penny_projekt_drawer_list);
@@ -63,11 +62,13 @@ public class Fragment_Controller extends AppCompatActivity {
                 R.layout.penny_drawer_listview_item, projekt_liste));
 
         // Opsæt actionbar
+        //getSupportActionBar().setLogo(R.drawable.penny_logo);
+        //getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.penny_logo);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        // Sæt Drawer op
         pennydrawerLayout = (DrawerLayout) findViewById(R.id.penny_projekt_drawer_layout);
         penny_Projekt_Drawer_Toggle = new ActionBarDrawerToggle(
                 this,
@@ -80,6 +81,9 @@ public class Fragment_Controller extends AppCompatActivity {
         projekt_liste_view.setOnItemClickListener(new DrawerItemClickListener());
     }
 
+    private void start(){
+
+    }
     private void populateTabList(int years){
         for(int i = 0;i < years;i++){
             tabMaaneder.add("Januar");
@@ -106,12 +110,12 @@ public class Fragment_Controller extends AppCompatActivity {
         }
     }
 
-    @Override
+    /*@Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         penny_Projekt_Drawer_Toggle.syncState();
-    }
+    }*/
 
     @Override
     public void onPause(){
@@ -137,6 +141,8 @@ public class Fragment_Controller extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         penny_Projekt_Drawer_Toggle.onConfigurationChanged(newConfig);
+        penny_Projekt_Drawer_Toggle.syncState();
+        //start();
     }
 
     @Override
@@ -197,5 +203,8 @@ public class Fragment_Controller extends AppCompatActivity {
             System.out.println(s);
         }
         return projectList;
+    }
+    private void testSetupProjekter(){
+
     }
 }
