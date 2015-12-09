@@ -1,7 +1,9 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.content.res.Configuration;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 public class Fragment_Controller extends AppCompatActivity {
     private ArrayList<String> projekt_liste = new ArrayList<String>();
     private ArrayList<String> projekter_test = new ArrayList<String>();
+    private ArrayList<String> tabMaaneder = new ArrayList<String>();
     private ListView projekt_liste_view;
     private DrawerLayout pennydrawerLayout;
     private ActionBarDrawerToggle penny_Projekt_Drawer_Toggle;
@@ -31,7 +34,7 @@ public class Fragment_Controller extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment__controller);
+        setContentView(R.layout.activity_fragment_controller);
 
         // Læs projektlister fra disken
         try {
@@ -39,6 +42,16 @@ public class Fragment_Controller extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        populateTabList(2);
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
+                Fragment_Controller.this, tabMaaneder, projekter_test));
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
         // Sikre der ikke eksisterer en instans af denne aktivitet allerede
         if(savedInstanceState != null){ return; }
@@ -55,14 +68,6 @@ public class Fragment_Controller extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Instantier Gantt fragmentet
-        Fragment_Gantt fragment_gantt = new Fragment_Gantt();
-
-        // Tilføj de instantierede fragmenter til fragmentmanager
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_content_controller, fragment_gantt)
-                .commit();
-
         pennydrawerLayout = (DrawerLayout) findViewById(R.id.penny_projekt_drawer_layout);
         penny_Projekt_Drawer_Toggle = new ActionBarDrawerToggle(
                 this,
@@ -75,7 +80,22 @@ public class Fragment_Controller extends AppCompatActivity {
         projekt_liste_view.setOnItemClickListener(new DrawerItemClickListener());
     }
 
-
+    private void populateTabList(int years){
+        for(int i = 0;i < years;i++){
+            tabMaaneder.add("Januar");
+            tabMaaneder.add("Februar");
+            tabMaaneder.add("Marts");
+            tabMaaneder.add("April");
+            tabMaaneder.add("Maj");
+            tabMaaneder.add("Juni");
+            tabMaaneder.add("Juli");
+            tabMaaneder.add("August");
+            tabMaaneder.add("September");
+            tabMaaneder.add("Oktober");
+            tabMaaneder.add("November");
+            tabMaaneder.add("December");
+        }
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.penny_projekt_drawer_layout);

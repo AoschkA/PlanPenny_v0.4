@@ -54,7 +54,7 @@ public class FileHandler{
         SharedPreferences sharedPref = context.getSharedPreferences(project + "_" + category + "_PlanList", Context.MODE_PRIVATE);
         int size = sharedPref.getAll().size();
         Plan[] tempPlans = new Plan[size];
-
+/*
         for(int i = 0; i<size; i++){
             String planname = sharedPref.getString("Plan " + i , "");
             String[] plandetails = planname.split(",");
@@ -66,7 +66,7 @@ public class FileHandler{
                                              Integer.parseInt(plandetails[5])));
             tempPlans[i] = planObj;
         }
-
+*/
         return tempPlans;
 
     }
