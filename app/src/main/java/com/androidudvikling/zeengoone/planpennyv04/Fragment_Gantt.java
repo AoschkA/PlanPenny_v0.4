@@ -33,54 +33,29 @@ public class Fragment_Gantt extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content_controller, container, false);
+
         // Læg listen ind i arrayadapteren
-        if(mPage %3 == 0){
-            ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, testList);
-
-            // Lav listviewet og setadapter til adapteren lavet herover
-            ListView listview = (ListView) view;
-            listview.setAdapter(adapter);
-        }
-        else if(mPage %3 == 1){
-            ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.pil_liste_venstre, R.id.listeelem_overskrift, testList) {
-                @Override
-                public View getView(int position, View cachedView, ViewGroup parent) {
-                    View view = super.getView(position, cachedView, parent);
-                    ImageView billede = (ImageView) view.findViewById(R.id.listeelem_billede);
-                    if (position % 3 == 2) {
-                        billede.setImageResource(android.R.drawable.sym_action_call);
-                    } else {
-                        billede.setImageResource(android.R.drawable.sym_action_email);
-                    }
-
-                    return view;
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.penny_listview_item, R.id.listeelem_overskrift, testList) {
+            @Override
+            public View getView(int position, View cachedView, ViewGroup parent) {
+                View view = super.getView(position, cachedView, parent);
+                if (position % 3 == 2) {
+                    ImageView billede = (ImageView) view.findViewById(R.id.listeelem_venstre);
+                    billede.setImageResource(android.R.drawable.sym_action_call);
+                } else if(position %3 == 1){
+                    ImageView billede = (ImageView) view.findViewById(R.id.listeelem_hoejre);
+                    billede.setImageResource(android.R.drawable.sym_action_email);
                 }
-            };
-
-            // Lav listviewet og setadapter til adapteren lavet herover
-            ListView listview = (ListView) view;
-            listview.setAdapter(adapter);
-        }
-        else{
-            ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.pil_liste_hoejre, R.id.listeelem_overskrift, testList) {
-                @Override
-                public View getView(int position, View cachedView, ViewGroup parent) {
-                    View view = super.getView(position, cachedView, parent);
-                    ImageView billede = (ImageView) view.findViewById(R.id.listeelem_billede);
-                    if (position % 3 == 2) {
-                        billede.setImageResource(android.R.drawable.sym_action_call);
-                    } else {
-                        billede.setImageResource(android.R.drawable.sym_action_email);
-                    }
-
-                    return view;
+                else{
+                    Log.d("else_array", "gået ind i else statement");
                 }
-            };
+                return view;
+            }
+        };
 
-            // Lav listviewet og setadapter til adapteren lavet herover
-            ListView listview = (ListView) view;
-            listview.setAdapter(adapter);
-        }
+        // Lav listviewet og setadapter til adapteren lavet herover
+        ListView listview = (ListView) view;
+        listview.setAdapter(adapter);
         return view;
     }
 
