@@ -34,4 +34,15 @@ public class Project{
     public ArrayList<Category> getCategoryList() {
     	return categoryList;
     }
+    
+    public ArrayList<Date> getContainingDates() {
+    	ArrayList<Date> dateList = new ArrayList<Date>();
+    	for (Category c : categoryList) {
+    		for (Date d : c.getContainingDays()) {
+    			if (!dateList.contains(d))
+    				dateList.add(d);
+    		}
+    	}
+    	return dateList;
+    }
 }

@@ -7,20 +7,8 @@ public class Category {
     private ArrayList<Plan> planList;
 
     public Category(String categoryTitle) {
-    	planList = new ArrayList<Plan>();
+    	planList = new ArrayList<Plan>(); 
         this.categoryTitle = categoryTitle;
-    }
-
-    public Plan getPlan(String date) {
-    	for (Plan temp : planList) {
-    		if (temp.getDate().equals(date))
-    			return temp;
-    	}
-    	return null;
-    }
-
-    public void addPlan(Plan p) {
-    	planList.add(p);
     }
 
     public void setCategoryTitle(String categoryTitle){
@@ -34,7 +22,26 @@ public class Category {
     public ArrayList<Plan> getPlanList(){
     	return planList;
     }
+    public Plan getPlan(Date startDate, Date endDate) {
+    	for (Plan temp : planList) {
+    		if (temp.getStartDate().equals(startDate) && temp.getEndDate().equals(endDate))
+    			return temp;
+    	}
+    	return null;
+    }
 
-
-
+    public void addPlan(Plan p) {
+    	planList.add(p);
+    }
+    
+    public ArrayList<Date> getContainingDays() {
+    	ArrayList<Date> dateList = new ArrayList<Date>();
+    	for (Plan p : planList) {
+    		for (Date d : p.getContainingDates()){
+    			if (!dateList.contains(d))
+    				dateList.add(d);
+    		}
+    	}
+    	return dateList;
+    }
 }
