@@ -2,6 +2,7 @@ package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +17,15 @@ import java.util.ArrayList;
  */
 public class Fragment_Gantt extends Fragment {
     private static ArrayList testList;
-    private static int testPage;
+    public static final String ARG_PAGE = "ARG_PAGE";
+    private int mPage;
 
     public static Fragment_Gantt newInstance(int page, ArrayList kategoriList) {
         Bundle args = new Bundle();
+        args.putInt(ARG_PAGE, page);
         Fragment_Gantt fragment = new Fragment_Gantt();
+        fragment.setArguments(args);
         testList = kategoriList;
-        testPage = page;
         return fragment;
     }
 
@@ -31,14 +34,14 @@ public class Fragment_Gantt extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content_controller, container, false);
         // Læg listen ind i arrayadapteren
-        if(testPage %3 == 0){
+        if(mPage %3 == 0){
             ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, testList);
 
             // Lav listviewet og setadapter til adapteren lavet herover
             ListView listview = (ListView) view;
             listview.setAdapter(adapter);
         }
-        else if(testPage %3 == 1){
+        else if(mPage %3 == 1){
             ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.pil_liste_venstre, R.id.listeelem_overskrift, testList) {
                 @Override
                 public View getView(int position, View cachedView, ViewGroup parent) {
@@ -84,5 +87,6 @@ public class Fragment_Gantt extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPage = getArguments().getInt(ARG_PAGE);
     }
 }

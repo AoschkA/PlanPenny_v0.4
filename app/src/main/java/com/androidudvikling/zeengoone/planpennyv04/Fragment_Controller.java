@@ -146,7 +146,6 @@ public class Fragment_Controller extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         penny_Projekt_Drawer_Toggle.onConfigurationChanged(newConfig);
         penny_Projekt_Drawer_Toggle.syncState();
-        //start();
     }
 
     @Override
