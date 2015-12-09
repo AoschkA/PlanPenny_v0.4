@@ -42,7 +42,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        // Generate title based on item position
+        // Generer tab-title baseret på position i arrayet
         return tabTitles[position];
     }
 }

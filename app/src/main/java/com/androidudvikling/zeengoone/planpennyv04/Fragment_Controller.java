@@ -44,12 +44,12 @@ public class Fragment_Controller extends AppCompatActivity {
         }
 
         populateTabList(2);
-        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        // Få fat i ViewPager og set dens pageradapter så den kan vise items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
                 Fragment_Controller.this, tabMaaneder, projekter_test));
 
-        // Give the TabLayout the ViewPager
+        // Sender tabLayoutet videre til viewpageren
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
