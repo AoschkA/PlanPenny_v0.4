@@ -54,7 +54,7 @@ public class Plan {
 			Date currentDate = new Date(currentYear, currentMonth, currentDay);
 			dateList.add(currentDate);
 			
-			if (dayLimit[currentMonth-1] >= currentDay) {
+			if (dayLimit[currentMonth-1] <= currentDay) {
 				currentDay=1;
 				if (currentMonth==12) {
 					currentMonth=1;

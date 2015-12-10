@@ -35,5 +35,35 @@ public class Date {
 		this.day = day;
 	}
 	
+	public boolean before(Date date){
+		if (year<date.getYear())
+			return true;
+		else if (year>date.getYear())
+			return false;
+		else if (month<date.getMonth())
+			return true;
+		else if (month>date.getMonth())
+			return false;
+		else if (day<date.getDay())
+			return true;
+		else 
+			return false;
+	}
+	
+	public boolean after(Date date) {
+		if (year>date.getYear())
+			return true;
+		else if (year<date.getYear())
+			return false;
+		else if (month>date.getMonth())
+			return true;
+		else if (month<date.getMonth())
+			return false;
+		else if (day>date.getDay())
+			return true;
+		else
+			return false;
+	}
+	
 
 }
