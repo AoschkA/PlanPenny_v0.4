@@ -44,4 +44,8 @@ public class Category {
     	}
     	return dateList;
     }
+
+	public String toString(Category c){
+		return c.getCategoryTitle();
+	}
 }
