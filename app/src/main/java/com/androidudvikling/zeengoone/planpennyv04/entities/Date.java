@@ -34,6 +34,17 @@ public class Date {
 	public void setDay(int day) {
 		this.day = day;
 	}
+
+	public Date setDateMonth(int month){
+		for(int i = 0;i < month;i++){
+			this.month += i;
+			if(this.month > 12) {
+				this.year += 1;
+				this.month = 1;
+			}
+		}
+		return new Date(this.year,this.month,this.day);
+	}
 	
 	public boolean before(Date date){
 		if (year<date.getYear())
