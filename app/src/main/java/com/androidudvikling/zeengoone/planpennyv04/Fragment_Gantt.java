@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 /**
  * Created by zeengoone on 11/26/15.
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class Fragment_Gantt extends Fragment{
     public static final String ARG_PAGE = "ARG_PAGE";
     private static ArrayList<Category> categories;
+    private static int currentMonth;
     private int mPage;
 
     public static Fragment_Gantt newInstance(int page, ArrayList kategoriList) {
@@ -28,6 +30,7 @@ public class Fragment_Gantt extends Fragment{
         Fragment_Gantt fragment = new Fragment_Gantt();
         fragment.setArguments(args);
         categories = setList(kategoriList);
+        currentMonth = GregorianCalendar.MONTH;
         return fragment;
     }
 
@@ -38,16 +41,17 @@ public class Fragment_Gantt extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content_controller, container, false);
-        ArrayList<String> categoryList = new ArrayList<>();
-        for(Category c:categories){
+        ArrayList<Category> categoryList = new ArrayList<>();
+        /*for(Category c:categories){
             categoryList.add(c.getCategoryTitle());
-        }
+        }*/
         // Læg listen ind i arrayadapteren
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.penny_listview_item, R.id.listeelem_overskrift, categoryList) {
+            private boolean findesIMaaneden = false;
             @Override
             public View getView(int position, View cachedView, ViewGroup parent) {
                 View view = super.getView(position, cachedView, parent);
-                if (position % 3 == 2) {
+                if (position == 1) {
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     billedeh.setImageResource(R.drawable.pil_hoejre);
@@ -66,6 +70,11 @@ public class Fragment_Gantt extends Fragment{
                     Log.d("else_array", "gået ind i else statement");
                 }
                 return view;
+            }
+            @Override
+            public Object getItem(Category c){
+                // Skal teste om containing days findes i nuværende måned
+                return c;
             }
         };
 

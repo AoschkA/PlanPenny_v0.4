@@ -20,7 +20,11 @@ import android.widget.Toast;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 import com.androidudvikling.zeengoone.planpennyv04.logic.FileHandler;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class Fragment_Controller extends AppCompatActivity {
     private ArrayList<String> projekt_liste = new ArrayList<>();
@@ -31,6 +35,8 @@ public class Fragment_Controller extends AppCompatActivity {
     private ActionBarDrawerToggle penny_Projekt_Drawer_Toggle;
     private DataLogic dc = new DataLogic();
     private FileHandler fh;
+    private Calendar cal = new GregorianCalendar();
+    private int currentMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +77,7 @@ public class Fragment_Controller extends AppCompatActivity {
 
         // Læg to års måneder ind i tab-listen
         //startKategorier();
-        populateTabList(2);
+        populateTabList(24);
         // Få fat i ViewPager og set dens pageradapter så den kan vise items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
@@ -89,20 +95,19 @@ public class Fragment_Controller extends AppCompatActivity {
             projekter_test.add("kategori" + i);
         }
     }*/
+    private Calendar addMonth(){
+        cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, currentMonth++);
+        return cal;
+    }
     private void populateTabList(int years){
+        int month;
+        int year;
         for(int i = 0;i < years;i++){
-            tabMaaneder.add("Januar");
-            tabMaaneder.add("Februar");
-            tabMaaneder.add("Marts");
-            tabMaaneder.add("April");
-            tabMaaneder.add("Maj");
-            tabMaaneder.add("Juni");
-            tabMaaneder.add("Juli");
-            tabMaaneder.add("August");
-            tabMaaneder.add("September");
-            tabMaaneder.add("Oktober");
-            tabMaaneder.add("November");
-            tabMaaneder.add("December");
+            month = addMonth().get(Calendar.MONTH);
+            month = month+1;
+            year = cal.get(Calendar.YEAR);
+            tabMaaneder.add(new SimpleDateFormat("MMM").format(cal.getTime()));
         }
     }
     @Override
