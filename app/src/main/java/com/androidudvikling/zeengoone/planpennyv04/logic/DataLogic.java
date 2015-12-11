@@ -37,7 +37,8 @@ public class DataLogic {
 	public ArrayList<Plan> getPlans(String projectTitle, String categoryTitle) {
 		return projectDB.getProject(projectTitle).getCategory(categoryTitle).getPlanList();
 	}
-	
+
+	// Returns projects for a given month
 	public ArrayList<Project> getProjectsForMonth(int year, int month) {
 		ArrayList<Project> projectList = new ArrayList<Project>();
 		for (Project p : projectDB.getProjectList()){
@@ -50,7 +51,8 @@ public class DataLogic {
 		}
 		return projectList;
 	}
-	
+
+	// Returns categories in a specific project for a given month
 	public ArrayList<Category> getCategoriesForMonth(String projectTitle, int year, int month) {
 		ArrayList<Category> categoryList = new ArrayList<Category>();
 		for (Category c : projectDB.getProject(projectTitle).getCategoryList()){
@@ -63,7 +65,8 @@ public class DataLogic {
 		}
 		return categoryList;
 	}
-	
+
+	// returns plans in a specific category in a given month
 	public ArrayList<Plan> getPlansForMonth(String projectTitle, String categoryTitle, int year, int month) {
 		ArrayList<Plan> planList = new ArrayList<Plan>();
 		for (Plan p : projectDB.getProject(projectTitle).getCategory(categoryTitle).getPlanList()) {
@@ -76,7 +79,8 @@ public class DataLogic {
 		}
 		return planList;
 	}
-	
+
+	// Returns the relevant months for a given project
 	public ArrayList<Integer> getRelevantMonthsForProject(String projectTitle){
 		ArrayList<Integer> integerList = new ArrayList<Integer>();
 		for (Date d : projectDB.getProject(projectTitle).getContainingDates()) {
@@ -85,7 +89,8 @@ public class DataLogic {
 		}
 		return integerList;
 	}
-	
+
+	// Returns the relevant months for a given category in a specific project
 	public ArrayList<Integer> getRelevantMonthsForCategory(String projectTitle, String categoryTitle) {
 		ArrayList<Integer> integerList = new ArrayList<Integer>();
 		for (Date d : projectDB.getProject(projectTitle).getCategory(categoryTitle).getContainingDays()) {
@@ -96,6 +101,7 @@ public class DataLogic {
 	}
 	
 	// Temporary function
+	// Creates some data for startup
 	public void addDefaultProjects() {
 		String color = "#ff6600";
 		// Project 1

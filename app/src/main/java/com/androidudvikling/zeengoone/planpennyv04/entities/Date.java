@@ -64,6 +64,10 @@ public class Date {
 		else
 			return false;
 	}
+
+	public String toString() {
+		return Integer.toString(year)+"/"+Integer.toString(month) + "/" + Integer.toString(day);
+	}
 	
 
 }
