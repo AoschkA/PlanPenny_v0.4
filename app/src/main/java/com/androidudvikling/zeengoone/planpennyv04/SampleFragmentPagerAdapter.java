@@ -4,17 +4,18 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
 /**
  * Created by zengoone on 09/12/15.
  */
-public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
+public class SampleFragmentPagerAdapter extends FragmentStatePagerAdapter {
     private static int PAGE_COUNT;
     private String tabTitles[];
     private Context context;
-    private static ArrayList listToShow;
+    private ArrayList listToShow;
 
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context, ArrayList<String> maaneder, ArrayList list) {
         super(fm);

@@ -10,14 +10,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
+
 import java.util.ArrayList;
 
 /**
  * Created by zeengoone on 11/26/15.
  */
-public class Fragment_Gantt extends Fragment {
-    private static ArrayList testList;
+public class Fragment_Gantt extends Fragment{
     public static final String ARG_PAGE = "ARG_PAGE";
+    private static ArrayList<Category> categories;
     private int mPage;
 
     public static Fragment_Gantt newInstance(int page, ArrayList kategoriList) {
@@ -25,28 +27,42 @@ public class Fragment_Gantt extends Fragment {
         args.putInt(ARG_PAGE, page);
         Fragment_Gantt fragment = new Fragment_Gantt();
         fragment.setArguments(args);
-        testList = kategoriList;
+        categories = setList(kategoriList);
         return fragment;
     }
 
+    public static ArrayList<Category> setList(ArrayList<Category> list){
+        return list;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content_controller, container, false);
-
+        ArrayList<String> categoryList = new ArrayList<>();
+        for(Category c:categories){
+            categoryList.add(c.getCategoryTitle());
+        }
         // Læg listen ind i arrayadapteren
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.penny_listview_item, R.id.listeelem_overskrift, testList) {
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.penny_listview_item, R.id.listeelem_overskrift, categoryList) {
             @Override
             public View getView(int position, View cachedView, ViewGroup parent) {
                 View view = super.getView(position, cachedView, parent);
                 if (position % 3 == 2) {
-                    ImageView billede = (ImageView) view.findViewById(R.id.listeelem_venstre);
-                    billede.setImageResource(android.R.drawable.sym_action_call);
+                    ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
+                    ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
+                    billedeh.setImageResource(R.drawable.pil_hoejre);
+                    billedev.setImageResource(R.drawable.pil_ingen);
                 } else if(position %3 == 1){
-                    ImageView billede = (ImageView) view.findViewById(R.id.listeelem_hoejre);
-                    billede.setImageResource(android.R.drawable.sym_action_email);
+                    ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
+                    ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
+                    billedeh.setImageResource(R.drawable.pil_ingen);
+                    billedev.setImageResource(R.drawable.pil_venstre);
                 }
                 else{
+                    ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
+                    ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
+                    billedeh.setImageResource(R.drawable.pil_ingen);
+                    billedev.setImageResource(R.drawable.pil_ingen);
                     Log.d("else_array", "gået ind i else statement");
                 }
                 return view;
