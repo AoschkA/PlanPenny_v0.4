@@ -34,6 +34,15 @@ public class Project{
     public ArrayList<Category> getCategoryList() {
     	return categoryList;
     }
+
+
+	public ArrayList<String> getCategoryTitlesList(){
+		ArrayList<String> tempList = new ArrayList<String>();
+		for(Category c:categoryList){
+			tempList.add(c.getCategoryTitle());
+		}
+		return tempList;
+	}
     
     public ArrayList<Date> getContainingDates() {
     	ArrayList<Date> dateList = new ArrayList<Date>();

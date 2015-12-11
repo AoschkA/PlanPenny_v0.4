@@ -65,7 +65,7 @@ public class Plan {
 				currentDay++;
 			
 			Date newDate = new Date(currentYear, currentMonth, currentDay);
-			if (newDate.equals(endDate)) {
+			if (newDate.getYear() == endDate.getYear() && newDate.getMonth() == endDate.getMonth() && newDate.getDay() == endDate.getDay()) {
 				dateList.add(newDate);
 				run=false;
 			}

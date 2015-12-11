@@ -1,5 +1,7 @@
 package com.androidudvikling.zeengoone.planpennyv04.entities;
 
+import java.util.Calendar;
+
 public class Date {
 	private int year;
 	private int month;
@@ -36,14 +38,19 @@ public class Date {
 	}
 
 	public Date setDateMonth(int month){
+		int aar = Calendar.getInstance().get(Calendar.YEAR);
+		int maaned = Calendar.getInstance().get(Calendar.MONTH) + 1;
+		int dag = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 		for(int i = 0;i < month;i++){
-			this.month += i;
-			if(this.month > 12) {
-				this.year += 1;
-				this.month = 1;
+			if(month > 0){
+				maaned++;
+			}
+			if(maaned > 12) {
+				aar += 1;
+				maaned = maaned - 12;
 			}
 		}
-		return new Date(this.year,this.month,this.day);
+		return new Date(aar,maaned,dag);
 	}
 	
 	public boolean before(Date date){

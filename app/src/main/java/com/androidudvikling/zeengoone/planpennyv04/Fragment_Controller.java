@@ -28,13 +28,11 @@ import java.util.GregorianCalendar;
 
 public class Fragment_Controller extends AppCompatActivity {
     private ArrayList<String> projekt_liste = new ArrayList<>();
-    private ArrayList<String> projekter_test = new ArrayList<String>();
     private ArrayList<String> tabMaaneder = new ArrayList<String>();
     private ListView projekt_liste_view;
     private DrawerLayout pennydrawerLayout;
     private ActionBarDrawerToggle penny_Projekt_Drawer_Toggle;
     private DataLogic dc = new DataLogic();
-    private FileHandler fh;
     private Calendar cal = new GregorianCalendar();
     private int currentMonth;
 
@@ -42,11 +40,9 @@ public class Fragment_Controller extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_controller);
-        //fh = new FileHandler(ContextCompat);
+
         // Lav default projekter at teste på
         dc.addDefaultProjects();
-        //fh.saveAllData(dc.getProjects());
-
         // Gør listen klar og smid den i projekt listen
         for(Project p:dc.getProjects()){
             projekt_liste.add(p.getTitle());
@@ -76,17 +72,13 @@ public class Fragment_Controller extends AppCompatActivity {
 
 
         // Læg to års måneder ind i tab-listen
-        //startKategorier();
         populateTabList(24);
+        // Toast.makeText(Fragment_Controller.this, ((TextView) view).getText(), Toast.LENGTH_LONG).show();
+        pennydrawerLayout.closeDrawer(projekt_liste_view);
         // Få fat i ViewPager og set dens pageradapter så den kan vise items
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
-                Fragment_Controller.this, tabMaaneder, projekter_test));
 
         // Sender tabLayoutet videre til viewpageren
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
+        Fragment_Gantt.beregnMaanedOgAar(0);
 
     }
 
@@ -158,12 +150,34 @@ public class Fragment_Controller extends AppCompatActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            // Få fat i ViewPager og set dens pageradapter så den kan vise items
-            ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-            viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
-                    Fragment_Controller.this, tabMaaneder, dc.getCategories(dc.getProjects().get(position).getTitle())));
-            Toast.makeText(Fragment_Controller.this, ((TextView) view).getText(), Toast.LENGTH_LONG).show();
-            pennydrawerLayout.closeDrawer(projekt_liste_view);
+            Fragment_Gantt.setProject(dc.getProjects().get(position).getTitle());
+            Fragment_Gantt.setProjectNumber(position);
+            final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+            final PennyFragmentPagerAdapter adapter = new PennyFragmentPagerAdapter(getSupportFragmentManager(),
+                    Fragment_Controller.this, dc);
+            adapter.setTabFields(tabMaaneder);
+            viewPager.setAdapter(adapter);
+            final TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+            tabLayout.setupWithViewPager(viewPager);
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    Fragment_Gantt.beregnMaanedOgAar(tab.getPosition());
+                    viewPager.setCurrentItem(tab.getPosition());
+                    System.out.println("fragment controller tab status: " + tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
         }
     }
 

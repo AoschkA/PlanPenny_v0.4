@@ -16,80 +16,70 @@ import android.widget.Toast;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
+import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
  * Created by zeengoone on 11/26/15.
  */
 public class Fragment_Gantt extends Fragment{
-    public static final String ARG_PAGE = "ARG_PAGE";
-    private static ArrayList<Category> categories;
     private static Date currentMonth;
-    private Date tabMonth;
-    private int mPage;
+    private static ArrayList<Category> tempCategories;
+    private static Date tabMonth;
+    private static int currentPosition = 0;
+    private static DataLogic dl;
+    private static String currentProject = "";
+    private static int currentProjectNumber = 0;
 
-    public static Fragment_Gantt newInstance(int page, ArrayList kategoriList) {
-        Bundle args = new Bundle();
-        args.putInt(ARG_PAGE, page);
-        Fragment_Gantt fragment = new Fragment_Gantt();
-        fragment.setArguments(args);
-        categories = kategoriList;
-        currentMonth = new Date(GregorianCalendar.YEAR, GregorianCalendar.MONTH + 1, GregorianCalendar.DAY_OF_MONTH);
-        return fragment;
+    public static Fragment_Gantt newInstance(int page, DataLogic dc) {
+        Fragment_Gantt gantt_fragment = new Fragment_Gantt();
+        dl = dc;
+        return gantt_fragment;
     }
 
-    public void beregnMaanedOgAar(int tab){
-        currentMonth = new Date(GregorianCalendar.YEAR, GregorianCalendar.MONTH + 1, GregorianCalendar.DAY_OF_MONTH);
+    public static void setProject(String projectTitle){ currentProject = projectTitle; }
+    public static void setProjectNumber(int projectNumber){ currentProjectNumber = projectNumber; }
+
+    public static void beregnMaanedOgAar(int tab){
+        currentPosition = tab;
+        currentMonth = new Date(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         tabMonth = currentMonth.setDateMonth(tab);
-    }
-    public static ArrayList<Category> setList(ArrayList<Category> list){
-        return list;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content_controller, container, false);
-        ArrayList<String> tempListe = new ArrayList<>();
-        for(Category c:categories){
-            tempListe.add(c.getCategoryTitle());
-        }
         // Læg listen ind i arrayadapteren for kategorier
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.penny_listview_item, R.id.listeelem_overskrift, tempListe) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.penny_listview_item, R.id.listeelem_overskrift, dl.getProjects().get(currentProjectNumber).getCategoryTitlesList()) {
 
             @Override
             public View getView(int position, View cachedView, ViewGroup parent) {
                 View view = super.getView(position, cachedView, parent);
-                if (true) {
+                if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDatePlan(position).after(tabMonth)) {
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     billedeh.setImageResource(R.drawable.pil_hoejre);
                     billedev.setImageResource(R.drawable.pil_ingen);
-                } else if(true){
+
+                }
+                else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDatePlan(position).before(tabMonth)){
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     billedeh.setImageResource(R.drawable.pil_ingen);
                     billedev.setImageResource(R.drawable.pil_venstre);
                 }
-                else if(true){
+                else if(dl.getCategoriesForMonth(currentProject, tabMonth.getYear(), tabMonth.getMonth()).size() > 0) {
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     billedeh.setImageResource(R.drawable.pil_ingen);
                     billedev.setImageResource(R.drawable.pil_ingen);
-                    Log.d("else_array", "gået ind i else statement");
                 }
-
                 return view;
             }
-
-           /* @Override
-            public String getItem(int position){
-                return tempListe.get(position);
-            }*/
-
         };
-        // Læg listen ind i arrayadapteren for planer
 
         // Lav listviewet og setadapter til adapteren lavet herover
         ListView lv = (ListView) view.findViewById(R.id.fragment_content);
@@ -106,6 +96,5 @@ public class Fragment_Gantt extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
     }
 }
