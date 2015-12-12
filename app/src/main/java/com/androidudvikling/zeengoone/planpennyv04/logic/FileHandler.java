@@ -8,10 +8,12 @@ import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 /**
  * Created by alexandervpedersen on 24/11/15.
+ * Modified by Jonas Praem on 10/24/15
  */
 public class FileHandler{
     Context context;
@@ -19,30 +21,36 @@ public class FileHandler{
     public FileHandler(Context context){
     }
 
+    // titles of categories and projects can't contain '#' for load method to work
     public void saveAllData(ArrayList<Project> projectList) {
-        SharedPreferences sharedPref = context.getSharedPreferences("ProjectList", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+        SharedPreferences projectPref = context.getSharedPreferences("ProjectList", Context.MODE_PRIVATE);
+        SharedPreferences categoryPref = context.getSharedPreferences("CategoryList", Context.MODE_PRIVATE);
+        SharedPreferences planPref = context.getSharedPreferences("PlanList", Context.MODE_PRIVATE);
+        SharedPreferences.Editor projectEditor = projectPref.edit();
+        SharedPreferences.Editor categoryEditor = categoryPref.edit();
+        SharedPreferences.Editor planEditor = planPref.edit();
+
         int projectCounter = 0;
         int categoryCounter = 0;
         int planCounter = 0;
         for (Project p : projectList) {
-            editor.putString("Project"+projectCounter, p.getTitle());
+            projectEditor.putString("Project"+projectCounter, p.getTitle());
             projectCounter++;
             for (Category c : p.getCategoryList()) {
-                editor.putString("Category"+categoryCounter, c.getCategoryTitle());
+                categoryEditor.putString("Category"+categoryCounter, p.getTitle()+"#"+c.getCategoryTitle());
                 categoryCounter++;
                 for (Plan plan : c.getPlanList()) {
                     Date startDate = plan.getStartDate();
                     Date endDate = plan.getEndDate();
                     String color = plan.getColor();
-                    editor.putString("Plan"+planCounter+"-1", startDate.toString());
-                    editor.putString("Plan"+planCounter+"-2", endDate.toString());
-                    editor.putString("Plan"+planCounter+"-3", color);
+                    planEditor.putString("Plan"+planCounter, p.getTitle()+"#"+c.getCategoryTitle()+"#"+startDate+"#"+endDate+"#"+color);
                     planCounter++;
                 }
             }
         }
-        editor.apply();
+        projectEditor.apply();
+        categoryEditor.apply();
+        planEditor.apply();
         int globalCount = projectCounter+categoryCounter+planCounter;
         System.out.println("***DATA SAVED SUCCESFULLY***");
         System.out.println("Amount of data saved: "+globalCount);
@@ -50,6 +58,43 @@ public class FileHandler{
         System.out.println("Projects: "+projectCounter);
         System.out.println("Categories: "+categoryCounter);
         System.out.println("Plans: "+planCounter);
+    }
+
+    public ArrayList<Project> loadAllDate() {
+        ArrayList<Project> projectList = new ArrayList<Project>();
+        SharedPreferences projectPref = context.getSharedPreferences("ProjectList", Context.MODE_PRIVATE);
+        SharedPreferences categoryPref = context.getSharedPreferences("CategoryList", Context.MODE_PRIVATE);
+        SharedPreferences planPref = context.getSharedPreferences("PlanList", Context.MODE_PRIVATE);
+
+        for (int p=0; p<projectPref.getAll().size(); p++){
+            String projectName = projectPref.getString("Project"+p, "");
+            projectList.add(new Project(projectName));
+        }
+
+        for (int p=0; p<categoryPref.getAll().size(); p++){
+            String line = categoryPref.getString("Category"+p, "");
+            String[] lineData = line.split("#");
+            for (Project pro : projectList) {
+                if (pro.getTitle().equals(lineData[0]))
+                    pro.addCategory(new Category(lineData[1]));
+            }
+        }
+
+        for (int p=0; p<planPref.getAll().size(); p++) {
+            String line = planPref.getString("Plan"+p, "");
+            String[] lineData = line.split("#");
+            for (Project pro : projectList) {
+                for (Category cat : pro.getCategoryList()){
+                    if (pro.getTitle().equals(lineData[0]) && cat.getCategoryTitle().equals(lineData[1])) {
+                        String[] date1 = lineData[2].split("/");
+                        String[] date2 = lineData[3].split("/");
+                        cat.addPlan(new Plan(new Date(Integer.getInteger(date1[0]), Integer.getInteger(date1[1]), Integer.getInteger(date1[2])),
+                                new Date(Integer.getInteger(date2[0]), Integer.getInteger(date2[1]), Integer.getInteger(date2[2])), lineData[4]));
+                    }
+                }
+            }
+        }
+        return projectList;
     }
 
 //    public Project[] getProjectlist(){
