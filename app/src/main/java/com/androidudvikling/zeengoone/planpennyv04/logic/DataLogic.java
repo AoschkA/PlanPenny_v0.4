@@ -65,6 +65,18 @@ public class DataLogic {
 		}
 		return categoryList;
 	}
+	// Returns categories in a specific project for a given month
+	public ArrayList<Plan> getCategoryForMonth(String projectTitle,int categoryIndex, int year, int month) {
+		ArrayList<Plan> planList = new ArrayList<Plan>();
+		for (Plan p : projectDB.getProject(projectTitle).getCategoryList().get(categoryIndex).getPlanList()){
+				for (Date d : p.getContainingDates()) {
+					if (d.getYear()==year && d.getMonth()==month) {
+						planList.add(p);
+					}
+				}
+		}
+		return planList;
+	}
 
 	// returns plans in a specific category in a given month
 	public ArrayList<Plan> getPlansForMonth(String projectTitle, String categoryTitle, int year, int month) {

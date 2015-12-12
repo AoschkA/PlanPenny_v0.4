@@ -3,6 +3,7 @@ package com.androidudvikling.zeengoone.planpennyv04;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -32,7 +34,7 @@ public class Fragment_Controller extends AppCompatActivity {
     private ListView projekt_liste_view;
     private DrawerLayout pennydrawerLayout;
     private ActionBarDrawerToggle penny_Projekt_Drawer_Toggle;
-    private DataLogic dc = new DataLogic();
+    public static DataLogic dc = new DataLogic();
     private Calendar cal = new GregorianCalendar();
     private int currentMonth;
 
@@ -73,8 +75,6 @@ public class Fragment_Controller extends AppCompatActivity {
 
         // Læg to års måneder ind i tab-listen
         populateTabList(24);
-        // Toast.makeText(Fragment_Controller.this, ((TextView) view).getText(), Toast.LENGTH_LONG).show();
-        pennydrawerLayout.closeDrawer(projekt_liste_view);
         // Få fat i ViewPager og set dens pageradapter så den kan vise items
 
         // Sender tabLayoutet videre til viewpageren
@@ -150,11 +150,12 @@ public class Fragment_Controller extends AppCompatActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
+            // Toast.makeText(Fragment_Controller.this, ((TextView) view).getText(), Toast.LENGTH_LONG).show();
+            pennydrawerLayout.closeDrawer(projekt_liste_view);
             Fragment_Gantt.setProject(dc.getProjects().get(position).getTitle());
             Fragment_Gantt.setProjectNumber(position);
             final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-            final PennyFragmentPagerAdapter adapter = new PennyFragmentPagerAdapter(getSupportFragmentManager(),
-                    Fragment_Controller.this, dc);
+            final PennyFragmentPagerAdapter.MyAdapter adapter = new PennyFragmentPagerAdapter.MyAdapter(getSupportFragmentManager());
             adapter.setTabFields(tabMaaneder);
             viewPager.setAdapter(adapter);
             final TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -165,20 +166,16 @@ public class Fragment_Controller extends AppCompatActivity {
                 public void onTabSelected(TabLayout.Tab tab) {
                     Fragment_Gantt.beregnMaanedOgAar(tab.getPosition());
                     viewPager.setCurrentItem(tab.getPosition());
-                    System.out.println("fragment controller tab status: " + tab.getPosition());
                 }
 
                 @Override
                 public void onTabUnselected(TabLayout.Tab tab) {
-
                 }
 
                 @Override
                 public void onTabReselected(TabLayout.Tab tab) {
-
                 }
             });
         }
     }
-
 }

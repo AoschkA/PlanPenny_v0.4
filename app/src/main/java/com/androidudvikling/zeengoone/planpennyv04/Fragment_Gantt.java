@@ -29,15 +29,18 @@ public class Fragment_Gantt extends Fragment{
     private static Date currentMonth;
     private static ArrayList<Category> tempCategories;
     private static Date tabMonth;
-    private static int currentPosition = 0;
-    private static DataLogic dl;
     private static String currentProject = "";
     private static int currentProjectNumber = 0;
+    private static DataLogic dl = Fragment_Controller.dc;
+    private static int currentPosition = 0;
 
-    public static Fragment_Gantt newInstance(int page, DataLogic dc) {
-        Fragment_Gantt gantt_fragment = new Fragment_Gantt();
-        dl = dc;
-        return gantt_fragment;
+    public static final String POSITION_KEY = "FragmentPositionKey";
+    private int position;
+
+    public static Fragment_Gantt newInstance(Bundle args) {
+        Fragment_Gantt fragment = new Fragment_Gantt();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     public static void setProject(String projectTitle){ currentProject = projectTitle; }
@@ -47,6 +50,10 @@ public class Fragment_Gantt extends Fragment{
         currentPosition = tab;
         currentMonth = new Date(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         tabMonth = currentMonth.setDateMonth(tab);
+    }
+    public static Date yearToTab(int tab){
+        Date tempDate = new Date(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        return tempDate.setDateMonth(tab);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,20 +65,25 @@ public class Fragment_Gantt extends Fragment{
             @Override
             public View getView(int position, View cachedView, ViewGroup parent) {
                 View view = super.getView(position, cachedView, parent);
-                if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDatePlan(position).after(tabMonth)) {
+                if(dl.getCategoryForMonth(currentProject, position, tabMonth.getYear(), tabMonth.getMonth()).size() > 4) {
+                    ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
+                    ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
+                    billedeh.setImageResource(R.drawable.pil_ingen);
+                    billedev.setImageResource(R.drawable.pil_ingen);
+                } else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDatePlan(position).after(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getEndDatePlan(position).after(tabMonth) ) {
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     billedeh.setImageResource(R.drawable.pil_hoejre);
                     billedev.setImageResource(R.drawable.pil_ingen);
 
                 }
-                else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDatePlan(position).before(tabMonth)){
+                else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDatePlan(position).before(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getEndDatePlan(position).before(tabMonth)){
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     billedeh.setImageResource(R.drawable.pil_ingen);
                     billedev.setImageResource(R.drawable.pil_venstre);
                 }
-                else if(dl.getCategoriesForMonth(currentProject, tabMonth.getYear(), tabMonth.getMonth()).size() > 0) {
+                else{
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     billedeh.setImageResource(R.drawable.pil_ingen);
