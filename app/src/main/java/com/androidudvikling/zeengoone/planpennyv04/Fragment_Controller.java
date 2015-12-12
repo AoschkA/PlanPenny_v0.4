@@ -54,10 +54,10 @@ public class Fragment_Controller extends AppCompatActivity {
                 R.layout.penny_drawer_listview_item, projekt_liste));
 
         // Opsæt actionbar
-        getSupportActionBar().setLogo(R.drawable.penny_logo);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.penny_logo);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
 
         // Sæt Drawer op
@@ -155,6 +155,7 @@ public class Fragment_Controller extends AppCompatActivity {
             Fragment_Gantt.setProject(dc.getProjects().get(position).getTitle());
             Fragment_Gantt.setProjectNumber(position);
             final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+            viewPager.setOffscreenPageLimit(0);
             final PennyFragmentPagerAdapter.MyAdapter adapter = new PennyFragmentPagerAdapter.MyAdapter(getSupportFragmentManager());
             adapter.setTabFields(tabMaaneder);
             viewPager.setAdapter(adapter);

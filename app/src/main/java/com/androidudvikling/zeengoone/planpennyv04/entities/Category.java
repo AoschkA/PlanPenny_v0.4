@@ -23,6 +23,14 @@ public class Category {
     	return planList;
     }
 
+	public ArrayList<String> getPlanListDates() {
+		ArrayList<String> tempPlanListDates = new ArrayList<String>();
+		for(Plan p:getPlanList()){
+			tempPlanListDates.add("StartDate: " + p.getStartDate().toString() + " EndDate: " + p.getEndDate().toString());
+		}
+		return tempPlanListDates;
+	}
+
     public Plan getPlan(Date startDate, Date endDate) {
     	for (Plan temp : planList) {
     		if (temp.getStartDate().equals(startDate) && temp.getEndDate().equals(endDate))

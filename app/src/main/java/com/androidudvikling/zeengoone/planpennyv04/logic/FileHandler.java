@@ -1,6 +1,7 @@
 package com.androidudvikling.zeengoone.planpennyv04.logic;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
@@ -52,12 +53,12 @@ public class FileHandler{
         categoryEditor.apply();
         planEditor.apply();
         int globalCount = projectCounter+categoryCounter+planCounter;
-        System.out.println("***DATA SAVED SUCCESFULLY***");
-        System.out.println("Amount of data saved: "+globalCount);
-        System.out.println("Which exist of: ");
-        System.out.println("Projects: "+projectCounter);
-        System.out.println("Categories: "+categoryCounter);
-        System.out.println("Plans: "+planCounter);
+        Log.d("FileHandler: ", "***DATA SAVED SUCCESFULLY***");
+        Log.d("FileHandler: ", "Amount of data saved: " + globalCount);
+        Log.d("FileHandler: ", "Which exist of: ");
+        Log.d("FileHandler: ", "Projects: " + projectCounter);
+        Log.d("FileHandler: ", "Categories: " + categoryCounter);
+        Log.d("FileHandler: ", "Plans: " + planCounter);
     }
 
     public ArrayList<Project> loadAllDate() {

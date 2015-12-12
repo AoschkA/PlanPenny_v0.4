@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="overskrift"
-        android:textColor="@color/colorPrimaryText"
+        android:textColor="@color/ColorPrimaryText"
         android:textSize="20sp"
         android:gravity="center"
         android:layout_centerHorizontal="true"

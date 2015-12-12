@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#912a15</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorPrimaryText">#fef4ea</color>
-    <color name="ColorPrimary">#FF5722</color>
-    <color name="ColorPrimaryDark">#E64A19</color>
+    <color name="ColorPrimaryText">#FBE9E7</color>
+    <color name="ColorPrimary">#FF3D00</color>
+    <color name="ColorPrimaryDark">#BF360C</color>
+    <color name="ColorSliderTab">#FFAB91</color>
+    <color name="ColorSliderTextpassive">#FF8A65</color>
 </resources>

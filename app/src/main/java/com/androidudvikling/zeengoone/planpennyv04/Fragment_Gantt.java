@@ -2,6 +2,7 @@ package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ public class Fragment_Gantt extends Fragment{
     private static int currentProjectNumber = 0;
     private static DataLogic dl = Fragment_Controller.dc;
     private static int currentPosition = 0;
+    ArrayAdapter<String> adapter;
 
     public static final String POSITION_KEY = "FragmentPositionKey";
     private int position;
@@ -40,6 +42,7 @@ public class Fragment_Gantt extends Fragment{
     public static Fragment_Gantt newInstance(Bundle args) {
         Fragment_Gantt fragment = new Fragment_Gantt();
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -60,7 +63,7 @@ public class Fragment_Gantt extends Fragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content_controller, container, false);
         // Læg listen ind i arrayadapteren for kategorier
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.penny_listview_item, R.id.listeelem_overskrift, dl.getProjects().get(currentProjectNumber).getCategoryTitlesList()) {
+        adapter = new ArrayAdapter<String>(getActivity(), R.layout.penny_listview_item, R.id.listeelem_overskrift, dl.getProjects().get(currentProjectNumber).getCategoryTitlesList()) {
 
             @Override
             public View getView(int position, View cachedView, ViewGroup parent) {
@@ -98,7 +101,7 @@ public class Fragment_Gantt extends Fragment{
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "Adapter click works" + " " + position, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Kategori er trykket på #: " + " " + ++position, Toast.LENGTH_LONG).show();
             }
         });
         lv.setAdapter(adapter);
@@ -108,5 +111,6 @@ public class Fragment_Gantt extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("onCreateGantt", "CurrentPosition: " + currentPosition);
     }
 }

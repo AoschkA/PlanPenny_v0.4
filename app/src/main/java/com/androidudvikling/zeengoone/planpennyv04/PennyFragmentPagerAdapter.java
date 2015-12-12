@@ -10,14 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
-import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
-import com.androidudvikling.zeengoone.planpennyv04.entities.ProjectDB;
-import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by zengoone on 09/12/15.
@@ -36,7 +29,6 @@ public class PennyFragmentPagerAdapter extends Fragment {
         View root = inflater.inflate(R.layout.activity_fragment_controller, container, false);
 
         ViewPager viewPager = (ViewPager) root.findViewById(R.id.viewpager);
-        /** Important: Must use the child FragmentManager or you will see side effects. */
         viewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
 
         return root;
@@ -73,29 +65,3 @@ public class PennyFragmentPagerAdapter extends Fragment {
         }
     }
 }
-/*
-    public PennyFragmentPagerAdapter(FragmentManager fm, Context context, DataLogic dc) {
-        super(fm);
-        this.dc = dc;
-        this.context = context;
-    }
-    @Override
-    public int getItemPosition (Object object) { return POSITION_NONE; }
-
-
-
-    @Override
-    public int getCount() {
-
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-        return Fragment_Gantt.newInstance(position, this.dc);
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        // Generer tab-title baseret på position i arrayet
-        return listToTabs.get(position).toString();
-    }*/
