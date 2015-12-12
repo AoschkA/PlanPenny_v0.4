@@ -15,6 +15,7 @@ import java.util.Map;
 /**
  * Created by alexandervpedersen on 24/11/15.
  * Modified by Jonas Praem on 10/24/15
+ * Untested class
  */
 public class FileHandler{
     Context context;
