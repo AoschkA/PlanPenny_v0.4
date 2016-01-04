@@ -138,9 +138,7 @@ public class Fragment_Controller extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (penny_Projekt_Drawer_Toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+        if (penny_Projekt_Drawer_Toggle.onOptionsItemSelected(item)) { return true; }
         return super.onOptionsItemSelected(item);
     }
 
