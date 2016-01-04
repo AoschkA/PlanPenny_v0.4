@@ -77,9 +77,6 @@ public class Fragment_Controller extends AppCompatActivity {
         populateTabList(24);
         // Få fat i ViewPager og set dens pageradapter så den kan vise items
 
-        // Sender tabLayoutet videre til viewpageren
-        Fragment_Gantt.beregnMaanedOgAar(0);
-
     }
 
     /*private void startKategorier(){
@@ -152,12 +149,11 @@ public class Fragment_Controller extends AppCompatActivity {
         public void onItemClick(AdapterView parent, View view, int position, long id) {
             // Toast.makeText(Fragment_Controller.this, ((TextView) view).getText(), Toast.LENGTH_LONG).show();
             pennydrawerLayout.closeDrawer(projekt_liste_view);
-            Fragment_Gantt.setProject(dc.getProjects().get(position).getTitle());
-            Fragment_Gantt.setProjectNumber(position);
             final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
             viewPager.setOffscreenPageLimit(0);
             final PennyFragmentPagerAdapter.MyAdapter adapter = new PennyFragmentPagerAdapter.MyAdapter(getSupportFragmentManager());
             adapter.setTabFields(tabMaaneder);
+            adapter.setProject(position);
             viewPager.setAdapter(adapter);
             final TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
             tabLayout.setupWithViewPager(viewPager);
@@ -165,7 +161,6 @@ public class Fragment_Controller extends AppCompatActivity {
             tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
-                    Fragment_Gantt.beregnMaanedOgAar(tab.getPosition());
                     viewPager.setCurrentItem(tab.getPosition());
                 }
 

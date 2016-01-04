@@ -36,13 +36,16 @@ public class PennyFragmentPagerAdapter extends Fragment {
 
     public static class MyAdapter extends FragmentStatePagerAdapter {
         private ArrayList<String> listToTabs;
-
+        private int currentProject;
         public MyAdapter(FragmentManager fm) {
             super(fm);
         }
         public void setTabFields(ArrayList<String> tabTitles) {
             PAGE_COUNT = tabTitles.size();
             populateTabs(tabTitles);
+        }
+        public void setProject(int projectNumber){
+            currentProject = projectNumber;
         }
         private void populateTabs(ArrayList<String> maaneder){
             listToTabs = maaneder;
@@ -55,6 +58,7 @@ public class PennyFragmentPagerAdapter extends Fragment {
         @Override
         public Fragment getItem(int position) {
             Bundle args = new Bundle();
+            args.putInt(Fragment_Gantt.PROJECT_KEY, currentProject);
             args.putInt(Fragment_Gantt.POSITION_KEY, position);
             return Fragment_Gantt.newInstance(args);
         }

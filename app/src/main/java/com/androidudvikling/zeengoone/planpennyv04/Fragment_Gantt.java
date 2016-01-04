@@ -27,30 +27,29 @@ import java.util.GregorianCalendar;
  * Created by zeengoone on 11/26/15.
  */
 public class Fragment_Gantt extends Fragment{
-    private static Date currentMonth;
+    private Date currentMonth;
     private static ArrayList<Category> tempCategories;
-    private static Date tabMonth;
-    private static String currentProject = "";
-    private static int currentProjectNumber = 0;
+    private Date tabMonth;
+    private String currentProject = "";
+    private int currentProjectNumber = 0;
     private static DataLogic dl = Fragment_Controller.dc;
-    private static int currentPosition = 0;
     ArrayAdapter<String> adapter;
 
     public static final String POSITION_KEY = "FragmentPositionKey";
-    private int position;
+    private int faneposition;
+    public static final String PROJECT_KEY = "FragmentProjectKey";
+    private int project;
 
     public static Fragment_Gantt newInstance(Bundle args) {
         Fragment_Gantt fragment = new Fragment_Gantt();
         fragment.setArguments(args);
-
         return fragment;
     }
 
-    public static void setProject(String projectTitle){ currentProject = projectTitle; }
-    public static void setProjectNumber(int projectNumber){ currentProjectNumber = projectNumber; }
+    public void setProject(String projectTitle){ currentProject = projectTitle; }
+    public void setProjectNumber(int projectNumber){ currentProjectNumber = projectNumber; }
 
-    public static void beregnMaanedOgAar(int tab){
-        currentPosition = tab;
+    public void beregnMaanedOgAar(int tab){
         currentMonth = new Date(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         tabMonth = currentMonth.setDateMonth(tab);
     }
@@ -62,6 +61,11 @@ public class Fragment_Gantt extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_content_controller, container, false);
+        faneposition = getArguments().getInt(Fragment_Gantt.POSITION_KEY);
+        project = getArguments().getInt(Fragment_Gantt.PROJECT_KEY);
+        currentProject = dl.getProjects().get(project).getTitle();
+        setProjectNumber(project);
+        beregnMaanedOgAar(faneposition);
         // Læg listen ind i arrayadapteren for kategorier
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.penny_listview_item, R.id.listeelem_overskrift, dl.getProjects().get(currentProjectNumber).getCategoryTitlesList()) {
 
@@ -111,6 +115,5 @@ public class Fragment_Gantt extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("onCreateGantt", "CurrentPosition: " + currentPosition);
     }
 }
