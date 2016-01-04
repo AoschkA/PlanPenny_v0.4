@@ -13,6 +13,10 @@ public class DataLogic {
 	private ProjectDB projectDB = new ProjectDB();
 	
 	public DataLogic() {}
+
+	public void clearProjects(){
+		projectDB.clearList();
+	}
 	
 	public void addProject(String projectTitle) {
 		projectDB.addProject(new Project(projectTitle));

@@ -24,4 +24,7 @@ public class ProjectDB {
     public ArrayList<Project> getProjectList() {
     	return projectList;
     }
+    public void clearList(){
+        projectList.clear();
+    }
 }

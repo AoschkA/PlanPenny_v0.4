@@ -125,7 +125,7 @@ public class Fragment_Controller extends AppCompatActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        //fh.saveAllData(dc.getProjects());
+        dc.clearProjects();
     }
 
     @Override
