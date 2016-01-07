@@ -115,6 +115,40 @@ public class DataLogic {
 		}
 		return integerList;
 	}
+
+	public int getRemainingMonthsForProject(Date currentDate, String currentProjectTitle) {
+		Project currentProject = projectDB.getProject(currentProjectTitle);
+		int remainingMonths = 0;
+
+		if (currentDate.after(currentProject.getEndDate())) return -1;
+		if (currentDate.equals(currentProject.getEndDate())) return 0;
+		while (true) {
+			if (currentDate.getYear()==currentProject.getEndDate().getYear()) break;
+			else {
+				remainingMonths+=12;
+				currentDate.setYear(currentDate.getYear()+1);
+			}
+		}
+		remainingMonths += currentProject.getEndDate().getMonth()-currentDate.getMonth();
+		return remainingMonths;
+	}
+
+	public int getRemainingMonthsForCategory(Date currentDate, String currentProjectTitle, String currentCategoryTitle) {
+		Category currentCategory = projectDB.getProject(currentProjectTitle).getCategory(currentCategoryTitle);
+		int remainingMonths = 0;
+
+		if (currentDate.after(currentCategory.getEndDate())) return -1;
+		if (currentDate.equals(currentCategory.getEndDate())) return 0;
+		while (true) {
+			if (currentDate.getYear()==currentCategory.getEndDate().getYear()) break;
+			else {
+				remainingMonths+=12;
+				currentDate.setYear(currentDate.getYear()+1);
+			}
+		}
+		remainingMonths += currentCategory.getEndDate().getMonth()-currentDate.getMonth();
+		return remainingMonths;
+	}
 	
 	// Temporary function
 	// Creates some data for startup

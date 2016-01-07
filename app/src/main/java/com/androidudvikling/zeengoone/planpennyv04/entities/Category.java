@@ -43,25 +43,19 @@ public class Category {
     	planList.add(p);
     }
 
-	public Date getStartDatePlan(int categoryIndex){
-		Date temp = new Date(2017,1,1);
-		for (Plan p : getPlanList()) {
-			if(p.getEndDate().before(temp)){
-				temp = p.getEndDate();
-			}
+	public Date getEndDate() {
+		Date temp = planList.get(0).getEndDate();
+		for (Plan p : planList) {
+			if (p.getEndDate().after(temp)) temp=p.getEndDate();
 		}
-
 		return temp;
 	}
 
-	public Date getEndDatePlan(int categoryIndex){
-		Date temp = new Date(2012,1,1);
-		for (Plan p : getPlanList()) {
-			if(p.getEndDate().after(temp)){
-				temp = p.getEndDate();
-			}
+	public Date getStartDate() {
+		Date temp = planList.get(0).getStartDate();
+		for (Plan p : planList) {
+			if (p.getStartDate().before(temp)) temp=p.getStartDate();
 		}
-
 		return temp;
 	}
 
