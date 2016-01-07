@@ -1,8 +1,11 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -41,6 +44,7 @@ public class Fragment_Controller extends AppCompatActivity {
     public static DataLogic dc = new DataLogic();
     private Calendar cal = new GregorianCalendar();
     private int currentMonth;
+    private FloatingActionButton drawerFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +109,20 @@ public class Fragment_Controller extends AppCompatActivity {
             tabMaaneder.add(new SimpleDateFormat("MMM").format(cal.getTime()));
         }
     }
+
+    public void drawerFabClick(View v){
+        // Virker ikke?
+        System.out.println("fab blev klikket på");
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        FragmentCreateProject fragmentCreateProject = new FragmentCreateProject();
+        fragmentTransaction.add(R.id.fragment_content,fragmentCreateProject);
+        fragmentTransaction.commit();
+
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.penny_projekt_drawer_layout);
@@ -152,6 +170,7 @@ public class Fragment_Controller extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
             // Toast.makeText(Fragment_Controller.this, ((TextView) view).getText(), Toast.LENGTH_LONG).show();
+            //Fold draweren ind
             pennydrawerLayout.closeDrawer(Gravity.LEFT);
 
 
