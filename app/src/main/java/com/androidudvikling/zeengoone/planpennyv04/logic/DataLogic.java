@@ -140,7 +140,7 @@ public class DataLogic {
 		addPlan("Create software expansion", "Design", new Date(2016, 3, 2), new Date(2016, 4, 1), color);
 		addPlan("Create software expansion", "Implementation", new Date(2016, 4, 1), new Date(2016, 6, 25), color);
 		addPlan("Create software expansion", "Test", new Date(2016, 6, 5), new Date(2016, 9, 28), color);
-		addPlan("Create software expansion", "Release", new Date(2016, 8, 10), new Date(2016, 8, 12), color);
+		addPlan("Create software expansion", "Release", new Date(2016, 8, 10), new Date(2016, 8, 15), color);
 		
 	}
 	
