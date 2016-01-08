@@ -1,7 +1,11 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +15,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +39,12 @@ public class Fragment_Controller extends AppCompatActivity {
     private ArrayList<String> tabMaaneder = new ArrayList<String>();
     private ListView projekt_liste_view;
     private DrawerLayout pennydrawerLayout;
+    private CoordinatorLayout coordinatorLayout;
     private ActionBarDrawerToggle penny_Projekt_Drawer_Toggle;
     public static DataLogic dc = new DataLogic();
     private Calendar cal = new GregorianCalendar();
     private int currentMonth;
+    private FloatingActionButton drawerFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +67,8 @@ public class Fragment_Controller extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.penny_logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
+        //Opsæt coordinatorlayout:
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.penny_projekt_drawer_coordinatorlayout);
 
         // Sæt Drawer op
         pennydrawerLayout = (DrawerLayout) findViewById(R.id.penny_projekt_drawer_layout);
@@ -99,6 +109,20 @@ public class Fragment_Controller extends AppCompatActivity {
             tabMaaneder.add(new SimpleDateFormat("MMM").format(cal.getTime()));
         }
     }
+
+    public void drawerFabClick(View v){
+        // Virker ikke?
+        System.out.println("fab blev klikket på");
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        FragmentCreateProject fragmentCreateProject = new FragmentCreateProject();
+        fragmentTransaction.add(R.id.fragment_content,fragmentCreateProject);
+        fragmentTransaction.commit();
+
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.penny_projekt_drawer_layout);
@@ -146,7 +170,10 @@ public class Fragment_Controller extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
             // Toast.makeText(Fragment_Controller.this, ((TextView) view).getText(), Toast.LENGTH_LONG).show();
-            pennydrawerLayout.closeDrawer(projekt_liste_view);
+            //Fold draweren ind
+            pennydrawerLayout.closeDrawer(Gravity.LEFT);
+
+
             final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
             viewPager.setOffscreenPageLimit(0);
             final PennyFragmentPagerAdapter.MyAdapter adapter = new PennyFragmentPagerAdapter.MyAdapter(getSupportFragmentManager());

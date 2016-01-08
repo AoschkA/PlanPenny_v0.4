@@ -54,8 +54,21 @@ public class Project{
     	}
     	return dateList;
     }
-	public int getNumberOfMonths(Date currentMonth){
 
-		return 0;
+	public Date getEndDate() {
+		Date temp = categoryList.get(0).getEndDate();
+		for (Category c : categoryList) {
+			if (c.getEndDate().after(temp)) temp = c.getEndDate();
+		}
+		return temp;
 	}
+
+	public Date getStartDate() {
+		Date temp = categoryList.get(0).getStartDate();
+		for (Category c : categoryList) {
+			if (c.getStartDate().before(temp)) temp = c.getStartDate();
+		}
+		return temp;
+	}
+
 }

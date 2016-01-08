@@ -65,7 +65,7 @@ public class Date {
 		else if (day<date.getDay())
 			return true;
 		else 
-			return false;
+			return true;
 	}
 	
 	public boolean after(Date date) {
@@ -80,7 +80,7 @@ public class Date {
 		else if (day>date.getDay())
 			return true;
 		else
-			return false;
+			return true;
 	}
 
 	public String toString() {

@@ -115,6 +115,40 @@ public class DataLogic {
 		}
 		return integerList;
 	}
+
+	public int getRemainingMonthsForProject(Date currentDate, String currentProjectTitle) {
+		Project currentProject = projectDB.getProject(currentProjectTitle);
+		int remainingMonths = 0;
+
+		if (currentDate.after(currentProject.getEndDate())) return -1;
+		if (currentDate.equals(currentProject.getEndDate())) return 0;
+		while (true) {
+			if (currentDate.getYear()==currentProject.getEndDate().getYear()) break;
+			else {
+				remainingMonths+=12;
+				currentDate.setYear(currentDate.getYear()+1);
+			}
+		}
+		remainingMonths += currentProject.getEndDate().getMonth()-currentDate.getMonth();
+		return remainingMonths;
+	}
+
+	public int getRemainingMonthsForCategory(Date currentDate, String currentProjectTitle, String currentCategoryTitle) {
+		Category currentCategory = projectDB.getProject(currentProjectTitle).getCategory(currentCategoryTitle);
+		int remainingMonths = 0;
+
+		if (currentDate.after(currentCategory.getEndDate())) return -1;
+		if (currentDate.equals(currentCategory.getEndDate())) return 0;
+		while (true) {
+			if (currentDate.getYear()==currentCategory.getEndDate().getYear()) break;
+			else {
+				remainingMonths+=12;
+				currentDate.setYear(currentDate.getYear()+1);
+			}
+		}
+		remainingMonths += currentCategory.getEndDate().getMonth()-currentDate.getMonth();
+		return remainingMonths;
+	}
 	
 	// Temporary function
 	// Creates some data for startup
@@ -140,7 +174,7 @@ public class DataLogic {
 		addPlan("Create software expansion", "Design", new Date(2016, 3, 2), new Date(2016, 4, 1), color);
 		addPlan("Create software expansion", "Implementation", new Date(2016, 4, 1), new Date(2016, 6, 25), color);
 		addPlan("Create software expansion", "Test", new Date(2016, 6, 5), new Date(2016, 9, 28), color);
-		addPlan("Create software expansion", "Release", new Date(2016, 8, 10), new Date(2016, 8, 12), color);
+		addPlan("Create software expansion", "Release", new Date(2016, 8, 10), new Date(2016, 8, 15), color);
 		
 	}
 	
