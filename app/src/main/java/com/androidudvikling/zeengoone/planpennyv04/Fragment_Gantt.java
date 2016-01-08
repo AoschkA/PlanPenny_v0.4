@@ -1,5 +1,7 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
@@ -28,7 +32,7 @@ public class Fragment_Gantt extends Fragment{
     private String currentProject = "";
     private int currentProjectNumber = 0;
     private static DataLogic dl = Fragment_Controller.dc;
-    ArrayAdapter<String> adapter;
+    private KategoriAdapter adapter;
 
     public static final String POSITION_KEY = "FragmentPositionKey";
     private int faneposition;
@@ -62,23 +66,23 @@ public class Fragment_Gantt extends Fragment{
         setProjectNumber(project);
         beregnMaanedOgAar(faneposition);
         // Læg listen ind i arrayadapteren for kategorier
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.projekt_kategori_liste_element, R.id.listeelem_overskrift, dl.getProjects().get(currentProjectNumber).getCategoryTitlesList()) {
+        adapter = new KategoriAdapter(getActivity(), dl.getProjects().get(currentProjectNumber).getCategoryList()) {
 
             @Override
-            public View getView(int position, View cachedView, ViewGroup parent) {
-                View view = super.getView(position, cachedView, parent);
-                if(dl.getCategoryForMonth(currentProject, position, tabMonth.getYear(), tabMonth.getMonth()).size() > 0) {
+            public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+                View view = super.getGroupView(groupPosition, isExpanded, convertView, parent);
+                if(dl.getCategoryForMonth(currentProject, groupPosition, tabMonth.getYear(), tabMonth.getMonth()).size() > 0) {
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     billedeh.setImageResource(R.drawable.pil_ingen);
                     billedev.setImageResource(R.drawable.pil_ingen);
-                } else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDate().after(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getEndDate().after(tabMonth) ) {
+                } else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate().after(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getEndDate().after(tabMonth) ) {
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     billedeh.setImageResource(R.drawable.pil_hoejre);
                     billedev.setImageResource(R.drawable.pil_ingen);
                 }
-                else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDate().before(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getEndDate().before(tabMonth)){
+                else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate().before(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getEndDate().before(tabMonth)){
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     billedeh.setImageResource(R.drawable.pil_ingen);
@@ -90,19 +94,27 @@ public class Fragment_Gantt extends Fragment{
                     billedeh.setImageResource(R.drawable.pil_ingen);
                     billedev.setImageResource(R.drawable.pil_ingen);
                 }
+                if(convertView == null){
+                    LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    convertView = inflater.inflate(R.layout.kategori_liste, parent, false);
+                }
+                TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element);
+                kategori_element.setText(kategorier.get(groupPosition).getCategoryTitle());
                 return view;
             }
         };
 
         // Lav listviewet og setadapter til adapteren lavet herover
-        ListView lv = (ListView) view.findViewById(R.id.fragment_content);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ExpandableListView projektListeView = (ExpandableListView) view.findViewById(R.id.kategoriliste_udv);
+        /*
+        projektListeView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity(), "Kategori er trykket på #: " + " " + ++position, Toast.LENGTH_LONG).show();
             }
         });
-        lv.setAdapter(adapter);
+        */
+        projektListeView.setAdapter(adapter);
         return view;
     }
 
