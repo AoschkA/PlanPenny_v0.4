@@ -77,13 +77,13 @@ public class Fragment_Gantt extends Fragment{
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     billedeh.setImageResource(R.drawable.pil_ingen);
                     billedev.setImageResource(R.drawable.pil_ingen);
-                } else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDatePlan(position).after(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getEndDatePlan(position).after(tabMonth) ) {
+                } else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDate().after(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getEndDate().after(tabMonth) ) {
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     billedeh.setImageResource(R.drawable.pil_hoejre);
                     billedev.setImageResource(R.drawable.pil_ingen);
                 }
-                else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDatePlan(position).before(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getEndDatePlan(position).before(tabMonth)){
+                else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDate().before(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getEndDate().before(tabMonth)){
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     billedeh.setImageResource(R.drawable.pil_ingen);

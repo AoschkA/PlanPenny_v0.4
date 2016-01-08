@@ -2,11 +2,13 @@
 <resources>
     <color name="colorPrimary">#EB5D3E</color>
     <color name="colorPrimaryWhite">#FFFFFF</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#FFCDD2</color>
     <color name="colorPrimaryText">#fef4ea</color>
     <color name="ColorPrimaryText">#FBE9E7</color>
     <color name="ColorPrimary">#F44336</color>
     <color name="ColorPrimaryDark">#B71C1C</color>
     <color name="ColorSliderTab">#D50000</color>
     <color name="ColorSliderTextpassive">#FFCDD2</color>
+    <color name="colorFABCross">#fef4ea</color>
+    <color name="colorFAB">#006600</color>
 </resources>

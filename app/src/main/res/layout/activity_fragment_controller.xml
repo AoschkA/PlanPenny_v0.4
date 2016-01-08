@@ -53,6 +53,7 @@
             android:layout_margin="16dp"
             android:onClick="drawerFabClick"
             android:src="@android:drawable/ic_input_add"
+            android:tint="@color/colorFABCross"
             app:layout_anchorGravity="bottom|right|end" />
     </android.support.design.widget.CoordinatorLayout>
 

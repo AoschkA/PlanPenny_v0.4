@@ -61,11 +61,13 @@ public class Fragment_Controller extends AppCompatActivity {
         projekt_liste_view.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.penny_drawer_listview_item, projekt_liste));
 
-        // Opsæt actionbar
+        // Opsæt actionbar burgermenu
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setLogo(R.drawable.penny_logo);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+
 
         //Opsæt coordinatorlayout:
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.penny_projekt_drawer_coordinatorlayout);
@@ -89,16 +91,16 @@ public class Fragment_Controller extends AppCompatActivity {
 
     }
 
-    /*private void startKategorier(){
-        for(int i = 0;i < 30;i++){
-            projekter_test.add("kategori" + i);
-        }
-    }*/
+    private void setupDrawer() {
+        penny_Projekt_Drawer_Toggle.setDrawerIndicatorEnabled(true);
+    }
+
     private Calendar addMonth(){
         cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, currentMonth++);
         return cal;
     }
+
     private void populateTabList(int years){
         int month;
         int year;
@@ -115,11 +117,12 @@ public class Fragment_Controller extends AppCompatActivity {
         System.out.println("fab blev klikket på");
 
         FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         FragmentCreateProject fragmentCreateProject = new FragmentCreateProject();
-        fragmentTransaction.add(R.id.fragment_content,fragmentCreateProject);
-        fragmentTransaction.commit();
+        fragmentManager.beginTransaction()
+                .add(R.id.fragment_content, fragmentCreateProject)
+                .commit();
+
 
     }
 
@@ -173,7 +176,6 @@ public class Fragment_Controller extends AppCompatActivity {
             //Fold draweren ind
             pennydrawerLayout.closeDrawer(Gravity.LEFT);
 
-
             final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
             viewPager.setOffscreenPageLimit(0);
             final PennyFragmentPagerAdapter.MyAdapter adapter = new PennyFragmentPagerAdapter.MyAdapter(getSupportFragmentManager());
@@ -198,5 +200,10 @@ public class Fragment_Controller extends AppCompatActivity {
                 }
             });
         }
+    }
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        penny_Projekt_Drawer_Toggle.syncState();
     }
 }
