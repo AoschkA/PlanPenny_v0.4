@@ -2,8 +2,6 @@ package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +9,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
-import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  * Created by zeengoone on 11/26/15.
@@ -60,14 +55,14 @@ public class Fragment_Gantt extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_content_controller, container, false);
+        View view = inflater.inflate(R.layout.fragment_projekt_visnings_liste, container, false);
         faneposition = getArguments().getInt(Fragment_Gantt.POSITION_KEY);
         project = getArguments().getInt(Fragment_Gantt.PROJECT_KEY);
         currentProject = dl.getProjects().get(project).getTitle();
         setProjectNumber(project);
         beregnMaanedOgAar(faneposition);
         // Læg listen ind i arrayadapteren for kategorier
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.penny_listview_item, R.id.listeelem_overskrift, dl.getProjects().get(currentProjectNumber).getCategoryTitlesList()) {
+        adapter = new ArrayAdapter<String>(getActivity(), R.layout.projekt_kategori_liste_element, R.id.listeelem_overskrift, dl.getProjects().get(currentProjectNumber).getCategoryTitlesList()) {
 
             @Override
             public View getView(int position, View cachedView, ViewGroup parent) {

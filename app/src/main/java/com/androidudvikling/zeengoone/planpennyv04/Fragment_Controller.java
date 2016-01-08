@@ -1,15 +1,10 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -17,18 +12,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
-import com.androidudvikling.zeengoone.planpennyv04.logic.FileHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,7 +41,7 @@ public class Fragment_Controller extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment_controller);
+        setContentView(R.layout.main_activity_controller);
 
         // Lav default projekter at teste på
         dc.addDefaultProjects();
@@ -60,7 +51,7 @@ public class Fragment_Controller extends AppCompatActivity {
         }
         projekt_liste_view = (ListView) findViewById(R.id.penny_projekt_drawer_list);
         projekt_liste_view.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.penny_drawer_listview_item, projekt_liste));
+                R.layout.skuffe_projekt_liste_element, projekt_liste));
 
         // Opsæt actionbar burgermenu
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -116,16 +107,7 @@ public class Fragment_Controller extends AppCompatActivity {
     public void drawerFabClick(View v){
         // Virker ikke?
         System.out.println("fab blev klikket på");
-    /*
-        FragmentManager fragmentManager = getFragmentManager();
 
-        FragmentCreateProject fragmentCreateProject = new FragmentCreateProject();
-        fragmentManager.beginTransaction()
-                .add(R.id.fragment_content, fragmentCreateProject)
-                .commit();
-        fragmentTransaction.add(R.id.fragment_content,fragmentCreateProject);
-        fragmentTransaction.commit();
-    */
 
         startActivity(new Intent(Fragment_Controller.this,PopCreateProject.class));
     }
@@ -139,13 +121,6 @@ public class Fragment_Controller extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
-    /*@Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        penny_Projekt_Drawer_Toggle.syncState();
-    }*/
 
     @Override
     public void onPause(){
@@ -179,10 +154,9 @@ public class Fragment_Controller extends AppCompatActivity {
             // Toast.makeText(Fragment_Controller.this, ((TextView) view).getText(), Toast.LENGTH_LONG).show();
             //Fold draweren ind
             pennydrawerLayout.closeDrawer(Gravity.LEFT);
-
             final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
             viewPager.setOffscreenPageLimit(0);
-            final PennyFragmentPagerAdapter.MyAdapter adapter = new PennyFragmentPagerAdapter.MyAdapter(getSupportFragmentManager());
+            final PennyFragmentPagerAdapter.NyViewPagerAdapter adapter = new PennyFragmentPagerAdapter.NyViewPagerAdapter(getSupportFragmentManager());
             adapter.setTabFields(tabMaaneder);
             adapter.setProject(position);
             viewPager.setAdapter(adapter);

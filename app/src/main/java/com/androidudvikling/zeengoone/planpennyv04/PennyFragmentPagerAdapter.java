@@ -1,15 +1,14 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 
 /**
@@ -26,18 +25,16 @@ public class PennyFragmentPagerAdapter extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.activity_fragment_controller, container, false);
-
+        View root = inflater.inflate(R.layout.main_activity_controller, container, false);
         ViewPager viewPager = (ViewPager) root.findViewById(R.id.viewpager);
-        viewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
-
+        viewPager.setAdapter(new NyViewPagerAdapter(getChildFragmentManager()));
         return root;
     }
 
-    public static class MyAdapter extends FragmentStatePagerAdapter {
+    public static class NyViewPagerAdapter extends FragmentStatePagerAdapter {
         private ArrayList<String> listToTabs;
         private int currentProject;
-        public MyAdapter(FragmentManager fm) {
+        public NyViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
         public void setTabFields(ArrayList<String> tabTitles) {
