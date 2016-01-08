@@ -3,6 +3,7 @@ package com.androidudvikling.zeengoone.planpennyv04;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -115,15 +116,18 @@ public class Fragment_Controller extends AppCompatActivity {
     public void drawerFabClick(View v){
         // Virker ikke?
         System.out.println("fab blev klikket på");
-
+    /*
         FragmentManager fragmentManager = getFragmentManager();
 
         FragmentCreateProject fragmentCreateProject = new FragmentCreateProject();
         fragmentManager.beginTransaction()
                 .add(R.id.fragment_content, fragmentCreateProject)
                 .commit();
+        fragmentTransaction.add(R.id.fragment_content,fragmentCreateProject);
+        fragmentTransaction.commit();
+    */
 
-
+        startActivity(new Intent(Fragment_Controller.this,PopCreateProject.class));
     }
 
     @Override

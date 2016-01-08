@@ -21,6 +21,9 @@
         <item name="android:textColor">@color/ColorSliderTextpassive</item>
         <item name="textAllCaps">true</item>
     </style>
-
+    <style name="AppTheme.PopTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
 
 </resources>
