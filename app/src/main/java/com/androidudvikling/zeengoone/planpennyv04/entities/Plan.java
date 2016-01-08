@@ -88,7 +88,7 @@ public class Plan {
 			return false;
 	}
 	public String toString() {
-		return Integer.toString(this.startDate.getYear())+"/"+ Integer.toString(this.startDate.getMonth()) + "/" + this.endDate.getDay() + "  - " + this.endDate.getYear() +"/"+Integer.toString(this.endDate.getMonth()) + "/" + Integer.toString(this.endDate.getDay());
+		return Integer.toString(this.startDate.getYear())+"/"+ Integer.toString(this.startDate.getMonth()) + "/" + this.startDate.getDay() + "  - " + this.endDate.getYear() +"/"+Integer.toString(this.endDate.getMonth()) + "/" + Integer.toString(this.endDate.getDay());
 	}
 
 }
