@@ -44,7 +44,7 @@ public class Category {
     }
 
 	public Date getStartDatePlan(int categoryIndex){
-		Date temp = new Date(2017,1,1);
+		Date temp = new Date(2050,1,1);
 		for (Plan p : getPlanList()) {
 			if(p.getEndDate().before(temp)){
 				temp = p.getEndDate();

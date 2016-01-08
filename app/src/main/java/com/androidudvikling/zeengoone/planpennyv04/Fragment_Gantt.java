@@ -72,7 +72,7 @@ public class Fragment_Gantt extends Fragment{
             @Override
             public View getView(int position, View cachedView, ViewGroup parent) {
                 View view = super.getView(position, cachedView, parent);
-                if(dl.getCategoryForMonth(currentProject, position, tabMonth.getYear(), tabMonth.getMonth()).size() > 4) {
+                if(dl.getCategoryForMonth(currentProject, position, tabMonth.getYear(), tabMonth.getMonth()).size() > 0) {
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
                     billedeh.setImageResource(R.drawable.pil_ingen);
@@ -82,7 +82,6 @@ public class Fragment_Gantt extends Fragment{
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
                     billedeh.setImageResource(R.drawable.pil_hoejre);
                     billedev.setImageResource(R.drawable.pil_ingen);
-
                 }
                 else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getStartDatePlan(position).before(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(position).getEndDatePlan(position).before(tabMonth)){
                     ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);

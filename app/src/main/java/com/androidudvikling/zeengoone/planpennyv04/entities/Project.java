@@ -54,4 +54,8 @@ public class Project{
     	}
     	return dateList;
     }
+	public int getNumberOfMonths(Date currentMonth){
+
+		return 0;
+	}
 }
