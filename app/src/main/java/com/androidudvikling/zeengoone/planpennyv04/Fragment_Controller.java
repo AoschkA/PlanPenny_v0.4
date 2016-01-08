@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 
@@ -25,6 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
 
 public class Fragment_Controller extends AppCompatActivity {
     private ArrayList<String> projekt_liste = new ArrayList<>();
@@ -37,6 +40,9 @@ public class Fragment_Controller extends AppCompatActivity {
     private Calendar cal = new GregorianCalendar();
     private int currentMonth;
     private FloatingActionButton drawerFab;
+
+    private HashMap<String, List<String>> kategoriListe;
+    private List<String> planListe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +82,6 @@ public class Fragment_Controller extends AppCompatActivity {
         // Onclick listener til projektlistemenuen
         projekt_liste_view.setOnItemClickListener(new DrawerItemClickListener());
 
-
-        // Læg to års måneder ind i tab-listen
-        populateTabList(24);
         // Få fat i ViewPager og set dens pageradapter så den kan vise items
 
     }
@@ -151,9 +154,15 @@ public class Fragment_Controller extends AppCompatActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
+            int aar = Calendar.getInstance().get(Calendar.YEAR);
+            int maaned = Calendar.getInstance().get(Calendar.MONTH);
+            int dag = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+            Date dato = new Date(aar, maaned, dag);
             // Toast.makeText(Fragment_Controller.this, ((TextView) view).getText(), Toast.LENGTH_LONG).show();
             //Fold draweren ind
             pennydrawerLayout.closeDrawer(Gravity.LEFT);
+            // Læg to års måneder ind i tab-listen
+            populateTabList(dc.getRemainingMonthsForProject(dato,dc.getProjects().get(position).getTitle()));
             final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
             viewPager.setOffscreenPageLimit(0);
             final PennyFragmentPagerAdapter.NyViewPagerAdapter adapter = new PennyFragmentPagerAdapter.NyViewPagerAdapter(getSupportFragmentManager());
