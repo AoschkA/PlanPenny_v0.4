@@ -7,6 +7,8 @@ import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.entities.ProjectDB;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 
 public class DataLogic {
@@ -148,6 +150,24 @@ public class DataLogic {
 		}
 		remainingMonths += currentCategory.getEndDate().getMonth()-currentDate.getMonth();
 		return remainingMonths;
+	}
+
+	/* type:
+	1 for alphabetic
+	2 for biggest first
+	3 for first created first
+	 */
+	private ArrayList<Category> sortCategories(int type, ArrayList<Category> categories) {
+		if (type==1) {
+			String[] titles = new String[categories.size()];
+			for (int i=0; i<titles.length; i++)
+				titles[i]=categories.get(i).getCategoryTitle();
+
+			 //Arrays.sort(titles, new Comparator<String>());
+
+
+		}
+		return  categories;
 	}
 	
 	// Temporary function

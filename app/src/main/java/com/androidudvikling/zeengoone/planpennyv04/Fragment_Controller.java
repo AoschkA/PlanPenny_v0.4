@@ -90,7 +90,7 @@ public class Fragment_Controller extends AppCompatActivity {
         penny_Projekt_Drawer_Toggle.setDrawerIndicatorEnabled(true);
     }
 
-    private Calendar addMonth(){
+    private Calendar addMonth() {
         cal = Calendar.getInstance();
         cal.add(Calendar.MONTH, currentMonth++);
         return cal;
