@@ -6,10 +6,11 @@ import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.entities.ProjectDB;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class DataLogic {
+public class DataLogic implements Serializable {
 	private ProjectDB projectDB = new ProjectDB();
 	
 	public DataLogic() {}

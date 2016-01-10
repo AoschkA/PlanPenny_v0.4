@@ -1,5 +1,6 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.design.widget.CoordinatorLayout;
@@ -52,9 +53,8 @@ public class Fragment_Controller extends AppCompatActivity {
         // Lav default projekter at teste på
         dc.addDefaultProjects();
         // Gør listen klar og smid den i projekt listen
-        for(Project p:dc.getProjects()){
-            projekt_liste.add(p.getTitle());
-        }
+        populateDrawer();
+
         projekt_liste_view = (ListView) findViewById(R.id.penny_projekt_drawer_list);
         projekt_liste_view.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.skuffe_projekt_liste_element, projekt_liste));
@@ -109,14 +109,23 @@ public class Fragment_Controller extends AppCompatActivity {
 
     public void drawerFabClick(View v){
         // Virker ikke?
-        System.out.println("fab blev klikket på");
+
+        System.out.println(dc.getProjects().get(dc.getProjects().size()-1).getTitle());
+
+        Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class)
+                .putExtra("DL", dc);
+
+        startActivityForResult(CreateProject, 2);
+
+        System.out.println("Done");
 
 
-        startActivity(new Intent(Fragment_Controller.this,PopCreateProject.class));
+        populateDrawer();
     }
 
     @Override
     public void onBackPressed() {
+        populateDrawer();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.penny_projekt_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -192,5 +201,24 @@ public class Fragment_Controller extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         penny_Projekt_Drawer_Toggle.syncState();
+    }
+
+    public void populateDrawer(){
+        projekt_liste.clear();
+
+        for(Project p:dc.getProjects()){
+            projekt_liste.add(p.getTitle());
+        }
+    }
+
+    @Override
+
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+                    if (resultCode == 2) {
+                        Bundle bundle = data.getExtras();
+                        this.dc = (DataLogic) bundle.get("NyDl");
+
+                    }
     }
 }

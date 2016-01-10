@@ -1,8 +1,9 @@
 package com.androidudvikling.zeengoone.planpennyv04.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Project{
+public class Project implements Serializable{
 	private String title;
     private ArrayList<Category> categoryList;
 

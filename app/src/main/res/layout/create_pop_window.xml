@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nyt Projekt"
+        android:text="Nyt Projekt           "
         android:id="@+id/textNytProjekt"
         android:textSize="20dp"
         android:layout_alignParentTop="true"
@@ -26,19 +26,6 @@
         android:layout_marginTop="5dp"
         android:id="@+id/view" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Projekt Navn"
-        android:id="@+id/projectName"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:layout_below="@+id/view"
-        android:layout_alignLeft="@+id/imageView"
-        android:layout_alignStart="@+id/imageView"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp" />
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,16 +35,54 @@
         android:layout_marginLeft="5dp"
         android:layout_alignBottom="@+id/view" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:background="@drawable/border_style"
-        android:layout_below="@+id/projectName"
-        android:layout_alignLeft="@+id/projectName"
-        android:layout_alignStart="@+id/projectName"
-        android:layout_alignRight="@+id/textNytProjekt"
-        android:layout_alignEnd="@+id/textNytProjekt"
-        android:layout_marginLeft="-5dp"
-        android:padding="5dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignRight="@+id/view"
+        android:layout_alignEnd="@+id/view"
+        android:layout_below="@+id/view"
+        android:id="@+id/contentLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Indskriv Projekt Navn"
+            android:id="@+id/projectName"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="25dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/createEdit"
+            android:background="@drawable/border_style_text"
+            android:layout_below="@+id/projectName"
+            android:layout_alignLeft="@+id/projectName"
+            android:layout_marginLeft="5dp"
+            android:padding="5dp"
+            android:inputType="textLongMessage"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/errorText"
+            android:layout_below="@+id/createEdit"
+            android:layout_alignLeft="@+id/projectName"
+            android:layout_alignStart="@+id/projectName" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Opret Projekt"
+            android:id="@+id/buttonCreateProject"
+            android:layout_below="@+id/errorText"
+            android:layout_centerHorizontal="true"
+            android:onClick="OnBtnClicked"/>
+    </RelativeLayout>
+
 </RelativeLayout>
