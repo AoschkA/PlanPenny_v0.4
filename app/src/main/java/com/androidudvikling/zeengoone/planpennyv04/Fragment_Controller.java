@@ -108,7 +108,7 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void drawerFabClick(View v){
-        System.out.println(dc.getProjects().get(dc.getProjects().size()-1).getTitle());
+        System.out.println(dc.getProjects().get(dc.getProjects().size() - 1).getTitle());
 
         Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
 
@@ -217,7 +217,7 @@ public class Fragment_Controller extends AppCompatActivity {
                         dc.addProject(projectName);
 
                         //Kategorier
-                        Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class)
+                        Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateCategory.class)
                                 .putExtra("CategoryNames", projectName);
                         startActivityForResult(CreateProject, 3);
                     }
