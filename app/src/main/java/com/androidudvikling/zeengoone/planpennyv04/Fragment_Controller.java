@@ -108,19 +108,14 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void drawerFabClick(View v){
-        // Virker ikke?
-
         System.out.println(dc.getProjects().get(dc.getProjects().size()-1).getTitle());
 
-        Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class)
-                .putExtra("DL", dc);
+        Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
 
         startActivityForResult(CreateProject, 2);
 
-        System.out.println("Done");
 
 
-        populateDrawer();
     }
 
     @Override
@@ -216,8 +211,18 @@ public class Fragment_Controller extends AppCompatActivity {
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
                     if (resultCode == 2) {
+                        // Projekt
                         Bundle bundle = data.getExtras();
-                        this.dc = (DataLogic) bundle.get("NyDl");
+                        String projectName = bundle.getString("NyDl");
+                        dc.addProject(projectName);
+
+                        //Kategorier
+                        Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class)
+                                .putExtra("CategoryNames", projectName);
+                        startActivityForResult(CreateProject, 3);
+                    }
+
+                    if (resultCode == 3){
 
                     }
     }

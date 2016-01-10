@@ -1,44 +1,39 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by alexandervpedersen on 08/01/16.
  */
-public class PopCreateProject extends Activity  {
+public class PopCreateCategory extends Activity  {
 
-    private TextView projectText;
-    private EditText projectName;
+    private TextView categoryText;
+    private EditText categoryname;
     private TextView errorText;
     private RelativeLayout contentLayout;
-    private Button projectCreateBtn;
-    private String projectTextFromUser;
-    private DataLogic dl;
+    private Button categoryCreateBtn;
+    private String categoryTextFromUser;
+    private ArrayList categoryNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent i = getIntent();
 
         // Sætter layout
-        setContentView(R.layout.create_pop_window);
+        setContentView(R.layout.category_pop_window);
 
         //Opsætter fremvisnings matricen
         DisplayMetrics dpm = new DisplayMetrics();
@@ -63,16 +58,16 @@ public class PopCreateProject extends Activity  {
         getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.border_style));
 
         // Top Text
-        projectText = (TextView) findViewById(R.id.textNytProjekt);
+        categoryText = (TextView) findViewById(R.id.textNytProjekt);
 
         //Content
         contentLayout = (RelativeLayout) findViewById(R.id.contentLayout);
 
         //Content opret
-        projectName = (EditText) findViewById(R.id.createEdit);
+        categoryname = (EditText) findViewById(R.id.createEdit);
         errorText = (TextView) findViewById(R.id.errorText);
-        projectName.getLayoutParams().width = 330;
-        projectCreateBtn = (Button) findViewById(R.id.buttonCreateProject);
+        categoryname.getLayoutParams().width = 330;
+        categoryCreateBtn = (Button) findViewById(R.id.buttonCreateProject);
 
         }
 
@@ -81,19 +76,22 @@ public class PopCreateProject extends Activity  {
            switch (v.getId()) {
                // Knap opret projekt
                case R.id.buttonCreateProject: {
-                   if (projectName.getText().toString().isEmpty()) {
+                   if (categoryname.getText().toString().isEmpty()) {
                        errorText.setText("Projektnavnet skal mindst have et bogstav.");
                    } else {
-                       projectTextFromUser = projectName.getText().toString();
+                       categoryTextFromUser = categoryname.getText().toString();
                    }
                }
 
+               case R.id.buttonDone: {
+                   Intent i = getIntent();
+                   i.putExtra("CategoryNames", categoryNames);
+                   setResult(3, i);
+                   finish();
+               }
            }
 
-           Intent i = getIntent();
-           i.putExtra("NyDl", projectTextFromUser);
-           setResult(2,i);
-           finish();
+
 
         }
 }
