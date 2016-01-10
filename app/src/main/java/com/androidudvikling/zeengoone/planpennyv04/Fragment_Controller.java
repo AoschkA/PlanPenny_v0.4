@@ -217,9 +217,9 @@ public class Fragment_Controller extends AppCompatActivity {
                         dc.addProject(projectName);
 
                         //Kategorier
-                        Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateCategory.class)
+                        Intent CreateCategory = new Intent(Fragment_Controller.this,PopCreateCategory.class)
                                 .putExtra("CategoryNames", projectName);
-                        startActivityForResult(CreateProject, 3);
+                        startActivityForResult(CreateCategory, 3);
                     }
 
                     if (resultCode == 3){
