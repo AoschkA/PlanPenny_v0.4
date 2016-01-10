@@ -1,8 +1,9 @@
 package com.androidudvikling.zeengoone.planpennyv04.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Plan {
+public class Plan implements Serializable {
     private Date startDate;
     private Date endDate;
     private String color;

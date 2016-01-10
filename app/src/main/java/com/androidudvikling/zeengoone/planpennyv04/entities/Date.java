@@ -1,8 +1,9 @@
 package com.androidudvikling.zeengoone.planpennyv04.entities;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class Date {
+public class Date implements Serializable {
 	private int year;
 	private int month;
 	private int day;

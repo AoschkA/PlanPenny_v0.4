@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Indskriv Projekt Navn"
+            android:text="Indskriv Kategori Navn"
             android:id="@+id/projectName"
             android:textSize="17dp"
             android:textStyle="bold"
@@ -78,11 +78,21 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:text="Opret Projekt"
+            android:text="Opret Kategori"
             android:id="@+id/buttonCreateProject"
             android:layout_below="@+id/errorText"
-            android:layout_centerHorizontal="true"
-            android:onClick="OnBtnClicked"/>
+            android:onClick="OnBtnClicked"
+            android:layout_marginLeft="60dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Færdig"
+            android:id="@+id/buttonDone"
+            android:layout_alignBottom="@+id/buttonCreateProject"
+            android:layout_toRightOf="@+id/buttonCreateProject"
+            android:layout_toEndOf="@+id/buttonCreateProject"
+            android:layout_alignTop="@+id/buttonCreateProject" />
     </RelativeLayout>
 
 </RelativeLayout>
