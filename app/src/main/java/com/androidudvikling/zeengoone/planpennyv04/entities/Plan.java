@@ -13,10 +13,11 @@ public class Plan implements Serializable {
     	this.endDate=endDate;
     	this.color=color;
     }
+	public Plan(){
 
-	public Date getStartDate() {
-		return startDate;
 	}
+
+	public Date getStartDate() {return this.startDate;}
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
@@ -74,6 +75,15 @@ public class Plan implements Serializable {
 		
 		return dateList;
 		
+	}
+	public int maxDaysInMonth(int year, int month){
+		int februaryDays = 28;
+		if (isLeapYear(year))
+			februaryDays++;
+		ArrayList<Date> dateList = new ArrayList<Date>();
+		// January, February, March, April, May, June, July, August, September, October, November, December
+		int[] dayLimit = {31, februaryDays, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+		return dayLimit[month-1];
 	}
 	private boolean isLeapYear(int year) {
 		if (year%4==0){

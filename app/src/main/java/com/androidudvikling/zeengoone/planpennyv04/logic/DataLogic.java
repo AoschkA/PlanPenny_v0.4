@@ -9,6 +9,7 @@ import com.androidudvikling.zeengoone.planpennyv04.entities.ProjectDB;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 
 
@@ -156,19 +157,56 @@ public class DataLogic implements Serializable {
 	/* type:
 	1 for alphabetic
 	2 for biggest first
-	3 for first created first
+	3 for first planned first
+	4 for first created first
 	 */
 	private ArrayList<Category> sortCategories(int type, ArrayList<Category> categories) {
 		if (type==1) {
-			String[] titles = new String[categories.size()];
-			for (int i=0; i<titles.length; i++)
-				titles[i]=categories.get(i).getCategoryTitle();
+			ArrayList<Category> sortedList = new ArrayList<Category>();
+			ArrayList<String> titles = new ArrayList<String>();
+			for (int i=0; i<categories.size(); i++)
+				titles.add(categories.get(i).getCategoryTitle());
 
-			 //Arrays.sort(titles, new Comparator<String>());
-
-
+			Collections.sort(titles, String.CASE_INSENSITIVE_ORDER);
+			for (Category c : categories) {
+				for (String s : titles)
+					if (c.getCategoryTitle().equals(s)) sortedList.add(c);
+			}
+			return sortedList;
 		}
-		return  categories;
+		else if (type==2) {
+			ArrayList<Category> sortedList = new ArrayList<Category>();
+			ArrayList<Integer> sizeList = new ArrayList<Integer>();
+			for (Category c : categories)
+				sizeList.add(c.getContainingDays().size());
+
+			Collections.sort(sizeList);
+			Collections.reverse(sizeList);
+
+			for (int i : sizeList) {
+				for (Category c : categories)
+					if (c.getContainingDays().size()==i) sortedList.add(c);
+			}
+			return sortedList;
+		}
+		else if (type==3) {
+			ArrayList<Category> sortedList = new ArrayList<Category>();
+			ArrayList<String> stringList = new ArrayList<String>();
+
+			for (Category c : categories)
+				stringList.add(c.getStartDate().toString());
+
+			Collections.sort(stringList, String.CASE_INSENSITIVE_ORDER);
+			for (Category c : categories) {
+				for (String s : stringList)
+					if (c.getStartDate().toString().equals(s)) sortedList.add(c);
+			}
+			return sortedList;
+		}
+		else {
+			// not implemented
+			return categories;
+		}
 	}
 	
 	// Temporary function
