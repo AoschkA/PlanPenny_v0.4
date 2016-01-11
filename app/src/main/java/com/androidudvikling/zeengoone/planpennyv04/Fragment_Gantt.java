@@ -193,7 +193,8 @@ public class Fragment_Gantt extends Fragment{
                                 dl.getProjects().get(project).getCategoryList().get(groupPosition).getPlanList().get(childPosition).setStartDate(new Date(nbAar.getValue(),nbMaaned.getValue(),nbDag.getValue()));
                                 System.out.println(nbAar.getValue() + ", " + nbMaaned.getValue() + ", " + nbDag.getValue());
                             }else{
-                                if(dl.getProjects().get(project).getCategoryList().get(groupPosition).getPlanList().get(childPosition).getStartDate() ==dl.getProjects().get(project).getCategoryList().get(groupPosition).getPlanList().get(childPosition).getEndDate()){
+                                Date testDato = new Date(nbAar.getValue(), nbMaaned.getValue(), nbDag.getValue());
+                                if(dl.getProjects().get(project).getCategoryList().get(groupPosition).getPlanList().get(childPosition).getStartDate().equals(testDato)){
                                     Toast.makeText(getActivity(), "Start og Slut Dato må ikke være Ens", Toast.LENGTH_SHORT).show();
                                 }
                                 else {

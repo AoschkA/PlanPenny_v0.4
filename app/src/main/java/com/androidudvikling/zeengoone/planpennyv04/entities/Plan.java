@@ -17,9 +17,7 @@ public class Plan implements Serializable {
 
 	}
 
-	public Date getStartDate() {
-		return startDate;
-	}
+	public Date getStartDate() {return this.startDate;}
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;

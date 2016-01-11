@@ -14,6 +14,15 @@ public class Date implements Serializable {
 		this.day=day;
 	}
 
+	public boolean equals(Date testDate){
+		if(this.year == testDate.getYear() && this.month == testDate.getMonth() && this.day == testDate.getDay()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
 	public int getYear() {
 		return year;
 	}
