@@ -13,11 +13,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
@@ -84,6 +87,17 @@ public class Fragment_Controller extends AppCompatActivity {
 
         // Få fat i ViewPager og set dens pageradapter så den kan vise items
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // show menu when menu button is pressed
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.projekt_oversigt, menu);
+        return true;
+    }
+
+    public void menuClick(MenuItem menuitem){
+        Toast.makeText(this, "Holda op hvor det går! " + menuitem, Toast.LENGTH_SHORT).show();
     }
 
     private void setupDrawer() {
