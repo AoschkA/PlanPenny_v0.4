@@ -23,6 +23,10 @@
             android:name=".PopCreateCategory"
             android:theme="@style/AppTheme.PopTheme">
         </activity>
+        <activity
+            android:name=".PopCreatePlan"
+            android:theme="@style/AppTheme.PopTheme">
+        </activity>
     </application>
 
 </manifest>

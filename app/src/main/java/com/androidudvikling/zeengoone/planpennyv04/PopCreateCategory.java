@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,11 +28,17 @@ public class PopCreateCategory extends Activity  {
     private RelativeLayout contentLayout;
     private Button categoryCreateBtn;
     private String categoryTextFromUser;
-    private ArrayList categoryNames;
+    private ListView categoryList;
+    public ArrayList <String> categoryNames = new ArrayList<String>();
+    private String curProject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent i = getIntent();
+        Bundle bundle = i.getExtras();
+        curProject = bundle.getString("ProjectName");
+
 
         // Sætter layout
         setContentView(R.layout.category_pop_window);
@@ -59,6 +67,7 @@ public class PopCreateCategory extends Activity  {
 
         // Top Text
         categoryText = (TextView) findViewById(R.id.textNytProjekt);
+        categoryText.setText(curProject);
 
         //Content
         contentLayout = (RelativeLayout) findViewById(R.id.contentLayout);
@@ -68,6 +77,9 @@ public class PopCreateCategory extends Activity  {
         errorText = (TextView) findViewById(R.id.errorText);
         categoryname.getLayoutParams().width = 330;
         categoryCreateBtn = (Button) findViewById(R.id.buttonCreateProject);
+        categoryList = (ListView) findViewById(R.id.categoryList);
+        errorText.getLayoutParams().height= 60;
+
 
         }
 
@@ -77,18 +89,34 @@ public class PopCreateCategory extends Activity  {
                // Knap opret projekt
                case R.id.buttonCreateProject: {
                    if (categoryname.getText().toString().isEmpty()) {
-                       errorText.setText("Projektnavnet skal mindst have et bogstav.");
+                       errorText.setText("Kategori navnet skal mindst have et bogstav.");
                    } else {
                        categoryTextFromUser = categoryname.getText().toString();
+                       System.out.println(categoryTextFromUser);
+                       categoryNames.add(categoryTextFromUser);
+
+                       // Tilføjer ArrayAdapter til at tage imod arraylist til fremvisning.
+                       ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                               this,
+                               android.R.layout.simple_list_item_1,
+                               categoryNames );
+                       categoryList.setAdapter(arrayAdapter);
+
                    }
-               }
+               }break;
 
                case R.id.buttonDone: {
-                   Intent i = getIntent();
-                   i.putExtra("CategoryNames", categoryNames);
-                   setResult(3, i);
-                   finish();
-               }
+                   if (categoryNames.isEmpty()){
+                       errorText.setText("Ingen kategorier er oprettet.");
+                   }else{
+                       System.out.println("Farvel");
+                       Intent i = getIntent();
+                       i.putExtra("CategoryNames", categoryNames);
+                       setResult(3, i);
+                       finish();
+                   }
+
+               }break;
            }
            Fragment_Controller.populateDrawer();
         }

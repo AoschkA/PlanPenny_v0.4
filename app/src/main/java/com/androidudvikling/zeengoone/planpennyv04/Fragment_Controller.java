@@ -23,6 +23,7 @@ import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,6 +42,9 @@ public class Fragment_Controller extends AppCompatActivity {
     private Calendar cal = new GregorianCalendar();
     private int currentMonth;
     private FloatingActionButton drawerFab;
+    private String curProjectName;
+    private ArrayList categoryList;
+    private ArrayList<List<String>> categoryListOfPlans;
 
     private HashMap<String, List<String>> kategoriListe;
     private List<String> planListe;
@@ -204,21 +208,58 @@ public class Fragment_Controller extends AppCompatActivity {
 
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
+
                     if (resultCode == 2) {
                         // Projekt
                         Bundle bundle = data.getExtras();
-                        String projectName = bundle.getString("NyDl");
-                        dc.addProject(projectName);
+                        curProjectName= bundle.getString("NyDl");
+                        dc.addProject(curProjectName);
                         System.out.println(dc.getProjects().get(dc.getProjects().size()-1).getTitle().toString());
 
                         //Kategorier
                         Intent CreateCategory = new Intent(Fragment_Controller.this,PopCreateCategory.class)
-                                .putExtra("CategoryNames", projectName);
+                                .putExtra("ProjectName", curProjectName);
                         startActivityForResult(CreateCategory, 3);
                     }
 
                     if (resultCode == 3){
+                        Bundle bundle = data.getExtras();
 
+                        categoryList = (ArrayList) bundle.get("CategoryNames");
+                         for(int i=0;i<categoryList.size();i++) {
+                             dc.addCategory(curProjectName,categoryList.get(i).toString());
+
+                        }
+
+                        Intent CreateCategory = new Intent(Fragment_Controller.this,PopCreatePlan.class)
+                                .putExtra("ProjectName", curProjectName).putExtra("Categories", categoryList);
+                        startActivityForResult(CreateCategory, 4);
+                    }
+
+                    if(resultCode == 4){
+                        Bundle bundle = data.getExtras();
+                        categoryListOfPlans = (ArrayList<List<String>>) bundle.get("Plans");
+                        for(int i=0;i<categoryListOfPlans.size();i++) {
+                            for (int k = 0; k < categoryListOfPlans.get(i).size();k++) {
+                                System.out.println(categoryListOfPlans.get(i).size());
+                                //Henter datoer for givne kategori
+                                String dates[] = categoryListOfPlans.get(i).get(k).split("-");
+                                String start = dates[0];
+                                String end = dates[1];
+
+                                System.out.println(start + " " +  end);
+                                //Splitter igen ved komma
+                                String date_start[] = start.split(",");
+                                String date_end[] = end.split(",");
+
+                                // Laver om til dato klassen:
+                                Date start_date = new Date(Integer.parseInt(date_start[2]),Integer.parseInt(date_start[1]),Integer.parseInt(date_start[0]));
+                                Date end_date = new Date(Integer.parseInt(date_end[2]),Integer.parseInt(date_end[1]), Integer.parseInt(date_end[0]));
+
+
+                                dc.addPlan(curProjectName,categoryList.get(i).toString(),start_date,end_date,"#ff6600");
+                            }
+                        }
                     }
     }
 }

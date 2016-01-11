@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Indskriv Projekt Navn"
-            android:id="@+id/projectName"
+            android:id="@+id/planName"
             android:textSize="17dp"
             android:textStyle="bold"
             android:layout_marginLeft="10dp"
@@ -60,8 +60,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/createEdit"
             android:background="@drawable/border_style_text"
-            android:layout_below="@+id/projectName"
-            android:layout_alignLeft="@+id/projectName"
+            android:layout_below="@+id/planName"
+            android:layout_alignLeft="@+id/planName"
             android:layout_marginLeft="5dp"
             android:padding="5dp"
             android:inputType="textLongMessage"
@@ -72,8 +72,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/errorText"
             android:layout_below="@+id/createEdit"
-            android:layout_alignLeft="@+id/projectName"
-            android:layout_alignStart="@+id/projectName" />
+            android:layout_alignLeft="@+id/planName"
+            android:layout_alignStart="@+id/planName" />
 
         <Button
             android:layout_width="wrap_content"

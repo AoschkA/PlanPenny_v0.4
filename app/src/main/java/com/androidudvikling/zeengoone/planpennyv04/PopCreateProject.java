@@ -35,7 +35,6 @@ public class PopCreateProject extends Activity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent i = getIntent();
 
         // Sætter layout
         setContentView(R.layout.create_pop_window);
