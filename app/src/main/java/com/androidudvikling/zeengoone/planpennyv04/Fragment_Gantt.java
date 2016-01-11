@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -106,14 +108,52 @@ public class Fragment_Gantt extends Fragment{
 
         // Lav listviewet og setadapter til adapteren lavet herover
         ExpandableListView projektListeView = (ExpandableListView) view.findViewById(R.id.kategoriliste_udv);
-        /*
-        projektListeView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        projektListeView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "Kategori er trykket på #: " + " " + ++position, Toast.LENGTH_LONG).show();
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
+                int itemType = ExpandableListView.getPackedPositionType(id);
+                final int childPosition, groupPosition;
+                boolean retVal = false;
+                if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                    childPosition = ExpandableListView.getPackedPositionChild(id);
+                    groupPosition = ExpandableListView.getPackedPositionGroup(id);
+
+                    //do your per-item callback here
+                    TextView planElement = (TextView) view.findViewById(R.id.plan_liste_element);
+                    planElement.setText("DU klikker laaaaang tid nu");
+
+                    return retVal; //true if we consumed the click, false if not
+
+                } else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+                    groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                    //do your per-group callback here
+                    final TextView kategoriTitel = (TextView) view.findViewById(R.id.kategori_liste_element);
+                    kategoriTitel.setVisibility(view.GONE);
+                    final EditText kategoriAendreTitel = (EditText) view.findViewById(R.id.aendreKategori);
+                    kategoriAendreTitel.setVisibility(view.VISIBLE);
+                    kategoriAendreTitel.setText(kategoriTitel.getText());
+                    final Button kategoriGem = (Button) view.findViewById(R.id.kategoriAendringKnap);
+                    kategoriGem.setVisibility(view.VISIBLE);
+                    kategoriGem.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            kategoriTitel.setText(kategoriAendreTitel.getText());
+                            kategoriGem.setVisibility(view.GONE);
+                            kategoriAendreTitel.setVisibility(view.GONE);
+                            kategoriTitel.setVisibility(view.VISIBLE);
+                            dl.getProjects().get(project).getCategoryList().get(groupPosition).setCategoryTitle(kategoriAendreTitel.getText().toString());
+                        }
+                    });
+                    retVal = true;
+                    return retVal; //true if we consumed the click, false if not
+
+                } else {
+                    // null item; we don't consume the click
+                    return false;
+                }
             }
         });
-        */
+
         projektListeView.setAdapter(adapter);
         return view;
     }

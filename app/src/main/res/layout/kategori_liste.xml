@@ -20,7 +20,10 @@ android:padding="5dp">
     android:paddingBottom="10dp"
     android:paddingStart="14.5sp"
     android:paddingEnd="14.5sp"
-    android:minHeight="35sp"/>
+    android:minHeight="35sp"
+    android:editable="false"
+    android:focusableInTouchMode="false"
+    android:longClickable="false" />
 
 <ImageView
     android:id="@+id/listeelem_venstre"
@@ -45,5 +48,26 @@ android:padding="5dp">
     android:layout_alignParentTop="true"
     android:layout_alignParentRight="true"
     android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/ColorPrimaryText"
+        android:id="@+id/aendreKategori"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_toLeftOf="@+id/listeelem_hoejre"
+        android:hint="Indtast KategoriNavn"
+        android:layout_alignLeft="@id/kategori_liste_element" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gem"
+        android:id="@+id/kategoriAendringKnap"
+        android:layout_alignBottom="@+id/kategori_liste_element"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

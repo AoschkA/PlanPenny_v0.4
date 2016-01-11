@@ -108,14 +108,8 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void drawerFabClick(View v){
-        System.out.println(dc.getProjects().get(dc.getProjects().size() - 1).getTitle());
-
         Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
-
         startActivityForResult(CreateProject, 2);
-
-
-
     }
 
     @Override
