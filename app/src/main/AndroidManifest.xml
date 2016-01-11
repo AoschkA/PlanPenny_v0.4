@@ -10,8 +10,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Fragment_Controller">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"
-                        android:windowSoftInputMode="adjustPan"/>
+                <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
