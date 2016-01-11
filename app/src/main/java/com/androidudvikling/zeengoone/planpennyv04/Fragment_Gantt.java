@@ -37,7 +37,6 @@ public class Fragment_Gantt extends Fragment{
     private int currentProjectNumber = 0;
     private static DataLogic dl = Fragment_Controller.dc;
     private KategoriAdapter adapter;
-
     public static final String POSITION_KEY = "FragmentPositionKey";
     private int faneposition;
     public static final String PROJECT_KEY = "FragmentProjectKey";
@@ -46,6 +45,7 @@ public class Fragment_Gantt extends Fragment{
     protected EditText kategoriAendreTitel;
     protected Button btnkategoriGem, btnPlanGem;
     protected NumberPicker nbAar, nbMaaned, nbDag;
+    private int lastGroup = -1;
 
     public static Fragment_Gantt newInstance(Bundle args) {
         Fragment_Gantt fragment = new Fragment_Gantt();
@@ -68,11 +68,13 @@ public class Fragment_Gantt extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_projekt_visnings_liste, container, false);
+
         faneposition = getArguments().getInt(Fragment_Gantt.POSITION_KEY);
         project = getArguments().getInt(Fragment_Gantt.PROJECT_KEY);
         currentProject = dl.getProjects().get(project).getTitle();
         setProjectNumber(project);
         beregnMaanedOgAar(faneposition);
+
         // Læg listen ind i arrayadapteren for kategorier
         adapter = new KategoriAdapter(getActivity(), dl.getProjects().get(currentProjectNumber).getCategoryList()) {
 
@@ -114,6 +116,17 @@ public class Fragment_Gantt extends Fragment{
 
         // Lav listviewet og setadapter til adapteren lavet herover
         final ExpandableListView projektListeView = (ExpandableListView) view.findViewById(R.id.kategoriliste_udv);
+        projektListeView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastGroup != -1
+                        && groupPosition != lastGroup) {
+                    projektListeView.collapseGroup(lastGroup);
+                }
+                lastGroup = groupPosition;
+            }
+        });
         projektListeView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
