@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.androidudvikling.zeengoone.planpennyv04">
+    package="com.androidudvikling.zeengoone.planpennyv04" >
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/penny_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Fragment_Controller">
+        android:theme="@style/AppTheme" >
+        <activity android:name=".Fragment_Controller" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".PopCreateProject"
-            android:theme="@style/AppTheme.PopTheme">
+            android:theme="@style/AppTheme.PopTheme" >
         </activity>
         <activity
             android:name=".PopCreateCategory"
-            android:theme="@style/AppTheme.PopTheme">
+            android:theme="@style/AppTheme.PopTheme" >
+        </activity>
+        <activity
+            android:name=".ScrollingActivity"
+            android:label="@string/title_activity_scrolling" >
         </activity>
     </application>
 
