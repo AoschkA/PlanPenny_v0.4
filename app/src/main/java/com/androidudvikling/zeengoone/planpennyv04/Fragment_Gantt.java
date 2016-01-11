@@ -40,6 +40,9 @@ public class Fragment_Gantt extends Fragment{
     private int faneposition;
     public static final String PROJECT_KEY = "FragmentProjectKey";
     private int project;
+    protected TextView kategoriTitel;
+    protected EditText kategoriAendreTitel;
+    protected Button kategoriGem;
 
     public static Fragment_Gantt newInstance(Bundle args) {
         Fragment_Gantt fragment = new Fragment_Gantt();
@@ -127,12 +130,12 @@ public class Fragment_Gantt extends Fragment{
                 } else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
                     groupPosition = ExpandableListView.getPackedPositionGroup(id);
                     //do your per-group callback here
-                    final TextView kategoriTitel = (TextView) view.findViewById(R.id.kategori_liste_element);
+                    kategoriTitel = (TextView) view.findViewById(R.id.kategori_liste_element);
+                    kategoriAendreTitel = (EditText) view.findViewById(R.id.aendreKategori);
+                    kategoriGem = (Button) view.findViewById(R.id.kategoriAendringKnap);
                     kategoriTitel.setVisibility(view.GONE);
-                    final EditText kategoriAendreTitel = (EditText) view.findViewById(R.id.aendreKategori);
                     kategoriAendreTitel.setVisibility(view.VISIBLE);
                     kategoriAendreTitel.setText(kategoriTitel.getText());
-                    final Button kategoriGem = (Button) view.findViewById(R.id.kategoriAendringKnap);
                     kategoriGem.setVisibility(view.VISIBLE);
                     kategoriGem.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -144,7 +147,6 @@ public class Fragment_Gantt extends Fragment{
                             dl.getProjects().get(project).getCategoryList().get(groupPosition).setCategoryTitle(kategoriAendreTitel.getText().toString());
                         }
                     });
-                    retVal = true;
                     return retVal; //true if we consumed the click, false if not
 
                 } else {
