@@ -5,6 +5,6 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-    android:divider="@color/colorFAB"
+    android:divider="@color/ColorPrimaryText"
     android:dividerHeight="0.5dp"
 />

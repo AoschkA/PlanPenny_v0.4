@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Fragment_Controller extends AppCompatActivity {
-    private ArrayList<String> projekt_liste = new ArrayList<>();
+    private static ArrayList<String> projekt_liste = new ArrayList<>();
     private ArrayList<String> tabMaaneder = new ArrayList<String>();
     private ListView projekt_liste_view;
     private DrawerLayout pennydrawerLayout;
@@ -198,7 +198,7 @@ public class Fragment_Controller extends AppCompatActivity {
         penny_Projekt_Drawer_Toggle.syncState();
     }
 
-    public void populateDrawer(){
+    public static void populateDrawer(){
         projekt_liste.clear();
 
         for(Project p:dc.getProjects()){
@@ -215,6 +215,7 @@ public class Fragment_Controller extends AppCompatActivity {
                         Bundle bundle = data.getExtras();
                         String projectName = bundle.getString("NyDl");
                         dc.addProject(projectName);
+                        System.out.println(dc.getProjects().get(dc.getProjects().size()-1).getTitle().toString());
 
                         //Kategorier
                         Intent CreateCategory = new Intent(Fragment_Controller.this,PopCreateCategory.class)

@@ -90,9 +90,7 @@ public class PopCreateCategory extends Activity  {
                    finish();
                }
            }
-
-
-
+           Fragment_Controller.populateDrawer();
         }
 }
 
