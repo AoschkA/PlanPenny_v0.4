@@ -253,7 +253,10 @@ public class Fragment_Controller extends AppCompatActivity {
                     if(resultCode == 4){
                         Bundle bundle = data.getExtras();
                         categoryListOfPlans = (ArrayList<List<String>>) bundle.get("Plans");
+
+                        // For kategorier
                         for(int i=0;i<categoryListOfPlans.size();i++) {
+                            // For planer
                             for (int k = 0; k < categoryListOfPlans.get(i).size();k++) {
                                 System.out.println(categoryListOfPlans.get(i).size());
                                 //Henter datoer for givne kategori

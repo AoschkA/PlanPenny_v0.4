@@ -45,6 +45,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
     private Spinner categoryChooser;
     private String chosenCategory = "not set";
     int catId = 0;
+    boolean startIsSet = false,endIsSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,18 +147,24 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                case R.id.buttonCreateProject: {
                    if (startDateBtn.getText().toString() == "START") {
                        errorText.setText("Du skal vælge en start dato.");
-                   }else if(endDateBtn.getText().toString() == "SLUT"){
+                   }else if(endDateBtn.getText().toString() == "SLUT") {
                        errorText.setText("Du skal vælge en slut dato.");
-                   } else {
-                       int catID = catId;
-                       System.out.println(catID);
-                       listOfPlansInCategories.get(catID).add(
-                               day_x + "," + month_x + "," + year_x + "-"
-                                      + day_y + "," + month_y + "," + year_y);
 
+                   }else if (year_x <= year_y) {
+                           if ((year_x == year_y && month_x <= month_y) || year_x < year_y) {
+                               if ((month_x == month_y && day_x <= day_y) || month_x < month_y || year_x < year_y) {
+                                   // Hvis alt er ok, opret:
+                                   int catID = catId;
+                                   String plan =
+                                           day_x + "," + month_x + "," + year_x + "-"
+                                                   + day_y + "," + month_y + "," + year_y;
+                                   System.out.println(catID);
+                                   listOfPlansInCategories.get(catID).add(plan);
 
-
-                   }
+                                   errorText.setText("Planen: " + plan + " er oprettet.");
+                               }else{errorText.setText("Start dag er efter slut dag");}
+                           }else{errorText.setText("Start måned er efter slut måned");}
+                       }else{errorText.setText("Start år er efter slut år");}
                }break;
 
                case R.id.buttonDone: {
@@ -210,6 +217,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
             month_x = monthOfYear+1;
             day_x = dayOfMonth;
             startDateBtn.setText(day_x + "-" + month_x + "-" + year_x);
+            startIsSet = true;
         }
     };
 
@@ -217,10 +225,13 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                 = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                year_y = year;
-                month_y = monthOfYear+1;
-                day_y = dayOfMonth;
-                endDateBtn.setText(day_y + "-" + month_y + "-" + year_y);
+
+                    year_y = year;
+                    month_y = monthOfYear + 1;
+                    day_y = dayOfMonth;
+                    endDateBtn.setText(day_y + "-" + month_y + "-" + year_y);
+                    endIsSet = true;
+
             }
         };
 
