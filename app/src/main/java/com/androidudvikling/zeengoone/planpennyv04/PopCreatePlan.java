@@ -149,6 +149,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                        errorText.setText("Du skal vælge en start dato.");
                    }else if(!endIsSet){
                        errorText.setText("Du skal vælge en slut dato.");
+
                    }else if (year_x <= year_y) {
                            if ((year_x == year_y && month_x <= month_y) || year_x < year_y) {
                                if ((month_x == month_y && day_x <= day_y) || month_x < month_y || year_x < year_y) {
