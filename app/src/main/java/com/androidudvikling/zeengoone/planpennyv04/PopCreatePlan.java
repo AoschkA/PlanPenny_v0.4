@@ -21,6 +21,8 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 
+import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -46,6 +48,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
     private String chosenCategory = "not set";
     int catId = 0;
     boolean startIsSet = false,endIsSet = false;
+    String overlap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,10 +150,14 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                case R.id.buttonCreateProject: {
                    if (!startIsSet) {
                        errorText.setText("Du skal vælge en start dato.");
-                   }else if(!endIsSet){
+                   }else if(!endIsSet) {
                        errorText.setText("Du skal vælge en slut dato.");
-
-                   }else if (year_x <= year_y) {
+                   }
+                   else {
+                       checkOverlap(day_x,month_x,year_x,day_y,month_y,year_y,catId);
+                   }if(overlap != "unset"){
+                           errorText.setText("Datoen overlapper en forrige plan for denne kategori: " + overlap);
+                       }else if (year_x <= year_y) {
                            if ((year_x == year_y && month_x <= month_y) || year_x < year_y) {
                                if ((month_x == month_y && day_x <= day_y) || month_x < month_y || year_x < year_y) {
                                    // Hvis alt er ok, opret:
@@ -253,8 +260,42 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
     }
 
 
+    // Bofore og after problem!
+    public void checkOverlap(int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear, int catID) {
+        Date trueDateStart = new Date(startYear, startMonth, startDay);
+        Date trueDateEnd = new Date(endYear, endMonth, endDay);
+        String overlapPlan = "unset";
 
+        for (int i = 0; i < listOfPlansInCategories.get(catID).size(); i++) {
+
+            String testDate = listOfPlansInCategories.get(catID).get(i);
+            String[] testDateStartEnd = testDate.split("-");
+            String[] testDateStart = testDateStartEnd[0].split(",");
+            String[] testDateEnd = testDateStartEnd[1].split(",");
+
+            Date testStart = new Date(Integer.parseInt(testDateStart[2]), Integer.parseInt(testDateStart[1]), Integer.parseInt(testDateStart[0]));
+            Date testEnd = new Date(Integer.parseInt(testDateEnd[2]), Integer.parseInt(testDateEnd[1]), Integer.parseInt(testDateEnd[0]));
+
+            System.out.println(testDate);
+            System.out.println(startDay + "," + startMonth + "," + startYear + "-" + endDay + "," + endMonth + "," + endYear);
+
+            System.out.println(testStart.toString() + " to " + testEnd.toString());
+            System.out.println(trueDateStart.toString() + " to " + trueDateEnd.toString());
+
+            Date testDatea = new Date(2016,1,10);
+            Date testDateb = new Date(2016,1,9);
+
+            System.out.println(testDatea.before(testDateb));
+
+            if (trueDateStart.after(testStart) && trueDateEnd.before(testEnd)) {
+                overlapPlan = listOfPlansInCategories.get(catID).get(i);
+                break;
+            }
+
+        }
+        overlap = overlapPlan;
     }
+}
 
 
 
