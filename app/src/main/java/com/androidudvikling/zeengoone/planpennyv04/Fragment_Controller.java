@@ -1,6 +1,5 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.design.widget.CoordinatorLayout;
@@ -20,13 +19,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -101,7 +98,10 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void menuClick(MenuItem menuitem){
-        Toast.makeText(this, "Holda op hvor det går! " + menuitem, Toast.LENGTH_SHORT).show();
+        if (menuitem.getTitle().equals("Indstillinger"))
+            startActivity(new Intent(this, ActivitySettings.class));
+        else if (menuitem.getTitle().equals("Hjælp"))
+            startActivity(new Intent(this, ActivityHelp.class));
     }
 
     private void setupDrawer() {

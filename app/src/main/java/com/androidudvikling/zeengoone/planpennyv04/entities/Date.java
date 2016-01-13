@@ -75,7 +75,7 @@ public class Date implements Serializable {
 		else if (day<date.getDay())
 			return true;
 		else 
-			return true;
+			return false;
 	}
 	
 	public boolean after(Date date) {
@@ -90,7 +90,7 @@ public class Date implements Serializable {
 		else if (day>date.getDay())
 			return true;
 		else
-			return true;
+			return false;
 	}
 
 	public String toString() {

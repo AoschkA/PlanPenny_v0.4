@@ -2,21 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="none">
         <item
-            android:title="Kategori sorterings type"
-            android:onClick="menuClick"
-            android:id="@+id/textViewCategory"/>
-        <item
             android:title="Indstillinger"
             android:onClick="menuClick"
             android:id="@+id/textViewTitle"/>
-        <item
-            android:title="Projekt sorterings type"
-            android:onClick="menuClick"
-            android:id="@+id/textViewProject" />
-        <item
-            android:title="synkroniser med google calendar"
-            android:onClick="menuClick"
-            android:id="@+id/synchronize"/>
         <item
             android:title="Hjælp"
             android:onClick="menuClick"
