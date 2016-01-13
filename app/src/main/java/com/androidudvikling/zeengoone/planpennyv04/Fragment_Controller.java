@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -98,10 +99,14 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void menuClick(MenuItem menuitem){
-    //    if (menuitem.getTitle().equals("Indstillinger"))
-        //   startActivity(new Intent(this, ActivitySettings.class));
-      //  else if (menuitem.getTitle().equals("Hjælp"))
-     //       startActivity(new Intent(this, ActivityHelp.class));
+        if (menuitem.getTitle().equals("Indstillinger")) {
+            Log.d("Click","Indstillinger");
+            startActivity(new Intent(this, ActivitySettings.class));
+        }
+       else if (menuitem.getTitle().equals("Hjælp")) {
+            Log.d("Click", "Indstillinger");
+            startActivity(new Intent(this, ActivityHelp.class));
+        }
     }
 
     private void setupDrawer() {
