@@ -145,11 +145,10 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
 
 
                case R.id.buttonCreateProject: {
-                   if (startDateBtn.getText().toString() == "START") {
+                   if (!startIsSet) {
                        errorText.setText("Du skal vælge en start dato.");
-                   }else if(endDateBtn.getText().toString() == "SLUT") {
+                   }else if(!endIsSet){
                        errorText.setText("Du skal vælge en slut dato.");
-
                    }else if (year_x <= year_y) {
                            if ((year_x == year_y && month_x <= month_y) || year_x < year_y) {
                                if ((month_x == month_y && day_x <= day_y) || month_x < month_y || year_x < year_y) {
@@ -243,11 +242,12 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
         String item = parent.getItemAtPosition(position).toString();
 
         // Valgte spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        Toast.makeText(parent.getContext(), "Valgt: " + item, Toast.LENGTH_LONG).show();
         catId = position;
     }
 
     public void onNothingSelected(AdapterView<?> arg0) {
+        // Hvis ønsket implementeret.
         // TODO Auto-generated method stub
     }
 

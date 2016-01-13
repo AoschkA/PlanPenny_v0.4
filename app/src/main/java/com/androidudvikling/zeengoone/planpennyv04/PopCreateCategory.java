@@ -94,6 +94,7 @@ public class PopCreateCategory extends Activity  {
                        categoryTextFromUser = categoryname.getText().toString();
                        System.out.println(categoryTextFromUser);
                        categoryNames.add(categoryTextFromUser);
+                       categoryname.setText("");
 
                        // Tilføjer ArrayAdapter til at tage imod arraylist til fremvisning.
                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
@@ -101,6 +102,7 @@ public class PopCreateCategory extends Activity  {
                                android.R.layout.simple_list_item_1,
                                categoryNames );
                        categoryList.setAdapter(arrayAdapter);
+
 
                    }
                }break;
