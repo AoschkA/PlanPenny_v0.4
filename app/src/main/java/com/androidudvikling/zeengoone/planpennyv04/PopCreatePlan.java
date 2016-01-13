@@ -282,12 +282,8 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
             System.out.println(testStart.toString() + " to " + testEnd.toString());
             System.out.println(trueDateStart.toString() + " to " + trueDateEnd.toString());
 
-            Date testDatea = new Date(2016,1,10);
-            Date testDateb = new Date(2016,1,9);
 
-            System.out.println(testDatea.before(testDateb));
-
-            if (trueDateStart.after(testStart) && trueDateEnd.before(testEnd)) {
+            if (!(trueDateStart.after(testEnd)&& trueDateEnd.after(testEnd)) && !(trueDateStart.after(testEnd) && trueDateEnd.before(testEnd))) {
                 overlapPlan = listOfPlansInCategories.get(catID).get(i);
                 break;
             }

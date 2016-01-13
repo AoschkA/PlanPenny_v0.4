@@ -98,10 +98,10 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void menuClick(MenuItem menuitem){
-        if (menuitem.getTitle().equals("Indstillinger"))
-            startActivity(new Intent(this, ActivitySettings.class));
-        else if (menuitem.getTitle().equals("Hjælp"))
-            startActivity(new Intent(this, ActivityHelp.class));
+    //    if (menuitem.getTitle().equals("Indstillinger"))
+        //   startActivity(new Intent(this, ActivitySettings.class));
+      //  else if (menuitem.getTitle().equals("Hjælp"))
+     //       startActivity(new Intent(this, ActivityHelp.class));
     }
 
     private void setupDrawer() {
