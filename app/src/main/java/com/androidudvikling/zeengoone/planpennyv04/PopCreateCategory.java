@@ -89,31 +89,45 @@ public class PopCreateCategory extends Activity  {
         categoryList = (ListView) findViewById(R.id.categoryList);
 
 
-
         }
 
         //Knap i content
        public void OnBtnClicked(View v){
-           buttonEffect(v);
+        buttonEffect(v);
            switch (v.getId()) {
                // Knap opret projekt
                case R.id.buttonCreateProject: {
                    if (categoryname.getText().toString().isEmpty()) {
                        errorText.setText("Kategori navnet skal mindst have et bogstav.");
                    } else {
-                       categoryTextFromUser = categoryname.getText().toString();
-                       System.out.println(categoryTextFromUser);
-                       categoryNames.add(categoryTextFromUser);
-                       categoryname.setText("");
+                       boolean previousCategory = false;
+                       for(int i = 0;i<categoryNames.size();i++){
+                           String catName = categoryNames.get(i).toString();
+                           System.out.println(catName);
+                           System.out.println(categoryname.getText().toString());
 
-                       // Tilføjer ArrayAdapter til at tage imod arraylist til fremvisning.
-                       ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                               this,
-                               android.R.layout.simple_list_item_1,
-                               categoryNames );
-                       categoryList.setAdapter(arrayAdapter);
+                           if(catName.equals(categoryname.getText().toString())) {
+                               System.out.println("Ja!");
+                               previousCategory = true;
+                           }
+                       }
 
+                       if(previousCategory == true) {
+                           errorText.setText("Denne kategori er allerede oprettet.");
+                       } else {
+                           categoryTextFromUser = categoryname.getText().toString();
+                           System.out.println(categoryTextFromUser);
+                           categoryNames.add(categoryTextFromUser);
+                           categoryname.setText("");
 
+                           // Tilføjer ArrayAdapter til at tage imod arraylist til fremvisning.
+                           ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                                   this,
+                                   android.R.layout.simple_list_item_1,
+                                   categoryNames);
+                           categoryList.setAdapter(arrayAdapter);
+
+                       }
                    }
                }break;
 
@@ -141,21 +155,17 @@ public class PopCreateCategory extends Activity  {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        Button view = (Button) v;
-                        view.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+                        v.getBackground().setColorFilter(0x77000000,PorterDuff.Mode.SRC_ATOP);
                         v.invalidate();
                         break;
                     }
-                    case MotionEvent.ACTION_UP:
-                        // Your action here on button click
-                    case MotionEvent.ACTION_CANCEL: {
-                        Button view = (Button) v;
-                        view.getBackground().clearColorFilter();
-                        view.invalidate();
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
                         break;
                     }
                 }
-                return true;
+                return false;
             }
         });
     }
