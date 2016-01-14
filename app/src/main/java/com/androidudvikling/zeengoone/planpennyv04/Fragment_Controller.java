@@ -75,6 +75,7 @@ public class Fragment_Controller extends AppCompatActivity {
                 R.layout.skuffe_projekt_liste_element, projekt_liste));
 
         // Opsæt actionbar burgermenu
+        this.setTitle(getString(R.string.app_title));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

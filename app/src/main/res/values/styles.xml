@@ -2,9 +2,8 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/ColorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryWhite</item>
+        <item name="colorPrimaryDark">#0F0F0F</item>
         <item name="colorAccent">@color/colorFAB</item>
     </style>
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
@@ -12,7 +11,6 @@
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabPaddingStart">8dp</item>
         <item name="tabPaddingEnd">8dp</item>
-        <item name="tabBackground">@color/colorPrimaryWhite</item>
         <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
         <item name="tabSelectedTextColor">@color/ColorPrimaryDark</item>
     </style>
