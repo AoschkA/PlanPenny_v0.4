@@ -55,27 +55,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="2dp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="Opret Plan"
-            android:id="@+id/buttonCreateProject"
-            android:onClick="OnBtnClicked"
-            android:layout_below="@+id/textView2"
-            android:layout_alignLeft="@+id/btnStart"
-            android:layout_alignStart="@+id/btnStart" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Færdig"
-            android:id="@+id/buttonDone"
-            android:layout_alignBottom="@+id/buttonCreateProject"
-            android:layout_toRightOf="@+id/buttonCreateProject"
-            android:layout_toEndOf="@+id/buttonCreateProject"
-            android:layout_alignTop="@+id/buttonCreateProject"
-            android:onClick="OnBtnClicked"/>
-
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,11 +70,12 @@
             android:layout_height="wrap_content"
             android:text="Plan start:"
             android:id="@+id/PlanStartText"
-            android:layout_below="@+id/TextStartEnd"
-            android:layout_alignRight="@+id/btnStart"
-            android:layout_alignEnd="@+id/btnStart"
             android:textAlignment="center"
-            android:layout_alignLeft="@+id/TextStartEnd" />
+            android:layout_alignTop="@+id/textView3"
+            android:layout_alignLeft="@+id/btnStart"
+            android:layout_alignStart="@+id/btnStart"
+            android:layout_alignRight="@+id/btnStart"
+            android:layout_alignEnd="@+id/btnStart" />
 
         <Button
             android:layout_width="wrap_content"
@@ -105,7 +85,8 @@
             android:layout_centerVertical="true"
             android:layout_below="@+id/PlanStartText"
             android:onClick="OnBtnClicked"
-            android:layout_alignLeft="@+id/TextStartEnd" />
+            android:layout_alignLeft="@+id/TextStartEnd"
+            android:background="@drawable/button_gradient"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -126,31 +107,22 @@
             android:text="SLUT"
             android:id="@+id/btnEnd"
             android:onClick="OnBtnClicked"
-            android:layout_above="@+id/textView2"
             android:layout_centerHorizontal="true"
-            android:layout_toRightOf="@+id/textView4" />
+            android:layout_toRightOf="@+id/textView4"
+            android:background="@drawable/button_gradient"
+            android:layout_below="@+id/textView3" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Plan slut:"
             android:id="@+id/textView3"
-            android:layout_above="@+id/btnEnd"
-            android:layout_alignRight="@+id/categoryChooser"
-            android:layout_alignEnd="@+id/categoryChooser" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vælg start og slut dato"
-            android:id="@+id/textView2"
-            android:textSize="17dp"
-            android:textStyle="bold"
-            android:layout_centerVertical="true"
-            android:layout_alignLeft="@+id/buttonCreateProject"
-            android:layout_alignStart="@+id/buttonCreateProject"
-            android:layout_below="@+id/btnStart"
-            android:layout_marginTop="15dp" />
+            android:layout_below="@+id/TextStartEnd"
+            android:layout_alignLeft="@+id/btnEnd"
+            android:layout_alignStart="@+id/btnEnd"
+            android:layout_alignRight="@+id/btnEnd"
+            android:layout_alignEnd="@+id/btnEnd"
+            android:gravity="center_horizontal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -168,10 +140,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ErrorText"
-            android:layout_below="@+id/buttonCreateProject"
-            android:layout_alignLeft="@+id/buttonCreateProject"
-            android:layout_alignStart="@+id/buttonCreateProject"
+            android:layout_below="@+id/btnStart"
+            android:layout_alignLeft="@+id/btnStart"
+            android:layout_alignStart="@+id/btnStart"
             android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="-5dp">
+
+            <Button
+                android:layout_width="129dp"
+                android:layout_height="fill_parent"
+                android:text="Opret Plan"
+                android:id="@+id/buttonCreateProject"
+                android:onClick="OnBtnClicked"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/errorText"
+                android:background="@drawable/button_gradient"
+                android:textSize="10dp"
+                android:textColor="#fef3ea" />
+
+            <Button
+                android:layout_width="129dp"
+                android:layout_height="fill_parent"
+                android:text="Færdig"
+                android:textColor="#fef3ea"
+                android:id="@+id/buttonDone"
+                android:layout_alignBottom="@+id/buttonCreateProject"
+                android:layout_toRightOf="@+id/buttonCreateProject"
+                android:layout_toEndOf="@+id/buttonCreateProject"
+                android:onClick="OnBtnClicked"
+                android:background="@drawable/button_gradient"
+                android:textSize="10dp"
+                android:elevation="5dp" />
+        </LinearLayout>
 
     </RelativeLayout>
 
