@@ -2,6 +2,7 @@ package com.androidudvikling.zeengoone.planpennyv04.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Plan implements Serializable {
     private Date startDate;
@@ -16,7 +17,6 @@ public class Plan implements Serializable {
 	public Plan(){
 
 	}
-
 	public Date getStartDate() {return this.startDate;}
 
 	public void setStartDate(Date startDate) {

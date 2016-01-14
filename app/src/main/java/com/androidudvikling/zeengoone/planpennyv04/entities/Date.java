@@ -22,7 +22,10 @@ public class Date implements Serializable {
 			return false;
 		}
 	}
-
+	public int getTwoDigitYear() {
+		String temp = Integer.toString(year);
+		return Integer.parseInt(temp.substring(temp.length()-2));
+	}
 	public int getYear() {
 		return year;
 	}

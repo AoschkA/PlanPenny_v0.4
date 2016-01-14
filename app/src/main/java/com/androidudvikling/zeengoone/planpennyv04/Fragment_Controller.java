@@ -46,7 +46,9 @@ public class Fragment_Controller extends AppCompatActivity {
     private String curProjectName;
     private ArrayList categoryList;
     private ArrayList<List<String>> categoryListOfPlans;
-
+    private ViewPager viewPager;
+    private PennyFragmentPagerAdapter.NyViewPagerAdapter adapter;
+    private TabLayout tabLayout;
     private HashMap<String, List<String>> kategoriListe;
     private List<String> planListe;
 
@@ -119,6 +121,7 @@ public class Fragment_Controller extends AppCompatActivity {
         return cal;
     }
 
+
     private void populateTabList(int years){
         int month;
         int year;
@@ -171,7 +174,11 @@ public class Fragment_Controller extends AppCompatActivity {
         if (penny_Projekt_Drawer_Toggle.onOptionsItemSelected(item)) { return true; }
         return super.onOptionsItemSelected(item);
     }
+    public void vpChangeCurrentItem(int position){
+        tabLayout.setScrollPosition(position,0f,true);
+        viewPager.setCurrentItem(position);
 
+    }
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -184,13 +191,13 @@ public class Fragment_Controller extends AppCompatActivity {
             pennydrawerLayout.closeDrawer(Gravity.LEFT);
             // Læg to års måneder ind i tab-listen
             populateTabList(dc.getRemainingMonthsForProject(dato,dc.getProjects().get(position).getTitle()));
-            final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
             viewPager.setOffscreenPageLimit(0);
-            final PennyFragmentPagerAdapter.NyViewPagerAdapter adapter = new PennyFragmentPagerAdapter.NyViewPagerAdapter(getSupportFragmentManager());
+            adapter = new PennyFragmentPagerAdapter.NyViewPagerAdapter(getSupportFragmentManager());
             adapter.setTabFields(tabMaaneder);
             adapter.setProject(position);
             viewPager.setAdapter(adapter);
-            final TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+            tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
             tabLayout.setupWithViewPager(viewPager);
             viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

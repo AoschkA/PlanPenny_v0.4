@@ -1,9 +1,12 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
+import android.app.TabActivity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,27 +86,51 @@ public class Fragment_Gantt extends Fragment{
             public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
                 View view = super.getGroupView(groupPosition, isExpanded, convertView, parent);
                 if(dl.getCategoryForMonth(currentProject, groupPosition, tabMonth.getYear(), tabMonth.getMonth()).size() > 0) {
-                    ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
-                    ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
-                    billedeh.setImageResource(R.drawable.pil_ingen);
-                    billedev.setImageResource(R.drawable.pil_ingen);
+                    TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
+                    TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
+                    txthoejre.setBackgroundResource(R.drawable.pil_ingen);
+                    txtvenstre.setBackgroundResource(R.drawable.pil_ingen);
+                    txthoejre.setText("");
+                    txtvenstre.setText("");
                 } else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate().after(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getEndDate().after(tabMonth) ) {
-                    ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
-                    ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
-                    billedeh.setImageResource(R.drawable.pil_hoejre);
-                    billedev.setImageResource(R.drawable.pil_ingen);
+                    TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
+                    TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
+                    txthoejre.setBackgroundResource(R.mipmap.pil_hoejre_ny);
+                    txtvenstre.setBackgroundResource(R.drawable.pil_ingen);
+                    final Date dato = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate();
+                    final int currentMonth = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).numberOfMonths(dato);
+                    txthoejre.setText(dato.getDay() + "/" + dato.getMonth() + "-" + dato.getTwoDigitYear());
+                    txtvenstre.setText("");
+                    txthoejre.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ((Fragment_Controller)getActivity()).vpChangeCurrentItem(currentMonth);
+                        }
+                    });
                 }
                 else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate().before(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getEndDate().before(tabMonth)){
-                    ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
-                    ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
-                    billedeh.setImageResource(R.drawable.pil_ingen);
-                    billedev.setImageResource(R.drawable.pil_venstre);
+                    TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
+                    TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
+                    txthoejre.setBackgroundResource(R.drawable.pil_ingen);
+                    txtvenstre.setBackgroundResource(R.mipmap.pil_venstre_ny);
+                    final Date dato = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate();
+                    final int currentMonth = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).numberOfMonths(dato);
+                    txthoejre.setText("");
+                    txtvenstre.setText(dato.getDay() + "/" + dato.getMonth() + "-" + dato.getTwoDigitYear());
+                    txtvenstre.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ((Fragment_Controller)getActivity()).vpChangeCurrentItem(currentMonth);
+                        }
+                    });
                 }
                 else{
-                    ImageView billedeh = (ImageView) view.findViewById(R.id.listeelem_hoejre);
-                    ImageView billedev = (ImageView) view.findViewById(R.id.listeelem_venstre);
-                    billedeh.setImageResource(R.drawable.pil_ingen);
-                    billedev.setImageResource(R.drawable.pil_ingen);
+                    TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
+                    TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
+                    txthoejre.setBackgroundResource(R.drawable.pil_ingen);
+                    txtvenstre.setBackgroundResource(R.drawable.pil_ingen);
+                    txthoejre.setText("");
+                    txtvenstre.setText("");
                 }
                 if(convertView == null){
                     LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -113,6 +141,7 @@ public class Fragment_Gantt extends Fragment{
                 return view;
             }
         };
+
 
         // Lav listviewet og setadapter til adapteren lavet herover
         final ExpandableListView projektListeView = (ExpandableListView) view.findViewById(R.id.kategoriliste_udv);
@@ -264,9 +293,5 @@ public class Fragment_Gantt extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    private void updatePlanView(){
-
     }
 }
