@@ -1,14 +1,22 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +39,7 @@ public class PopCreateCategory extends Activity  {
     private ListView categoryList;
     public ArrayList <String> categoryNames = new ArrayList<String>();
     private String curProject;
+    private LinearLayout ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +87,14 @@ public class PopCreateCategory extends Activity  {
         categoryname.getLayoutParams().width = 330;
         categoryCreateBtn = (Button) findViewById(R.id.buttonCreateProject);
         categoryList = (ListView) findViewById(R.id.categoryList);
-        errorText.getLayoutParams().height= 60;
+
 
 
         }
 
         //Knap i content
        public void OnBtnClicked(View v){
+           buttonEffect(v);
            switch (v.getId()) {
                // Knap opret projekt
                case R.id.buttonCreateProject: {
@@ -122,6 +132,33 @@ public class PopCreateCategory extends Activity  {
            }
            Fragment_Controller.populateDrawer();
         }
+
+
+    // Effekt til button
+    public static void buttonEffect(View button){
+        button.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        Button view = (Button) v;
+                        view.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                        // Your action here on button click
+                    case MotionEvent.ACTION_CANCEL: {
+                        Button view = (Button) v;
+                        view.getBackground().clearColorFilter();
+                        view.invalidate();
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+    }
 }
 
 

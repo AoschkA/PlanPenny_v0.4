@@ -1,11 +1,10 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
     android:id="@+id/penny_projekt_drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -38,10 +37,10 @@
     <ListView android:id="@+id/penny_projekt_drawer_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/side_penny_drawer_bar"
         android:choiceMode="singleChoice"
         android:divider="#666"
         android:dividerHeight="1dp"
-        android:background="@drawable/side_penny_drawer_bar"
         android:paddingLeft="15sp"
         android:paddingRight="15sp"
         />
