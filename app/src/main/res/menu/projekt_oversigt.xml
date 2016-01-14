@@ -3,6 +3,7 @@
     <group android:checkableBehavior="none">
         <item
             android:id="@+id/textViewTitle"
+            android:onClick="menuClick"
             android:title="Indstillinger">
         <!-- "file" submenu -->
         <menu>
