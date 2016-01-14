@@ -2,6 +2,7 @@ package com.androidudvikling.zeengoone.planpennyv04.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Category implements Serializable {
 	private String categoryTitle;
@@ -39,6 +40,30 @@ public class Category implements Serializable {
     	}
     	return null;
     }
+
+	public int numberOfMonths(Date toDate){
+		int aar = Calendar.getInstance().get(Calendar.YEAR);
+		int maaned = Calendar.getInstance().get(Calendar.MONTH) + 1;
+		int dag = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+		int countMonths = 0;
+		boolean notSame = true;
+		while(notSame){
+			if(toDate.getYear() == aar && toDate.getMonth() == maaned){
+				notSame = false;
+			}
+			else{
+				countMonths++;
+				if(maaned == 12){
+					aar++;
+					maaned = 1;
+				}
+				else{
+					maaned++;
+				}
+			}
+		}
+		return countMonths;
+	}
 
     public void addPlan(Plan p) {
     	planList.add(p);

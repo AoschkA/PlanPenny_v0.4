@@ -14,13 +14,14 @@ public class Date implements Serializable {
 		this.day=day;
 	}
 
+	// Samnmenlign to datoer
 	public boolean equals(Date testDate){
-		if(this.year == testDate.getYear() && this.month == testDate.getMonth() && this.day == testDate.getDay()){
-			return true;
-		}
-		else{
-			return false;
-		}
+		return this.year == testDate.getYear() && this.month == testDate.getMonth() && this.day == testDate.getDay();
+	}
+	// Giv de to sidste tal i året
+	public int getTwoDigitYear() {
+		String temp = Integer.toString(year);
+		return Integer.parseInt(temp.substring(temp.length()-2));
 	}
 
 	public int getYear() {
@@ -62,7 +63,7 @@ public class Date implements Serializable {
 		}
 		return new Date(aar,maaned,dag);
 	}
-	
+	// Undersøg om datoen er før angivne dato
 	public boolean before(Date date){
 		if (year<date.getYear())
 			return true;
@@ -72,12 +73,10 @@ public class Date implements Serializable {
 			return true;
 		else if (month>date.getMonth())
 			return false;
-		else if (day<date.getDay())
-			return true;
-		else 
-			return false;
+		else return day < date.getDay();
 	}
-	
+
+	// Undersøg om datoen er efter angivne dato
 	public boolean after(Date date) {
 		if (year>date.getYear())
 			return true;
@@ -87,15 +86,10 @@ public class Date implements Serializable {
 			return true;
 		else if (month<date.getMonth())
 			return false;
-		else if (day>date.getDay())
-			return true;
-		else
-			return false;
+		else return day > date.getDay();
 	}
 
 	public String toString() {
 		return Integer.toString(year)+"/"+Integer.toString(month) + "/" + Integer.toString(day);
 	}
-	
-
 }
