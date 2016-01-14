@@ -8,9 +8,7 @@ import com.androidudvikling.zeengoone.planpennyv04.entities.ProjectDB;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 
 
 public class DataLogic implements Serializable {
@@ -30,8 +28,8 @@ public class DataLogic implements Serializable {
 		projectDB.getProject(projectTitle).addCategory(new Category(categoryTitle));
 	}
 	
-	public void addPlan(String projectTitle, String categoryTitle, Date startDate, Date endDate, String color) {
-		projectDB.getProject(projectTitle).getCategory(categoryTitle).addPlan(new Plan(startDate, endDate, color));
+	public void addPlan(String projectTitle, String categoryTitle, Date startDate, Date endDate, String color, String title) {
+		projectDB.getProject(projectTitle).getCategory(categoryTitle).addPlan(new Plan(startDate, endDate, color, title));
 	}
 	
 	public ArrayList<Project> getProjects() {
@@ -218,10 +216,10 @@ public class DataLogic implements Serializable {
 		addCategory("Redesign of company", "Design");
 		addCategory("Redesign of company", "Planing");
 		addCategory("Redesign of company", "Contruction");
-		addPlan("Redesign of company", "Design", new Date(2016, 01, 01), new Date(2016, 01, 29), color);
-		addPlan("Redesign of company", "Planing", new Date(2016, 01, 01), new Date(2016, 01, 20), color);
-		addPlan("Redesign of company", "Planing", new Date(2016, 02, 01), new Date(2016, 02, 20), color);
-		addPlan("Redesign of company", "Contruction", new Date(2016, 03, 01), new Date(2016, 05, 20), color);
+		addPlan("Redesign of company", "Design", new Date(2016, 01, 01), new Date(2016, 01, 29), color, "design fase");
+		addPlan("Redesign of company", "Planing", new Date(2016, 01, 01), new Date(2016, 01, 20), color, "planning fase 1");
+		addPlan("Redesign of company", "Planing", new Date(2016, 02, 01), new Date(2016, 02, 20), color, "planning fase 2");
+		addPlan("Redesign of company", "Contruction", new Date(2016, 03, 01), new Date(2016, 05, 20), color, "konstruktion");
 		// Project 2
 		addProject("Create software expansion");
 		addCategory("Create software expansion", "Analyse");
@@ -229,11 +227,11 @@ public class DataLogic implements Serializable {
 		addCategory("Create software expansion", "Implementation");
 		addCategory("Create software expansion", "Test");
 		addCategory("Create software expansion", "Release");
-		addPlan("Create software expansion", "Analyse", new Date(2016, 2, 2), new Date(2016, 2, 28), color);
-		addPlan("Create software expansion", "Design", new Date(2016, 3, 2), new Date(2016, 4, 1), color);
-		addPlan("Create software expansion", "Implementation", new Date(2016, 4, 1), new Date(2016, 6, 25), color);
-		addPlan("Create software expansion", "Test", new Date(2016, 6, 5), new Date(2016, 9, 28), color);
-		addPlan("Create software expansion", "Release", new Date(2016, 8, 10), new Date(2016, 8, 15), color);
+		addPlan("Create software expansion", "Analyse", new Date(2016, 2, 2), new Date(2016, 2, 28), color, "analyse fase");
+		addPlan("Create software expansion", "Design", new Date(2016, 3, 2), new Date(2016, 4, 1), color, "design fase");
+		addPlan("Create software expansion", "Implementation", new Date(2016, 4, 1), new Date(2016, 6, 25), color, "implementations fase");
+		addPlan("Create software expansion", "Test", new Date(2016, 6, 5), new Date(2016, 9, 28), color, "test fase");
+		addPlan("Create software expansion", "Release", new Date(2016, 8, 10), new Date(2016, 8, 15), color, "udgivelse");
 		
 	}
 	

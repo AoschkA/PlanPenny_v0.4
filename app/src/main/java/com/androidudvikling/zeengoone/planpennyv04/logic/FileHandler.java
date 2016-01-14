@@ -1,4 +1,5 @@
 package com.androidudvikling.zeengoone.planpennyv04.logic;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -9,7 +10,6 @@ import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 
 /**
@@ -61,7 +61,7 @@ public class FileHandler{
         Log.d("FileHandler: ", "Categories: " + categoryCounter);
         Log.d("FileHandler: ", "Plans: " + planCounter);
     }
-
+/*
     public ArrayList<Project> loadAllDate() {
         ArrayList<Project> projectList = new ArrayList<Project>();
         SharedPreferences projectPref = context.getSharedPreferences("ProjectList", Context.MODE_PRIVATE);
@@ -98,7 +98,7 @@ public class FileHandler{
         }
         return projectList;
     }
-
+*/
 //    public Project[] getProjectlist(){
 //        SharedPreferences sharedPref = context.getSharedPreferences("ProjectList", Context.MODE_PRIVATE);
 //        int size = sharedPref.getAll().size();

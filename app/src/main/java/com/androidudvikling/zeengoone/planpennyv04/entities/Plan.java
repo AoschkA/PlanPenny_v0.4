@@ -2,21 +2,24 @@ package com.androidudvikling.zeengoone.planpennyv04.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class Plan implements Serializable {
     private Date startDate;
     private Date endDate;
     private String color;
+	private String title;
 
-    public Plan(Date startDate, Date endDate, String color) {
+    public Plan(Date startDate, Date endDate, String color, String title) {
     	this.startDate=startDate;
     	this.endDate=endDate;
     	this.color=color;
+		this.title = title;
     }
 	public Plan(){
 
 	}
+	public String getTitle() {return this.title;}
+	public void setTitle(String title) {this.title = title;}
 	public Date getStartDate() {return this.startDate;}
 
 	public void setStartDate(Date startDate) {
@@ -88,10 +91,7 @@ public class Plan implements Serializable {
 	private boolean isLeapYear(int year) {
 		if (year%4==0){
 			if (year%100==0){
-				if(year%400==0)
-					return true;
-				else
-					return false;
+				return year % 400 == 0;
 			}
 			else
 				return true;
@@ -99,7 +99,7 @@ public class Plan implements Serializable {
 			return false;
 	}
 	public String toString() {
-		return Integer.toString(this.startDate.getYear())+"/"+ Integer.toString(this.startDate.getMonth()) + "/" + this.startDate.getDay() + "  - " + this.endDate.getYear() +"/"+Integer.toString(this.endDate.getMonth()) + "/" + Integer.toString(this.endDate.getDay());
+		return this.title + ": " + this.startDate.getYear() + "/" + this.startDate.getMonth() + "/" + this.startDate.getDay() + "  - " + this.endDate.getYear() +"/"+this.endDate.getMonth() + "/" + this.endDate.getDay();
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,10 +59,12 @@ public class KategoriAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        // check om viewet findes allerede, hvis ikke lav det
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.kategori_liste, parent, false);
         }
+        // hent listen af kategorier og læg sæt tekst i listen til deres titler
         TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element);
         kategori_element.setText(kategorier.get(groupPosition).getCategoryTitle());
         return convertView;
@@ -71,10 +72,12 @@ public class KategoriAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        // check om subviewet findes allerede, hvis ikke lav det
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.plan_liste, parent, false);
         }
+        // hent planer start og slut dato og titel og læg dem ind i submenu eller "childview"
         TextView plan_element = (TextView) convertView.findViewById(R.id.plan_liste_element);
         plan_element.setText(kategorier.get(groupPosition).getPlanList().get(childPosition).toString());
         return convertView;

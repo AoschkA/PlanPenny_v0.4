@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,8 @@ import java.util.ArrayList;
  */
 
 public class PennyFragmentPagerAdapter extends Fragment {
-    private static int PAGE_COUNT;
     public static final String TAG = PennyFragmentPagerAdapter.class.getName();
+    private static int PAGE_COUNT;
 
     public static PennyFragmentPagerAdapter newInstance() {
         return new PennyFragmentPagerAdapter();
@@ -26,6 +25,7 @@ public class PennyFragmentPagerAdapter extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // forbered view, viewpager og set adapter
         View root = inflater.inflate(R.layout.main_activity_controller, container, false);
         ViewPager viewPager = (ViewPager) root.findViewById(R.id.viewpager);
         viewPager.setAdapter(new NyViewPagerAdapter(getChildFragmentManager()));
@@ -38,6 +38,7 @@ public class PennyFragmentPagerAdapter extends Fragment {
         public NyViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
+        // beregn antallet af tabs
         public void setTabFields(ArrayList<String> tabTitles) {
             PAGE_COUNT = tabTitles.size();
             populateTabs(tabTitles);
@@ -45,6 +46,7 @@ public class PennyFragmentPagerAdapter extends Fragment {
         public void setProject(int projectNumber){
             currentProject = projectNumber;
         }
+
         private void populateTabs(ArrayList<String> maaneder){
             listToTabs = maaneder;
         }
@@ -55,6 +57,7 @@ public class PennyFragmentPagerAdapter extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
+            // find fragmentet til den givne position og gem position og projekt i bundle
             Bundle args = new Bundle();
             args.putInt(Fragment_Gantt.PROJECT_KEY, currentProject);
             args.putInt(Fragment_Gantt.POSITION_KEY, position);

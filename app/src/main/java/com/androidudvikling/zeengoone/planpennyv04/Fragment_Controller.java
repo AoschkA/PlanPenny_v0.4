@@ -2,6 +2,7 @@ package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -10,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -33,13 +33,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Fragment_Controller extends AppCompatActivity {
+    public static DataLogic dc = new DataLogic();
     private static ArrayList<String> projekt_liste = new ArrayList<>();
     private ArrayList<String> tabMaaneder = new ArrayList<String>();
     private ListView projekt_liste_view;
     private DrawerLayout pennydrawerLayout;
     private CoordinatorLayout coordinatorLayout;
     private ActionBarDrawerToggle penny_Projekt_Drawer_Toggle;
-    public static DataLogic dc = new DataLogic();
     private Calendar cal = new GregorianCalendar();
     private int currentMonth;
     private FloatingActionButton drawerFab;
@@ -51,6 +51,14 @@ public class Fragment_Controller extends AppCompatActivity {
     private TabLayout tabLayout;
     private HashMap<String, List<String>> kategoriListe;
     private List<String> planListe;
+
+    public static void populateDrawer(){
+        projekt_liste.clear();
+
+        for(Project p:dc.getProjects()){
+            projekt_liste.add(p.getTitle());
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +100,7 @@ public class Fragment_Controller extends AppCompatActivity {
         // Få fat i ViewPager og set dens pageradapter så den kan vise items
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // show menu when menu button is pressed
@@ -120,7 +129,6 @@ public class Fragment_Controller extends AppCompatActivity {
         cal.add(Calendar.MONTH, currentMonth++);
         return cal;
     }
-
 
     private void populateTabList(int years){
         int month;
@@ -174,60 +182,17 @@ public class Fragment_Controller extends AppCompatActivity {
         if (penny_Projekt_Drawer_Toggle.onOptionsItemSelected(item)) { return true; }
         return super.onOptionsItemSelected(item);
     }
+
     public void vpChangeCurrentItem(int position){
-        tabLayout.setScrollPosition(position,0f,true);
+        tabLayout.setScrollPosition(position, 0f, true);
         viewPager.setCurrentItem(position);
 
     }
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-            int aar = Calendar.getInstance().get(Calendar.YEAR);
-            int maaned = Calendar.getInstance().get(Calendar.MONTH);
-            int dag = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-            Date dato = new Date(aar, maaned, dag);
-            // Toast.makeText(Fragment_Controller.this, ((TextView) view).getText(), Toast.LENGTH_LONG).show();
-            //Fold draweren ind
-            pennydrawerLayout.closeDrawer(Gravity.LEFT);
-            // Læg to års måneder ind i tab-listen
-            populateTabList(dc.getRemainingMonthsForProject(dato,dc.getProjects().get(position).getTitle()));
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-            viewPager.setOffscreenPageLimit(0);
-            adapter = new PennyFragmentPagerAdapter.NyViewPagerAdapter(getSupportFragmentManager());
-            adapter.setTabFields(tabMaaneder);
-            adapter.setProject(position);
-            viewPager.setAdapter(adapter);
-            tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-            tabLayout.setupWithViewPager(viewPager);
-            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    viewPager.setCurrentItem(tab.getPosition());
-                }
 
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
-                }
-
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-                }
-            });
-        }
-    }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         penny_Projekt_Drawer_Toggle.syncState();
-    }
-
-    public static void populateDrawer(){
-        projekt_liste.clear();
-
-        for(Project p:dc.getProjects()){
-            projekt_liste.add(p.getTitle());
-        }
     }
 
     @Override
@@ -286,9 +251,47 @@ public class Fragment_Controller extends AppCompatActivity {
                                 Date end_date = new Date(Integer.parseInt(date_end[2]),Integer.parseInt(date_end[1]), Integer.parseInt(date_end[0]));
 
 
-                                dc.addPlan(curProjectName,categoryList.get(i).toString(),start_date,end_date,"#ff6600");
+                                dc.addPlan(curProjectName,categoryList.get(i).toString(),start_date,end_date,"#ff6600", "");
                             }
                         }
                     }
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            int aar = Calendar.getInstance().get(Calendar.YEAR);
+            int maaned = Calendar.getInstance().get(Calendar.MONTH);
+            int dag = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+            Date dato = new Date(aar, maaned, dag);
+            // Toast.makeText(Fragment_Controller.this, ((TextView) view).getText(), Toast.LENGTH_LONG).show();
+            //Fold draweren ind
+            pennydrawerLayout.closeDrawer(Gravity.LEFT);
+            // Læg to års måneder ind i tab-listen
+            populateTabList(dc.getRemainingMonthsForProject(dato,dc.getProjects().get(position).getTitle()));
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
+            viewPager.setOffscreenPageLimit(0);
+            adapter = new PennyFragmentPagerAdapter.NyViewPagerAdapter(getSupportFragmentManager());
+            adapter.setTabFields(tabMaaneder);
+            adapter.setProject(position);
+            viewPager.setAdapter(adapter);
+            tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+            tabLayout.setupWithViewPager(viewPager);
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    viewPager.setCurrentItem(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                }
+            });
+        }
     }
 }
