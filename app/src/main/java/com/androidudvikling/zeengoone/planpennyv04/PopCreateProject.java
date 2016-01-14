@@ -84,16 +84,13 @@ public class PopCreateProject extends Activity  {
                        errorText.setText("Projektnavnet skal mindst have et bogstav.");
                    } else {
                        projectTextFromUser = projectName.getText().toString();
+                       Intent i = getIntent();
+                       i.putExtra("NyDl", projectTextFromUser);
+                       setResult(2,i);
+                       finish();
                    }
-               }
-
+               }break;
            }
-
-           Intent i = getIntent();
-           i.putExtra("NyDl", projectTextFromUser);
-           setResult(2,i);
-           finish();
-
         }
 }
 

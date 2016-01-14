@@ -38,13 +38,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignRight="@+id/view"
-        android:layout_alignEnd="@+id/view"
         android:layout_below="@+id/view"
-        android:id="@+id/contentLayout">
+        android:id="@+id/contentLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:text="Indskriv Kategori Navn"
             android:id="@+id/planName"
@@ -75,48 +76,81 @@
             android:layout_alignLeft="@+id/planName"
             android:layout_alignStart="@+id/planName" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="Opret Kategori"
-            android:id="@+id/buttonCreateProject"
-            android:layout_below="@+id/errorText"
-            android:onClick="OnBtnClicked"
-            android:layout_marginLeft="15dp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Færdig"
-            android:id="@+id/buttonDone"
-            android:layout_alignBottom="@+id/buttonCreateProject"
-            android:layout_toRightOf="@+id/buttonCreateProject"
-            android:layout_toEndOf="@+id/buttonCreateProject"
-            android:layout_alignTop="@+id/buttonCreateProject"
-            android:onClick="OnBtnClicked"/>
-
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/categoryList"
-            android:background="@drawable/border_style_text"
-            android:layout_below="@+id/textView"
-            android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/buttonDone"
-            android:layout_alignEnd="@+id/buttonDone"
-            android:layout_alignLeft="@+id/textView"
-            android:layout_alignStart="@+id/textView"
-            android:layout_marginBottom="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Liste af kategorier:"
+            android:textSize="17dp"
+            android:textStyle="bold"
             android:id="@+id/textView"
-            android:layout_below="@+id/buttonCreateProject"
-            android:layout_alignLeft="@+id/buttonCreateProject"
-            android:layout_alignStart="@+id/buttonCreateProject"
-            android:layout_marginTop="5dp" />
+            android:layout_below="@+id/errorText"
+            android:layout_alignLeft="@+id/createEdit"
+            android:layout_alignStart="@+id/createEdit"
+            android:layout_marginTop="15dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:weightSum="1"
+            android:id="@+id/linearLayout"
+            android:gravity="center_horizontal">
+
+            <ListView
+            android:layout_width="225dp"
+            android:layout_height="100dp"
+                android:layout_weight="0.3"
+            android:id="@+id/categoryList"
+            android:background="@drawable/border_style_text"
+                android:layout_alignLeft="@+id/textView"
+                android:layout_alignStart="@+id/textView"
+                android:layout_alignRight="@+id/buttonDone"
+                android:layout_alignEnd="@+id/buttonDone"
+                android:layout_above="@+id/buttonCreateProject"
+                android:layout_below="@+id/textView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:gravity="center_horizontal|bottom"
+            android:id="@+id/linearLayout2"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="-5dp">
+
+            <Button
+                android:layout_width="129dp"
+                android:layout_height="fill_parent"
+                android:text="Opret Kategori"
+                android:id="@+id/buttonCreateProject"
+                android:onClick="OnBtnClicked"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/errorText"
+                android:background="@drawable/button_gradient"
+                android:textSize="10dp"
+                android:textColor="#fef3ea"
+                />
+
+            <Button
+                android:layout_width="129dp"
+                android:layout_height="fill_parent"
+                android:text="Færdig"
+                android:textColor="#fef3ea"
+                android:id="@+id/buttonDone"
+                android:layout_alignBottom="@+id/buttonCreateProject"
+                android:layout_toRightOf="@+id/buttonCreateProject"
+                android:layout_toEndOf="@+id/buttonCreateProject"
+                android:onClick="OnBtnClicked"
+                android:background="@drawable/button_gradient"
+                android:textSize="10dp"
+                android:elevation="5dp"/>
+        </LinearLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>
