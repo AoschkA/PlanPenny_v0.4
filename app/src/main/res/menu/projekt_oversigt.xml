@@ -2,12 +2,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="none">
         <item
-            android:title="Indstillinger"
-            android:onClick="menuClick"
-            android:id="@+id/textViewTitle"/>
+            android:id="@+id/textViewTitle"
+            android:title="Indstillinger">
+        <!-- "file" submenu -->
+        <menu>
+            <item android:id="@+id/menu_sort"
+                android:title="Vælg sortering">
+                <menu>
+                    <item android:id="@+id/menu_sort_dato"
+                        android:onClick="menuClick"
+                        android:title="Sorter efter dato"/>
+                    <item android:id="@+id/menu_sort_navn"
+                        android:onClick="menuClick"
+                        android:title="Sorter efter navn"/>
+                </menu></item>
+            <item android:id="@+id/menu_edit"
+                android:onClick="menuClick"
+                android:title="Rediger Projekt"/>
+            <item android:id="@+id/menu_create_cat"
+                android:onClick="menuClick"
+                android:title="Ny Kategori"/>
+            <item android:id="@+id/menu_create_plan"
+                android:onClick="menuClick"
+                android:title="Ny Plan"/>
+        </menu></item>
         <item
-            android:title="Hjælp"
+            android:id="@+id/textViewHelp"
             android:onClick="menuClick"
-            android:id="@+id/textViewHelp"/>
+            android:title="Hjælp"/>
     </group>
 </menu>

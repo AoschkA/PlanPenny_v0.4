@@ -24,6 +24,10 @@ import android.widget.ListView;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,6 +55,7 @@ public class Fragment_Controller extends AppCompatActivity {
     private TabLayout tabLayout;
     private HashMap<String, List<String>> kategoriListe;
     private List<String> planListe;
+    private Firebase uRef;
 
     public static void populateDrawer(){
         projekt_liste.clear();
@@ -70,11 +75,28 @@ public class Fragment_Controller extends AppCompatActivity {
         // Gør listen klar og smid den i projekt listen
         populateDrawer();
 
+        // Instantier Firebase
+        Firebase.setAndroidContext(this);
+        uRef = new Firebase("https://g26planpenny.firebaseio.com/");
+
+        uRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        // Sæt drawer elementer til ProjektVisning
         projekt_liste_view = (ListView) findViewById(R.id.penny_projekt_drawer_list);
         projekt_liste_view.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.skuffe_projekt_liste_element, projekt_liste));
 
-        // Opsæt actionbar burgermenu
+        // Opsæt actionbar burgermenu og titel
         this.setTitle(getString(R.string.app_title));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

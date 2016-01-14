@@ -18,6 +18,11 @@ android {
     }
     productFlavors {
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
 }
 ext {
     supportLibVersion = '23.1.1'  // variable that can be referenced to keep support libs consistent
@@ -36,4 +41,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
     compile "com.android.support:design:${supportLibVersion}"
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+}
+dependencies {
+    compile 'com.firebase:firebase-client-android:2.2.3+'
 }
