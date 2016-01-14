@@ -7,6 +7,9 @@
         <!-- "file" submenu -->
         <menu>
             <item android:id="@+id/menu_sort"
+                android:checkable="true"
+                android:checked="true"
+                android:icon="@mipmap/penny_launcher"
                 android:title="Vælg sortering">
                 <menu>
                     <item android:id="@+id/menu_sort_dato"
