@@ -20,6 +20,8 @@
                         android:title="Sorter efter navn"/>
                 </menu></item>
             <item android:id="@+id/menu_edit"
+                android:checkable="true"
+                android:checked="false"
                 android:onClick="menuClick"
                 android:title="Rediger Projekt"/>
             <item android:id="@+id/menu_create_cat"
