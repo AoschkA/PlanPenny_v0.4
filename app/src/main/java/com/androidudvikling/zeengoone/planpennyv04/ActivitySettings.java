@@ -11,6 +11,7 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Settings;
 import com.androidudvikling.zeengoone.planpennyv04.entities.UserSettings;
@@ -24,7 +25,7 @@ public class ActivitySettings extends Activity {
 
     private Settings indstillinger;
     private DataLogic data = new DataLogic();
-    private PreferenceManager preferenceManager = new PreferenceManager();
+    private PreferenceManager preferenceManager;
     private UserSettings userSettings;
     private SettingsAdapter adapter;
 
@@ -33,8 +34,9 @@ public class ActivitySettings extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         indstillinger = new Settings(this);
+        preferenceManager = new PreferenceManager(this);
         readData();
-        updateSettings();
+        // updateSettings();
         setContentView(R.layout.expandable_list_layout);
         // Læg listen ind i arrayadapteren for kategorier
         adapter = new SettingsAdapter(this, indstillinger);
@@ -51,6 +53,7 @@ public class ActivitySettings extends Activity {
         userSettings = preferenceManager.loadSettings();
         data.setSortType_project(userSettings.getSortSetting1());
         data.setSortType_category(userSettings.getSortSetting2());
+        Toast.makeText(this, "Data hentet", Toast.LENGTH_SHORT).show();
     }
     private void updateSettings() {
         RadioButton r11 = (RadioButton) adapter.getChild(0, 0);

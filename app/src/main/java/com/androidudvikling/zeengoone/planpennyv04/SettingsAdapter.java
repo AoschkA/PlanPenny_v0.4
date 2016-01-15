@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Settings;
@@ -89,8 +90,14 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                 convertView = inflater.inflate(R.layout.settings_sublist, parent, false);
             }
             // hent planer start og slut dato og titel og læg dem ind i submenu eller "childview"
-            RadioButton sublist_element = (RadioButton) convertView.findViewById(R.id.settings_sublist_element);
-            sublist_element.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(childPosition));
+            if (groupPosition == 2) {
+                Switch sublist_element = (Switch) convertView.findViewById(R.id.settings_sublist_switch_element);
+                sublist_element.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(childPosition));
+            }
+            else {
+                RadioButton sublist_element = (RadioButton) convertView.findViewById(R.id.settings_sublist_element);
+                sublist_element.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(childPosition));
+            }
             return convertView;
         }
 

@@ -13,6 +13,10 @@ public class PreferenceManager {
 
     private Context context;
 
+    public PreferenceManager(Context ctx) {
+        context=ctx;
+    }
+
     public void saveSettings(UserSettings userSettings) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
 
