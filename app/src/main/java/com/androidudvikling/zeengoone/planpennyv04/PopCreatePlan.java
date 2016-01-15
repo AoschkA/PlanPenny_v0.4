@@ -3,6 +3,7 @@ package com.androidudvikling.zeengoone.planpennyv04;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
+import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,6 +53,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
     int catId = 0;
     boolean startIsSet = false,endIsSet = false;
     String overlap;
+    private EditText planTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +67,6 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
         for(int count = 0; count < curCategories.size(); count++)  {
             listOfPlansInCategories.add(new ArrayList<String>());
         }
-
-
 
 
         // Sætter layout
@@ -108,6 +109,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
         startDateBtn = (Button) findViewById(R.id.btnStart);
         endDateBtn = (Button) findViewById(R.id.btnEnd);
         categoryChooser = (Spinner) findViewById(R.id.categoryChooser);
+        planTitle = (EditText) findViewById(R.id.planTextEdit);
 
         // Lidt til dato
         final Calendar cal = Calendar.getInstance();
@@ -130,6 +132,9 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
 
         // Adapter sat på spinner
         categoryChooser.setAdapter(dataAdapter);
+
+        //Titlens tekstboks bliver sat.
+
     }
 
 
@@ -158,16 +163,18 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                    }
                    else {
                        checkOverlap(day_x,month_x,year_x,day_y,month_y,year_y,catId);
-                   }if(overlap != "unset"){
-                           errorText.setText("Datoen overlapper en forrige plan for denne kategori: " + overlap);
+                   }if(overlap != "unset") {
+                       errorText.setText("Datoen overlapper en forrige plan for denne kategori: " + overlap);
                        }else if (year_x <= year_y) {
                            if ((year_x == year_y && month_x <= month_y) || year_x < year_y) {
                                if ((month_x == month_y && day_x <= day_y) || month_x < month_y || year_x < year_y) {
+
                                    // Hvis alt er ok, opret:
                                    int catID = catId;
+                                   String planName = planTitle.getText().toString();
                                    String plan =
                                            day_x + "," + month_x + "," + year_x + "-"
-                                                   + day_y + "," + month_y + "," + year_y;
+                                                   + day_y + "," + month_y + "," + year_y + "," + planName;
                                    System.out.println(catID);
                                    listOfPlansInCategories.get(catID).add(plan);
 
@@ -193,10 +200,10 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                    if (errorCategories != null){
                        errorText.setText("Følgende kategorier mangler planer: " + errorCategories);
                    }else{
-                       System.out.println("Farvel");
+
                        Intent i = getIntent();
                        Bundle bundle = new Bundle();
-                       bundle.putSerializable("Plans",listOfPlansInCategories);
+                       bundle.putSerializable("Plans", listOfPlansInCategories);
                        i.putExtra("Plans",listOfPlansInCategories);
                        setResult(4, i);
                        finish();
@@ -247,7 +254,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        System.out.println(position);
+
 
         // Navnet defineret
         String item = parent.getItemAtPosition(position).toString();
@@ -278,12 +285,6 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
 
             Date testStart = new Date(Integer.parseInt(testDateStart[2]), Integer.parseInt(testDateStart[1]), Integer.parseInt(testDateStart[0]));
             Date testEnd = new Date(Integer.parseInt(testDateEnd[2]), Integer.parseInt(testDateEnd[1]), Integer.parseInt(testDateEnd[0]));
-
-            System.out.println(testDate);
-            System.out.println(startDay + "," + startMonth + "," + startYear + "-" + endDay + "," + endMonth + "," + endYear);
-
-            System.out.println(testStart.toString() + " to " + testEnd.toString());
-            System.out.println(trueDateStart.toString() + " to " + trueDateEnd.toString());
 
 
             if (!(trueDateStart.after(testEnd)&& trueDateEnd.after(testEnd)) && !(trueDateStart.after(testEnd) && trueDateEnd.before(testEnd))) {
@@ -317,6 +318,22 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                 return false;
             }
         });
+    }
+
+    public boolean checkTitleName(String name){
+        for(int i=0;i<listOfPlansInCategories.get(catId).size();i++) {
+
+            String testTitle = listOfPlansInCategories.get(catId).get(i);
+            String[] testDateStartEnd = testTitle.split("-");
+            String[] testDateEnd = testDateStartEnd[1].split(",");
+            String title = testDateEnd[3];
+
+            if(name.equals(title)) {
+                return true;
+            }
+
+        }
+        return false;
     }
 }
 

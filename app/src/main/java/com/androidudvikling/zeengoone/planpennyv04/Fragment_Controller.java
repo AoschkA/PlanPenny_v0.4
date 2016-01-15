@@ -274,7 +274,7 @@ public class Fragment_Controller extends AppCompatActivity {
                                 Date end_date = new Date(Integer.parseInt(date_end[2]),Integer.parseInt(date_end[1]), Integer.parseInt(date_end[0]));
 
 
-                                dc.addPlan(curProjectName,categoryList.get(i).toString(),start_date,end_date,"#ff6600", "");
+                                dc.addPlan(curProjectName,categoryList.get(i).toString(),start_date,end_date,"#ff6600", date_end[3]);
                             }
                         }
                     }
