@@ -11,8 +11,10 @@
         android:icon="@mipmap/penny_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".Fragment_Controller" android:label="@string/app_name">
-            <intent-filter android:label="@string/app_title">
+        <activity
+            android:name=".Fragment_Controller"
+            android:label="@string/app_name" >
+            <intent-filter android:label="@string/app_title" >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -28,15 +30,19 @@
         </activity>
         <activity
             android:name=".PopCreatePlan"
-            android:theme="@style/AppTheme.PopTheme">
+            android:theme="@style/AppTheme.PopTheme" >
         </activity>
         <activity
             android:name=".ActivitySettings"
-            android:theme="@style/AppTheme.PopTheme">
+            android:theme="@style/AppTheme.PopTheme" >
         </activity>
         <activity
             android:name=".ActivityHelp"
-            android:theme="@style/AppTheme.PopTheme">
+            android:theme="@style/AppTheme.PopTheme" >
+        </activity>
+        <activity
+            android:name=".PopHomepage"
+            android:theme="@style/AppTheme.PopTheme" >
         </activity>
     </application>
 

@@ -2,9 +2,11 @@ package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -20,7 +22,8 @@ public class ActivityHelp extends Activity implements View.OnClickListener {
     ScrollView scrollView;
     ImageView imageView1;
     TextView textView1;
-    TextView finishText;
+    Button buttonFinish;
+    Button buttonWeb;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,14 +34,19 @@ public class ActivityHelp extends Activity implements View.OnClickListener {
         imageView1 = (ImageView) findViewById(R.id.imageViewHelp);
         textView1 = (TextView) findViewById(R.id.textViewHelp1);
         textView1.setText(R.string.Describtion);
-        finishText = (TextView) findViewById(R.id.textViewHelp2);
-        finishText.setOnClickListener(this);
+        buttonFinish = (Button) findViewById(R.id.buttonHelp2);
+        buttonWeb = (Button) findViewById(R.id.buttonHelp1);
+        buttonFinish.setOnClickListener(this);
+        buttonWeb.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == finishText.getId()) {
+        if (v.getId() == buttonFinish.getId()) {
             finish();
+        }
+        else if (v.getId() == buttonWeb.getId()) {
+            startActivity(new Intent(this, PopHomepage.class));
         }
     }
 }
