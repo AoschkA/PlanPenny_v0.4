@@ -2,48 +2,27 @@ package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Switch;
-import android.widget.TextView;
+import android.widget.ExpandableListView;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.androidudvikling.zeengoone.planpennyv04.entities.Settings;
 
 /**
  * Created by Jonas Praem on 11/01/16.
  */
 public class ActivitySettings extends Activity {
 
-    ListView list;
-    ArrayList<View> viewList = new ArrayList<View>();
-    TextView textView1;
-    TextView textView2;
-    Switch switchSynchronize;
+    private Settings indstillinger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-
-        list = (ListView) findViewById(R.id.settingsList);
-
-
-        populateListView();
-    }
-
-    private void populateListView() {
-        View[] views = {textView1, textView2, switchSynchronize};
-        String[] strings = {"1", "2", "3"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                strings);
-
-        list.setAdapter(adapter);
+        indstillinger = new Settings(this);
+        setContentView(R.layout.expandable_list_layout);
+        // Læg listen ind i arrayadapteren for kategorier
+        SettingsAdapter adapter = new SettingsAdapter(this, indstillinger);
+        // Lav listviewet og setadapter til adapteren lavet herover
+        final ExpandableListView settingsView = (ExpandableListView) findViewById(R.id.kategoriliste_udv);
+        settingsView.setAdapter(adapter);
 
     }
-
-
 }

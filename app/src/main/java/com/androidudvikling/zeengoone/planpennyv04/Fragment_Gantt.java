@@ -1,24 +1,16 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
-import android.app.TabActivity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.NumberPicker;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,21 +26,21 @@ import java.util.Calendar;
  * Created by zeengoone on 11/26/15.
  */
 public class Fragment_Gantt extends Fragment{
-    private Date currentMonth;
-    private static ArrayList<Category> tempCategories;
-    private Date tabMonth;
-    private String currentProject = "";
-    private int currentProjectNumber = 0;
-    private static DataLogic dl = Fragment_Controller.dc;
-    private KategoriAdapter adapter;
     public static final String POSITION_KEY = "FragmentPositionKey";
-    private int faneposition;
     public static final String PROJECT_KEY = "FragmentProjectKey";
-    private int project;
+    private static ArrayList<Category> tempCategories;
+    private static DataLogic dl = Fragment_Controller.dc;
     protected TextView kategoriTitel;
     protected EditText kategoriAendreTitel;
     protected Button btnkategoriGem, btnPlanGem;
     protected NumberPicker nbAar, nbMaaned, nbDag;
+    private Date currentMonth;
+    private Date tabMonth;
+    private String currentProject = "";
+    private int currentProjectNumber = 0;
+    private KategoriAdapter adapter;
+    private int faneposition;
+    private int project;
     private int lastGroup = -1;
 
     public static Fragment_Gantt newInstance(Bundle args) {
@@ -57,21 +49,24 @@ public class Fragment_Gantt extends Fragment{
         return fragment;
     }
 
+    public static Date yearToTab(int tab){
+        Date tempDate = new Date(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        return tempDate.setDateMonth(tab);
+    }
+
     public void setProject(String projectTitle){ currentProject = projectTitle; }
+
     public void setProjectNumber(int projectNumber){ currentProjectNumber = projectNumber; }
 
     public void beregnMaanedOgAar(int tab){
         currentMonth = new Date(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         tabMonth = currentMonth.setDateMonth(tab);
     }
-    public static Date yearToTab(int tab){
-        Date tempDate = new Date(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        return tempDate.setDateMonth(tab);
-    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_projekt_visnings_liste, container, false);
+        View view = inflater.inflate(R.layout.expandable_list_layout, container, false);
 
         faneposition = getArguments().getInt(Fragment_Gantt.POSITION_KEY);
         project = getArguments().getInt(Fragment_Gantt.PROJECT_KEY);
@@ -178,12 +173,12 @@ public class Fragment_Gantt extends Fragment{
                     nbMaaned.setMaxValue(12);
                     nbDag.setMinValue(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
                     nbDag.setMaxValue(31);
-                    planElement.setVisibility(view.GONE);
+                    planElement.setVisibility(View.GONE);
 
-                    btnPlanGem.setVisibility(view.VISIBLE);
-                    nbAar.setVisibility(view.VISIBLE);
-                    nbMaaned.setVisibility(view.VISIBLE);
-                    nbDag.setVisibility(view.VISIBLE);
+                    btnPlanGem.setVisibility(View.VISIBLE);
+                    nbAar.setVisibility(View.VISIBLE);
+                    nbMaaned.setVisibility(View.VISIBLE);
+                    nbDag.setVisibility(View.VISIBLE);
                     nbAar.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                         @Override
                         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -242,11 +237,11 @@ public class Fragment_Gantt extends Fragment{
                                 else {
                                     btnPlanGem.setText("Gem StartDato");
                                     System.out.println(nbAar.getValue() + ", " + nbMaaned.getValue() + ", " + nbDag.getValue());
-                                    btnPlanGem.setVisibility(view.GONE);
-                                    nbAar.setVisibility(view.GONE);
-                                    nbMaaned.setVisibility(view.GONE);
-                                    nbDag.setVisibility(view.GONE);
-                                    planElement.setVisibility(view.VISIBLE);
+                                    btnPlanGem.setVisibility(View.GONE);
+                                    nbAar.setVisibility(View.GONE);
+                                    nbMaaned.setVisibility(View.GONE);
+                                    nbDag.setVisibility(View.GONE);
+                                    planElement.setVisibility(View.VISIBLE);
                                     projektListeView.collapseGroup(groupPosition);
                                     projektListeView.expandGroup(groupPosition);
                                     dl.getProjects().get(project).getCategoryList().get(groupPosition).getPlanList().get(childPosition).setEndDate(new Date(nbAar.getValue(), nbMaaned.getValue(), nbDag.getValue()));
@@ -262,17 +257,17 @@ public class Fragment_Gantt extends Fragment{
                     kategoriTitel = (TextView) view.findViewById(R.id.kategori_liste_element);
                     kategoriAendreTitel = (EditText) view.findViewById(R.id.aendreKategori);
                     btnkategoriGem = (Button) view.findViewById(R.id.kategoriAendringKnap);
-                    kategoriTitel.setVisibility(view.GONE);
-                    kategoriAendreTitel.setVisibility(view.VISIBLE);
+                    kategoriTitel.setVisibility(View.GONE);
+                    kategoriAendreTitel.setVisibility(View.VISIBLE);
                     kategoriAendreTitel.setText(kategoriTitel.getText());
-                    btnkategoriGem.setVisibility(view.VISIBLE);
+                    btnkategoriGem.setVisibility(View.VISIBLE);
                     btnkategoriGem.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             kategoriTitel.setText(kategoriAendreTitel.getText());
-                            btnkategoriGem.setVisibility(view.GONE);
-                            kategoriAendreTitel.setVisibility(view.GONE);
-                            kategoriTitel.setVisibility(view.VISIBLE);
+                            btnkategoriGem.setVisibility(View.GONE);
+                            kategoriAendreTitel.setVisibility(View.GONE);
+                            kategoriTitel.setVisibility(View.VISIBLE);
                             dl.getProjects().get(project).getCategoryList().get(groupPosition).setCategoryTitle(kategoriAendreTitel.getText().toString());
                         }
                     });
