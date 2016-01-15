@@ -8,22 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/sliding_tabs"
-            style="@style/MyCustomTabLayout"
+        <FrameLayout
+            android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="17dp"
-            android:background="@color/colorPrimaryWhite"
-            app:tabMode="scrollable" />
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="0px"
-            android:layout_weight="1"
-            android:background="@color/colorPrimaryWhite" />
-
+            android:layout_height="0dp"
+            android:layout_weight="1"></FrameLayout>
     </LinearLayout>
 
     <!-- Liste over projekter -->

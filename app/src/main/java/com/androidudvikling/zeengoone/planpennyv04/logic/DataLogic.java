@@ -16,7 +16,7 @@ import java.util.Collections;
 public class DataLogic implements Serializable {
 	private ProjectDB projectDB = new ProjectDB();
 	
-	public DataLogic() {}
+	public DataLogic() {addDefaultProjects();}
 
 	public void clearProjects(){
 		projectDB.clearList();
@@ -213,6 +213,7 @@ public class DataLogic implements Serializable {
 	// Creates some data for startup
 	public void addDefaultProjects() {
 		String color = "#ff6600";
+		projectDB.clearList();
 		// Project 1
 		addProject("Redesign of company");
 		addCategory("Redesign of company", "Design");

@@ -32,10 +32,10 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
         }
         private String getSettingsKey(int groupPosition){
             switch(groupPosition){
-                case 0: return "Projekt sorterings type";
-                case 1: return "Kategori sorterings type";
-                case 2: return "Synkronisering";
-                default: return "Projekt sorterings type";
+                case 0: return ctx.getString(R.string.setting1);
+                case 1: return ctx.getString(R.string.setting2);
+                case 2: return ctx.getString(R.string.setting3);
+                default: return ctx.getString(R.string.setting1);
             }
         }
         @Override

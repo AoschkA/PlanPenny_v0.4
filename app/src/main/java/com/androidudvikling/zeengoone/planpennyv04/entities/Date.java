@@ -25,7 +25,7 @@ public class Date implements Serializable {
 	}
 
 	public int getYear() {
-		return year;
+		return this.year;
 	}
 
 	public void setYear(int year) {
