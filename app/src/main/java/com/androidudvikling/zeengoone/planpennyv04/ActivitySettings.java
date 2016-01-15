@@ -1,12 +1,7 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.text.Layout;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -41,7 +36,7 @@ public class ActivitySettings extends Activity {
         // Læg listen ind i arrayadapteren for kategorier
         adapter = new SettingsAdapter(this, indstillinger);
         // Lav listviewet og setadapter til adapteren lavet herover
-        final ExpandableListView settingsView = (ExpandableListView) findViewById(R.id.kategoriliste_udv);
+        final ExpandableListView settingsView = (ExpandableListView) findViewById(R.id.expandable_list_id);
         settingsView.setAdapter(adapter);
         setContentView(R.layout.activity_settings);
 

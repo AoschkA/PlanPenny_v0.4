@@ -3,16 +3,12 @@ package com.androidudvikling.zeengoone.planpennyv04.logic;
 import android.content.Context;
 import android.util.Log;
 
-import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 
 /**
  * Created by alexandervpedersen on 15/01/16.

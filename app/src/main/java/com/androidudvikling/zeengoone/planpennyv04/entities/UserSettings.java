@@ -28,19 +28,23 @@ public class UserSettings {
     public int getSortSetting1() {
         return sortSetting1;
     }
-    public int getSortSetting2() {
-        return sortSetting2;
-    }
-    public boolean getSyncSetting1(){
-        return syncSetting1;
-    }
 
     public void setSortSetting1(String setting) {
         sortSetting1=Integer.parseInt(setting);
     }
+
+    public int getSortSetting2() {
+        return sortSetting2;
+    }
+
     public void setSortSetting2(String setting) {
         sortSetting2=Integer.parseInt(setting);
     }
+
+    public boolean getSyncSetting1(){
+        return syncSetting1;
+    }
+
     public void setSyncSetting1(String setting) {
         syncSetting1 = Boolean.parseBoolean(setting);
     }

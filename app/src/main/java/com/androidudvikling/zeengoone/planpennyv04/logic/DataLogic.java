@@ -14,9 +14,9 @@ import java.util.Collections;
  */
 
 public class DataLogic implements Serializable {
-	private ProjectDB projectDB = new ProjectDB();
 	private static int sortType_project = 2;
 	private static int sortType_category = 3;
+	private ProjectDB projectDB = new ProjectDB();
 	
 	public DataLogic() {addDefaultProjects();}
 
@@ -24,12 +24,12 @@ public class DataLogic implements Serializable {
 		return sortType_project;
 	}
 
-	public int getSortType_category() {
-		return sortType_category;
-	}
-
 	public void setSortType_project(int sortType) {
 		sortType_project=sortType;
+	}
+
+	public int getSortType_category() {
+		return sortType_category;
 	}
 
 	public void setSortType_category(int sortType) {
