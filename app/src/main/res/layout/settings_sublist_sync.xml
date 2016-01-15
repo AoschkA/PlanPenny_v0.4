@@ -2,15 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/AppTheme">
+    >
 
-
-    <RadioButton
-        style="@style/AppTheme"
-        android:id="@+id/settings_sublist_element"
+    <Switch
+        android:id="@+id/sync_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sort Type" />
-
-
+        android:text="New Switch" />
 </LinearLayout>
