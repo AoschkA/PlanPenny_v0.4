@@ -22,7 +22,9 @@ public class ActivitySettings extends Activity {
 
     ListView list;
     ArrayList<View> viewList = new ArrayList<View>();
-
+    TextView textView1;
+    TextView textView2;
+    Switch switchSynchronize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +32,23 @@ public class ActivitySettings extends Activity {
         setContentView(R.layout.activity_settings);
 
         list = (ListView) findViewById(R.id.settingsList);
-        ArrayAdapter<View> adapter = new ArrayAdapter<View>(
+        textView1 = (TextView) findViewById(R.id.textViewProject);
+        textView2 = (TextView) findViewById(R.id.textViewCategory);
+        switchSynchronize = (Switch) findViewById(R.id.synchronize);
+
+        populateListView();
+    }
+
+    private void populateListView() {
+        View[] views = {textView1, textView2, switchSynchronize};
+        String[] strings = {"1", "2", "3"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
-                android.R.layout.simple_list_item_1,
-                viewList);
+                R.layout.settings_list,
+                strings);
+
         list.setAdapter(adapter);
-
-        TextView textView1 = (TextView) findViewById(R.id.textViewProject);
-        TextView textView2 = (TextView) findViewById(R.id.textViewCategory);
-        Switch switchSynchronize = (Switch) findViewById(R.id.synchronize);
-
-        list.addView(textView1, 0);
-        list.addView(textView2, 1);
-        list.addView(switchSynchronize, 2);
-
 
     }
 

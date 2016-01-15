@@ -9,7 +9,9 @@ import com.androidudvikling.zeengoone.planpennyv04.entities.ProjectDB;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-
+/**
+ * Created by Jonas Praem on 13-Dec-15.
+ */
 
 public class DataLogic implements Serializable {
 	private ProjectDB projectDB = new ProjectDB();
