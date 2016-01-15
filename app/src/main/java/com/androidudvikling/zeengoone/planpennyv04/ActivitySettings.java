@@ -1,8 +1,14 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Settings;
 
@@ -12,6 +18,7 @@ import com.androidudvikling.zeengoone.planpennyv04.entities.Settings;
 public class ActivitySettings extends Activity {
 
     private Settings indstillinger;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +30,12 @@ public class ActivitySettings extends Activity {
         // Lav listviewet og setadapter til adapteren lavet herover
         final ExpandableListView settingsView = (ExpandableListView) findViewById(R.id.kategoriliste_udv);
         settingsView.setAdapter(adapter);
+        setContentView(R.layout.activity_settings);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.linearLayoutSettings);
+        layout.addView(settingsView);
+
+
 
     }
+
 }
