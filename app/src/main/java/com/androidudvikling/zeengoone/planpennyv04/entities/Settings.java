@@ -21,7 +21,7 @@ public class Settings {
 
     private void populateHashMap() {
         ArrayList<String> sortTypes = new ArrayList<>();
-        sortTypes.add("Projekt sorterings type");
+        sortTypes.add(ctx.getString(R.string.sortsetting1));
         sortTypes.add(ctx.getString(R.string.sortsetting2));
         sortTypes.add(ctx.getString(R.string.sortsetting3));
         sortTypes.add(ctx.getString(R.string.sortsetting4));
