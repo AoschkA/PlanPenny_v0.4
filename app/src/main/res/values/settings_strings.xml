@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting1">Projekt sorterings type</string>
+    <string name="setting2">Kategori sorterings type</string>
+    <string name="setting3">Synkronisering</string>
+    <string name="sortsetting1">Alfabetisk</string>
+    <string name="sortsetting2">Største først</string>
+    <string name="sortsetting3">Først planlagte først</string>
+    <string name="sortsetting4">Først oprettet først</string>
+    <string name="syncsetting1">Google Calendar</string>
+</resources>
