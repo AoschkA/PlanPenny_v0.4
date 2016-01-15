@@ -29,6 +29,12 @@ public class Settings {
         map.put("3", synchronizeTypes);
     }
 
+    public HashMap getHashMap() {
+        return map;
+    }
+
+
+
 
 
 }
