@@ -28,9 +28,7 @@ public class ActivitySettings extends Activity {
         setContentView(R.layout.activity_settings);
 
         list = (ListView) findViewById(R.id.settingsList);
-        textView1 = (TextView) findViewById(R.id.textViewProject);
-        textView2 = (TextView) findViewById(R.id.textViewCategory);
-        switchSynchronize = (Switch) findViewById(R.id.synchronize);
+
 
         populateListView();
     }
@@ -38,14 +36,10 @@ public class ActivitySettings extends Activity {
     private void populateListView() {
         View[] views = {textView1, textView2, switchSynchronize};
         String[] strings = {"1", "2", "3"};
-        List<String> test = new ArrayList<String>();
-        test.add("1");
-        test.add("2");
-        test.add("3");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
-                test);
+                strings);
 
         list.setAdapter(adapter);
 

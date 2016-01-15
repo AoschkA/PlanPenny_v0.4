@@ -5,33 +5,7 @@
             android:id="@+id/textViewTitle"
             android:onClick="menuClick"
             android:title="Indstillinger">
-        <!-- "file" submenu -->
-        <menu>
-            <item android:id="@+id/menu_sort"
-                android:checkable="true"
-                android:checked="true"
-                android:icon="@mipmap/penny_launcher"
-                android:title="Vælg sortering">
-                <menu>
-                    <item android:id="@+id/menu_sort_dato"
-                        android:onClick="menuClick"
-                        android:title="Sorter efter dato"/>
-                    <item android:id="@+id/menu_sort_navn"
-                        android:onClick="menuClick"
-                        android:title="Sorter efter navn"/>
-                </menu></item>
-            <item android:id="@+id/menu_edit"
-                android:checkable="true"
-                android:checked="false"
-                android:onClick="menuClick"
-                android:title="Rediger Projekt"/>
-            <item android:id="@+id/menu_create_cat"
-                android:onClick="menuClick"
-                android:title="Ny Kategori"/>
-            <item android:id="@+id/menu_create_plan"
-                android:onClick="menuClick"
-                android:title="Ny Plan"/>
-        </menu></item>
+        </item>
         <item
             android:id="@+id/textViewHelp"
             android:onClick="menuClick"
