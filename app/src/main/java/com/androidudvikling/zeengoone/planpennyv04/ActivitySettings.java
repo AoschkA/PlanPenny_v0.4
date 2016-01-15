@@ -1,19 +1,15 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jonas Praem on 11/01/16.
@@ -42,11 +38,14 @@ public class ActivitySettings extends Activity {
     private void populateListView() {
         View[] views = {textView1, textView2, switchSynchronize};
         String[] strings = {"1", "2", "3"};
-
-        ArrayAdapter<View> adapter = new ArrayAdapter<View>(
+        List<String> test = new ArrayList<String>();
+        test.add("1");
+        test.add("2");
+        test.add("3");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
-                strings);
+                test);
 
         list.setAdapter(adapter);
 
