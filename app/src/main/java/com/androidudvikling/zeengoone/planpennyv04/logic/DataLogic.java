@@ -15,8 +15,26 @@ import java.util.Collections;
 
 public class DataLogic implements Serializable {
 	private ProjectDB projectDB = new ProjectDB();
+	private static int sortType_project = 2;
+	private static int sortType_category = 3;
 	
 	public DataLogic() {addDefaultProjects();}
+
+	public int getSortType_project() {
+		return sortType_project;
+	}
+
+	public int getSortType_category() {
+		return sortType_category;
+	}
+
+	public void setSortType_project(int sortType) {
+		sortType_project=sortType;
+	}
+
+	public void setSortType_category(int sortType) {
+		sortType_category=sortType;
+	}
 
 	public void clearProjects(){
 		projectDB.clearList();
@@ -160,8 +178,8 @@ public class DataLogic implements Serializable {
 	3 for first planned first
 	4 for first created first
 	 */
-	private ArrayList<Category> sortCategories(int type, ArrayList<Category> categories) {
-		if (type==1) {
+	private ArrayList<Category> sortCategories(ArrayList<Category> categories) {
+		if (sortType_category==1) {
 			ArrayList<Category> sortedList = new ArrayList<Category>();
 			ArrayList<String> titles = new ArrayList<String>();
 			for (int i=0; i<categories.size(); i++)
@@ -174,7 +192,7 @@ public class DataLogic implements Serializable {
 			}
 			return sortedList;
 		}
-		else if (type==2) {
+		else if (sortType_category==2) {
 			ArrayList<Category> sortedList = new ArrayList<Category>();
 			ArrayList<Integer> sizeList = new ArrayList<Integer>();
 			for (Category c : categories)
@@ -189,7 +207,7 @@ public class DataLogic implements Serializable {
 			}
 			return sortedList;
 		}
-		else if (type==3) {
+		else if (sortType_category==3) {
 			ArrayList<Category> sortedList = new ArrayList<Category>();
 			ArrayList<String> stringList = new ArrayList<String>();
 
@@ -206,6 +224,55 @@ public class DataLogic implements Serializable {
 		else {
 			// not implemented
 			return categories;
+		}
+	}
+
+	private ArrayList<Project> sortProjects(int type, ArrayList<Project> projects) {
+		if (sortType_project==1) {
+			ArrayList<Project> sortedList = new ArrayList<Project>();
+			ArrayList<String> titles = new ArrayList<String>();
+			for (int i=0; i<projects.size(); i++)
+				titles.add(projects.get(i).getTitle());
+
+			Collections.sort(titles, String.CASE_INSENSITIVE_ORDER);
+			for (Project p : projects) {
+				for (String s : titles)
+					if (p.getTitle().equals(s)) sortedList.add(p);
+			}
+			return sortedList;
+		}
+		else if (sortType_project==2) {
+			ArrayList<Project> sortedList = new ArrayList<Project>();
+			ArrayList<Integer> sizeList = new ArrayList<Integer>();
+			for (Project p : projects)
+				sizeList.add(p.getContainingDates().size());
+
+			Collections.sort(sizeList);
+			Collections.reverse(sizeList);
+
+			for (int i : sizeList) {
+				for (Project p : projects)
+					if (p.getContainingDates().size()==i) sortedList.add(p);
+			}
+			return sortedList;
+		}
+		else if (sortType_project==3) {
+			ArrayList<Project> sortedList = new ArrayList<Project>();
+			ArrayList<String> stringList = new ArrayList<String>();
+
+			for (Project p : projects)
+				stringList.add(p.getStartDate().toString());
+
+			Collections.sort(stringList, String.CASE_INSENSITIVE_ORDER);
+			for (Project p : projects) {
+				for (String s : stringList)
+					if (p.getStartDate().toString().equals(s)) sortedList.add(p);
+			}
+			return sortedList;
+		}
+		else {
+			// not implemented
+			return projects;
 		}
 	}
 	

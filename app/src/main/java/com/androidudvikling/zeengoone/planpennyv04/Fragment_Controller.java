@@ -1,5 +1,6 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Settings;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
+import com.androidudvikling.zeengoone.planpennyv04.logic.OfflineFilehandler;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -44,6 +46,8 @@ public class Fragment_Controller extends AppCompatActivity {
     private ArrayList categoryList;
     private ArrayList<List<String>> categoryListOfPlans;
     private Firebase uRef;
+    private OfflineFilehandler of;
+    private Context ctx;
 
     public static void populateDrawer(){
         projekt_liste.clear();
@@ -56,6 +60,8 @@ public class Fragment_Controller extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity_controller);
+
+        ctx = getApplicationContext();
 
         // Lav default projekter at teste på
         //dc.addDefaultProjects();
@@ -76,6 +82,11 @@ public class Fragment_Controller extends AppCompatActivity {
 
             }
         });
+
+        //Opsæt filehandler
+
+        of = new OfflineFilehandler(ctx);
+
 
         // Sæt drawer elementer til ProjektVisning
         projekt_liste_view = (ListView) findViewById(R.id.penny_projekt_drawer_list);
@@ -146,6 +157,9 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void drawerFabClick(View v){
+        Project test = dc.getProjects().get(0);
+        of.saveProject(test);
+
         Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
         startActivityForResult(CreateProject, 2);
     }
