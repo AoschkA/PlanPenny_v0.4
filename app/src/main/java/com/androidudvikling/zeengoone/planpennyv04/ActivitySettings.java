@@ -43,9 +43,9 @@ public class ActivitySettings extends Activity {
         View[] views = {textView1, textView2, switchSynchronize};
         String[] strings = {"1", "2", "3"};
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        ArrayAdapter<View> adapter = new ArrayAdapter<View>(
                 this,
-                R.layout.settings_list,
+                android.R.layout.simple_list_item_1,
                 strings);
 
         list.setAdapter(adapter);
