@@ -14,17 +14,14 @@ public class PopHomepage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pop_homepage);
-        // Sætter layout
-        setContentView(R.layout.create_pop_window);
 
         //Opsætter fremvisnings matricen
         DisplayMetrics dpm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dpm);
 
         // Definerer dimensionerne på pop
-        double scaleHeight = 0.8;
-        double scaleWidth = 0.8;
-
+        double scaleHeight = 0.9;
+        double scaleWidth = 0.9;
         int width = (int) ((dpm.widthPixels) * scaleWidth);
         int height = (int) ((dpm.heightPixels) * scaleHeight);
 
@@ -40,7 +37,7 @@ public class PopHomepage extends Activity {
         getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.border_style, null));
 
         web = (WebView) findViewById(R.id.webView);
-
-        web.loadUrl("http://planpenny.com");
+        web.getSettings().setJavaScriptEnabled(true);
+        web.loadUrl("http://planpenny.com/");
     }
 }
