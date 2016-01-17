@@ -99,12 +99,10 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
 
         if(groupPosition < 2){
             // check om subviewet findes allerede, hvis ikke lav det
-            if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.settings_sublist_sort, parent, false);
-            }
             // hent planer start og slut dato og titel og læg dem ind i submenu eller "childview"
-            final RadioGroup radioGroup = (RadioGroup) convertView.findViewById(R.id.radioGroup);
+            RadioGroup radioGroup = (RadioGroup) convertView.findViewById(R.id.radioGroup);
             if(groupPosition == 0){
                 RadioButton button1 = (RadioButton) convertView.findViewById(R.id.radioBtn1);
                 RadioButton button2 = (RadioButton) convertView.findViewById(R.id.radioBtn2);
@@ -131,7 +129,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                     }
                 });
             }
-            else{
+            else if(groupPosition == 1){
                 RadioButton button4 = (RadioButton) convertView.findViewById(R.id.radioBtn1);
                 RadioButton button5 = (RadioButton) convertView.findViewById(R.id.radioBtn2);
                 RadioButton button6 = (RadioButton) convertView.findViewById(R.id.radioBtn3);
@@ -158,12 +156,10 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                 });
             }
         }
-        else{
+        else if(groupPosition == 2){
             // check om subviewet findes allerede, hvis ikke lav det
-            if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.settings_sublist_sync, parent, false);
-            }
             Switch syncswitch = (Switch) convertView.findViewById(R.id.sync_switch);
             syncswitch.setText(getSettingsTitle(groupPosition,childPosition));
             syncswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

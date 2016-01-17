@@ -137,11 +137,6 @@ public class Fragment_Controller extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, "indstillinger").commit();
         }
        else if (menuitem.getTitle().equals("Hjælp")) {
-            Log.d("Click", "Indstillinger");
-            FragmentSettings fragment = new FragmentSettings();
-
-            SettingsAdapter s_adapter = new SettingsAdapter(this, new Settings(getApplicationContext()));
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment, "hjaelp").commit();
             startActivity(new Intent(this, ActivityHelp.class));
         }
     }
