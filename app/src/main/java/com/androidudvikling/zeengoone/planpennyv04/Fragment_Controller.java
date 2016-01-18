@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +27,7 @@ import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Settings;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OfflineFilehandler;
+import com.androidudvikling.zeengoone.planpennyv04.logic.PreferenceManager;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -37,6 +39,7 @@ import java.util.List;
 public class Fragment_Controller extends AppCompatActivity {
     public static DataLogic dc = new DataLogic();
     private static ArrayList<String> projekt_liste = new ArrayList<>();
+    private PreferenceManager pManager = new PreferenceManager(this);
     private ListView projekt_liste_view;
     private DrawerLayout pennydrawerLayout;
     private CoordinatorLayout coordinatorLayout;
@@ -133,7 +136,7 @@ public class Fragment_Controller extends AppCompatActivity {
         if (menuitem.getTitle().equals("Indstillinger")) {
             Log.d("Click","Indstillinger");
             FragmentSettings fragment = new FragmentSettings();
-            SettingsAdapter s_adapter = new SettingsAdapter(this, new Settings(getApplicationContext()));
+            SettingsAdapter s_adapter = new SettingsAdapter(this, new Settings(getApplicationContext()), pManager);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, "indstillinger").commit();
         }
        else if (menuitem.getTitle().equals("Hjælp")) {
