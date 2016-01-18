@@ -17,9 +17,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -92,6 +95,25 @@ public class Fragment_Controller extends AppCompatActivity {
         landscape = ctx.getResources().getBoolean(R.bool.is_landscape);
 
         if(!landscape) {
+            LinearLayout activityLayout = new LinearLayout(this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            activityLayout.setLayoutParams(lp);
+            activityLayout.setOrientation(LinearLayout.VERTICAL);
+            activityLayout.setPadding(16, 16, 16, 16);
+            // Instantiere google api textview
+            ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            mOutputText = new TextView(this);
+            mOutputText.setLayoutParams(tlp);
+            mOutputText.setPadding(16, 16, 16, 16);
+            mOutputText.setVerticalScrollBarEnabled(true);
+            mOutputText.setMovementMethod(new ScrollingMovementMethod());
+            activityLayout.addView(mOutputText);
+            setContentView(activityLayout);
+
             setContentView(R.layout.main_activity_controller_portrait);
             // Sæt drawer elementer til ProjektVisning
             projekt_liste_view = (ListView) findViewById(R.id.penny_projekt_drawer_list);
@@ -119,24 +141,6 @@ public class Fragment_Controller extends AppCompatActivity {
             // Onclick listener til projektlistemenuen
             projekt_liste_view.setOnItemClickListener(new DrawerItemClickListener());
 
-            LinearLayout activityLayout = new LinearLayout(this);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            activityLayout.setLayoutParams(lp);
-            activityLayout.setOrientation(LinearLayout.VERTICAL);
-            activityLayout.setPadding(16, 16, 16, 16);
-            // Instantiere google api textview
-            ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            mOutputText = new TextView(this);
-            mOutputText.setLayoutParams(tlp);
-            mOutputText.setPadding(16, 16, 16, 16);
-            mOutputText.setVerticalScrollBarEnabled(true);
-            mOutputText.setMovementMethod(new ScrollingMovementMethod());
-            activityLayout.addView(mOutputText);
-            setContentView(activityLayout);
             // Instantiere Firebase
             Firebase.setAndroidContext(this);
 
@@ -295,8 +299,10 @@ public class Fragment_Controller extends AppCompatActivity {
         } else {
             if (isDeviceOnline()) {
                 new MakeRequestTask(mCredential).execute();
+                Toast.makeText(ctx, "Forbindelse til Google Oprettet: Login: "+mCredential.getSelectedAccountName(), Toast.LENGTH_SHORT).show();
             } else {
                 mOutputText.setText("No network connection available.");
+                Toast.makeText(ctx, "Forbindelse til Google IKKE oprettet, tjek internetforbindelse", Toast.LENGTH_SHORT).show();
             }
         }
     }
