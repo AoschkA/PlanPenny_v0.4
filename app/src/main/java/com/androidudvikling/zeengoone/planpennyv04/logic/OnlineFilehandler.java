@@ -26,7 +26,9 @@ public class OnlineFilehandler {
     Context ctx;
     Firebase myFirebaseRef;
     Project project;
-    ArrayList<Project> allProjects;
+    ArrayList<Project> allProjects = new ArrayList<Project>();
+    int counter = 0;
+    int count = 0;
 
 
     public OnlineFilehandler(Context ctx){
@@ -67,11 +69,14 @@ public class OnlineFilehandler {
         Toast.makeText(ctx, "Alle projekter er gemt.", Toast.LENGTH_LONG).show();
     }
 
-    /* Virker PT ikke
+
     public void getAllProjects(ArrayList<String> projectNames){
         //Får alle projekter på ny
+
+        if(allProjects.size()>=1)
         allProjects.clear();
 
+        count = projectNames.size()-1;
         for(int i = 0 ; i<projectNames.size() ; i++) {
             myFirebaseRef.child(projectNames.get(i)).addValueEventListener(new ValueEventListener() {
 
@@ -177,6 +182,9 @@ public class OnlineFilehandler {
 
                     }
                     allProjects.add(newProject);
+                    counter++;
+                    if(counter == count)
+                        Toast.makeText(ctx, "Alle projekter er opdateret.", Toast.LENGTH_LONG).show();
                 }
 
 
@@ -187,12 +195,9 @@ public class OnlineFilehandler {
                 }
 
             });
-
-            if(i == allProjects.size()-1)
-                Toast.makeText(ctx, "Alle projekter er opdateret.", Toast.LENGTH_LONG).show();
         }
     }
-*/
+
     public void getProject(String projectName){
         myFirebaseRef.child(projectName).addValueEventListener(new ValueEventListener() {
 
