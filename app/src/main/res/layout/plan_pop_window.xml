@@ -201,7 +201,7 @@
             android:layout_alignLeft="@+id/planText"
             android:layout_alignStart="@+id/planText"
             android:background="@drawable/border_style_text"
-            android:inputType="textLongMessage"/>
+            android:inputType="textLongMessage" />
 
     </RelativeLayout>
 

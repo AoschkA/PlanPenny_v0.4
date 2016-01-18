@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class ProjectDB implements Serializable{
     private ArrayList<Project> projectList;
 
+
     public ProjectDB() {
     	projectList = new ArrayList<Project>();
     }
