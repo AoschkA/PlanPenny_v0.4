@@ -33,10 +33,6 @@
             android:theme="@style/AppTheme.PopTheme" >
         </activity>
         <activity
-            android:name=".ActivitySettings"
-            android:theme="@style/AppTheme.PopTheme" >
-        </activity>
-        <activity
             android:name=".ActivityHelp"
             android:theme="@style/AppTheme.PopTheme" >
         </activity>
