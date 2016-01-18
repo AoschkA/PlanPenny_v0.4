@@ -39,7 +39,6 @@ public class ActivitySettings extends Activity {
         final ExpandableListView settingsView = (ExpandableListView) findViewById(R.id.expandable_list_id);
         settingsView.setAdapter(adapter);
         setContentView(R.layout.activity_settings);
-
         LinearLayout layout = (LinearLayout) findViewById(R.id.linearLayoutSettings);
         layout.addView(settingsView);
     }

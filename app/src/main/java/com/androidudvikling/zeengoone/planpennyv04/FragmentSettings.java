@@ -29,6 +29,7 @@ public class FragmentSettings extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         indstillinger = new Settings(getActivity());
+        preferenceManager = new PreferenceManager(getActivity());
         //savedExists = readData();
     }
     @Override
@@ -36,7 +37,7 @@ public class FragmentSettings extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.expandable_list_layout, container, false);
         // Læg listen ind i arrayadapteren for kategorier
-        adapter = new SettingsAdapter(getActivity(), indstillinger);
+        adapter = new SettingsAdapter(getActivity(), indstillinger, preferenceManager);
 
         // Lav listviewet og setadapter til adapteren lavet herover
         final ExpandableListView settingsView = (ExpandableListView) view.findViewById(R.id.expandable_list_id);
