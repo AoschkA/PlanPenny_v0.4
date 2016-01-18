@@ -139,6 +139,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         us.setSortSetting1(1);
                         pManager.saveSettings(us);
                         logic.setSortType_project(1);
+                        logic.sortProjects();
                         Toast.makeText(ctx, "Sorteringstype 1 for projekt gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -149,6 +150,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         us.setSortSetting1(2);
                         pManager.saveSettings(us);
                         logic.setSortType_project(2);
+                        logic.sortProjects();
                         Toast.makeText(ctx, "Sorteringstype 2 for projekt gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -159,6 +161,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         us.setSortSetting1(3);
                         pManager.saveSettings(us);
                         logic.setSortType_project(3);
+                        logic.sortProjects();
                         Toast.makeText(ctx, "Sorteringstype 3 for projekt gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -194,6 +197,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         us.setSortSetting2(1);
                         pManager.saveSettings(us);
                         logic.setSortType_category(1);
+                        logic.sortProjects();
                         Toast.makeText(ctx, "Sorteringstype 1 for kategori gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -205,6 +209,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         us.setSortSetting2(2);
                         pManager.saveSettings(us);
                         logic.setSortType_category(2);
+                        logic.sortProjects();
                         Toast.makeText(ctx, "Sorteringstype 2 for kategori gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -216,6 +221,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         us.setSortSetting2(3);
                         pManager.saveSettings(us);
                         logic.setSortType_category(3);
+                        logic.sortProjects();
                         Toast.makeText(ctx, "Sorteringstype 3 for kategori gemt", Toast.LENGTH_SHORT).show();
                     }
                 });

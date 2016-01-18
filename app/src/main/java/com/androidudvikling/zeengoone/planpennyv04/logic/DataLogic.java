@@ -14,10 +14,10 @@ import java.util.Collections;
  */
 
 public class DataLogic implements Serializable {
-	private static int sortType_project = 2;
-	private static int sortType_category = 3;
+	private static int sortType_project = 1;
+	private static int sortType_category = 1;
 	private static boolean sync_google = false;
-	private ProjectDB projectDB = new ProjectDB();
+	private static ProjectDB projectDB = new ProjectDB();
 	
 	public DataLogic() {addDefaultProjects();}
 
@@ -62,7 +62,7 @@ public class DataLogic implements Serializable {
 	}
 	
 	public ArrayList<Project> getProjects() {
-		return projectDB.getProjectList();
+		return projectDB.getProjectList(sortType_category);
 	}
 	
 	public ArrayList<Category> getCategories(String projectTitle) {
@@ -76,7 +76,7 @@ public class DataLogic implements Serializable {
 	// Returns projects for a given month
 	public ArrayList<Project> getProjectsForMonth(int year, int month) {
 		ArrayList<Project> projectList = new ArrayList<Project>();
-		for (Project p : projectDB.getProjectList()){
+		for (Project p : projectDB.getProjectList(sortType_category)){
 			for (Date d : p.getContainingDates()) {
 				if(d.getYear()==year && d.getMonth()==month) {
 					projectList.add(p);
@@ -181,6 +181,10 @@ public class DataLogic implements Serializable {
 		return remainingMonths;
 	}
 
+	public void sortProjects() {
+		projectDB.setProjectList(sortProjects(projectDB.getProjectList(sortType_category)));
+	}
+
 	/* type:
 	1 for alphabetic
 	2 for biggest first
@@ -236,7 +240,7 @@ public class DataLogic implements Serializable {
 		}
 	}
 
-	private ArrayList<Project> sortProjects(int type, ArrayList<Project> projects) {
+	private ArrayList<Project> sortProjects(ArrayList<Project> projects) {
 		if (sortType_project==1) {
 			ArrayList<Project> sortedList = new ArrayList<Project>();
 			ArrayList<String> titles = new ArrayList<String>();
@@ -311,6 +315,10 @@ public class DataLogic implements Serializable {
 		addPlan("Create software expansion", "Implementation", new Date(2016, 4, 1), new Date(2016, 6, 25), color, "implementations fase");
 		addPlan("Create software expansion", "Test", new Date(2016, 6, 5), new Date(2016, 9, 28), color, "test fase");
 		addPlan("Create software expansion", "Release", new Date(2016, 8, 10), new Date(2016, 8, 15), color, "udgivelse");
+		// Project 3
+		addProject("Preparing for marathon");
+		addCategory("Preparing for marathon", "Run training sessions");
+		addPlan("Preparing for marathon", "Run training sessions", new Date(2016, 2, 2), new Date(2016, 5, 28), color, "Løb");
 		
 	}
 	
