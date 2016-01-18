@@ -3,7 +3,6 @@ package com.androidudvikling.zeengoone.planpennyv04;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -21,11 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
-
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
-import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,24 +33,70 @@ import java.util.List;
  */
 public class PopCreatePlan extends Activity implements OnItemSelectedListener{
 
+    static final int start = 0;
+    static final int end = 1;
+    public ArrayList <String> curCategories = new ArrayList<String>();
+    ArrayList<List<String>> listOfPlansInCategories = new ArrayList<List<String>>();
+    int catId = 0;
+    boolean startIsSet = false,endIsSet = false;
+    String overlap;
     private TextView planText;
     private TextView errorText;
     private RelativeLayout contentLayout;
     private Button planCreateBtn, startDateBtn, endDateBtn;
     private String categoryTextFromUser;
     private ListView planList;
-    public ArrayList <String> curCategories = new ArrayList<String>();
-    ArrayList<List<String>> listOfPlansInCategories = new ArrayList<List<String>>();
     private String curProject;
     private int year_x,month_x,day_x,year_y,month_y,day_y;
-    static final int start = 0;
-    static final int end = 1;
     private Spinner categoryChooser;
     private String chosenCategory = "not set";
-    int catId = 0;
-    boolean startIsSet = false,endIsSet = false;
-    String overlap;
     private EditText planTitle;
+    private DatePickerDialog.OnDateSetListener dpickerListnerStart
+            = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            year_x = year;
+            month_x = monthOfYear+1;
+            day_x = dayOfMonth;
+            startDateBtn.setText(day_x + "-" + month_x + "-" + year_x);
+            startIsSet = true;
+        }
+    };
+        private DatePickerDialog.OnDateSetListener dpickerListnerEnd
+                = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                    year_y = year;
+                    month_y = monthOfYear + 1;
+                    day_y = dayOfMonth;
+                    endDateBtn.setText(day_y + "-" + month_y + "-" + year_y);
+                    endIsSet = true;
+
+            }
+        };
+
+    // Effekt til button
+    public static void buttonEffect(View button){
+        button.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,10 +180,6 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
 
     }
 
-
-
-
-
         //Knap i content
        public void OnBtnClicked(View v){
            buttonEffect(v);
@@ -212,7 +251,6 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                }break;
 
            }
-           Fragment_Controller.populateDrawer();
         }
 
     @Override
@@ -225,32 +263,6 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
         return null;
 
     }
-
-    private DatePickerDialog.OnDateSetListener dpickerListnerStart
-            = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            year_x = year;
-            month_x = monthOfYear+1;
-            day_x = dayOfMonth;
-            startDateBtn.setText(day_x + "-" + month_x + "-" + year_x);
-            startIsSet = true;
-        }
-    };
-
-        private DatePickerDialog.OnDateSetListener dpickerListnerEnd
-                = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-                    year_y = year;
-                    month_y = monthOfYear + 1;
-                    day_y = dayOfMonth;
-                    endDateBtn.setText(day_y + "-" + month_y + "-" + year_y);
-                    endIsSet = true;
-
-            }
-        };
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -268,7 +280,6 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
         // Hvis ønsket implementeret.
         // TODO Auto-generated method stub
     }
-
 
     // Bofore og after problem!
     public void checkOverlap(int startDay, int startMonth, int startYear, int endDay, int endMonth, int endYear, int catID) {
@@ -296,28 +307,6 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
         overlap = overlapPlan;
 
 
-    }
-
-    // Effekt til button
-    public static void buttonEffect(View button){
-        button.setOnTouchListener(new View.OnTouchListener() {
-
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        v.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
-                        v.invalidate();
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP: {
-                        v.getBackground().clearColorFilter();
-                        v.invalidate();
-                        break;
-                    }
-                }
-                return false;
-            }
-        });
     }
 
     public boolean checkTitleName(String name){

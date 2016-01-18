@@ -28,6 +28,7 @@ public class ViewPagerFragment extends Fragment {
     private int projectNumber;
     private Calendar cal = new GregorianCalendar();
     private DataLogic dc = Fragment_Controller.dc;
+    private ViewPagerAdapter adapter;
 
     public static void vpChangeCurrentItem(int position){
         tabLayout.setScrollPosition(position, 0f, true);
@@ -77,7 +78,7 @@ public class ViewPagerFragment extends Fragment {
         View root = inflater.inflate(R.layout.view_pager, container, false);
         viewPager = (ViewPager) root.findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(0);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.setTabFields(tabMaaneder);
         adapter.setProject(projectNumber);
         viewPager.setAdapter(adapter);

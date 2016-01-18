@@ -1,17 +1,52 @@
 package com.androidudvikling.zeengoone.planpennyv04.entities;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class Project implements Serializable{
 	private String title;
+	/*Comparator for sorting the list by Project Title*/
+	public static Comparator<Project> ProjectNameComparator = new Comparator<Project>() {
+
+		public int compare(Project p1, Project p2) {
+			String ProjectTitle1 = p1.getTitle().toUpperCase();
+			String ProjectTitle2 = p2.getTitle().toUpperCase();
+
+			//ascending order
+			return ProjectTitle1.compareTo(ProjectTitle2);
+			}};
     private ArrayList<Category> categoryList;
+	/*Comparator for sorting the list by Project Length*/
+	public static Comparator<Project> ProjectLengthComparator = new Comparator<Project>() {
+
+		public int compare(Project p1, Project p2) {
+			int ProjectDates1 = p1.getContainingDates().size();
+			int ProjectDates2 = p2.getContainingDates().size();
+
+			//ascending order
+			return ProjectDates1 > ProjectDates2?ProjectDates1:ProjectDates2;
+
+			//descending order
+			//return StudentName2.compareTo(StudentName1);
+		}};
+	/*Comparator for sorting the list by Project Start*/
+	public static Comparator<Project> ProjectStartComparator = new Comparator<Project>() {
+
+		public int compare(Project p1, Project p2) {
+			Date ProjectDates1 = p1.getStartDate();
+			Date ProjectDates2 = p2.getStartDate();
+
+			//ascending order
+			return ProjectDates1.before(ProjectDates2)?5:15;
+
+			}
+		};
 
     public Project(String title) {
     	this.title=title;
-    	categoryList = new ArrayList<Category>();
+    	categoryList = new ArrayList<>();
     }
 
     public Category getCategory(String categoryTitle) {
@@ -26,14 +61,14 @@ public class Project implements Serializable{
     	categoryList.add(c);
     }
 
-    public void setTitle(String title) {
-    	this.title=title;
-    }
-
     public String getTitle() {
     	return title;
     }
 
+    public void setTitle(String title) {
+    	this.title=title;
+    }
+    
     public ArrayList<Category> getCategoryList() {
     	return categoryList;
     }
@@ -43,15 +78,15 @@ public class Project implements Serializable{
 	}
 
 	public ArrayList<String> getCategoryTitlesList(){
-		ArrayList<String> tempList = new ArrayList<String>();
+		ArrayList<String> tempList = new ArrayList<>();
 		for(Category c:categoryList){
 			tempList.add(c.getCategoryTitle());
 		}
 		return tempList;
 	}
-    
+
     public ArrayList<Date> getContainingDates() {
-    	ArrayList<Date> dateList = new ArrayList<Date>();
+    	ArrayList<Date> dateList = new ArrayList<>();
     	for (Category c : categoryList) {
     		for (Date d : c.getContainingDays()) {
     			if (!dateList.contains(d))
@@ -81,6 +116,7 @@ public class Project implements Serializable{
 		ArrayList<Category> newCategories = sortCategories(type, getCategoryList());
 		setCategoryList(newCategories);
 	}
+
 	/* type:
 	1 for alphabetic
 	2 for biggest first
@@ -89,51 +125,20 @@ public class Project implements Serializable{
 	 */
 	private ArrayList<Category> sortCategories(int sortType_category, ArrayList<Category> categories) {
 		if (sortType_category==1) {
-			ArrayList<Category> sortedList = new ArrayList<Category>();
-			ArrayList<String> titles = new ArrayList<String>();
-			for (int i=0; i<categories.size(); i++)
-				titles.add(categories.get(i).getCategoryTitle());
-
-			Collections.sort(titles, String.CASE_INSENSITIVE_ORDER);
-			for (Category c : categories) {
-				for (String s : titles)
-					if (c.getCategoryTitle().equals(s)) sortedList.add(c);
-			}
-			return sortedList;
+			Collections.sort(categories, Category.CategoryNameComparator);
+			return categories;
 		}
 		else if (sortType_category==2) {
-			ArrayList<Category> sortedList = new ArrayList<Category>();
-			ArrayList<Integer> sizeList = new ArrayList<Integer>();
-			for (Category c : categories)
-				sizeList.add(c.getContainingDays().size());
-
-			Collections.sort(sizeList);
-			Collections.reverse(sizeList);
-
-			for (int i : sizeList) {
-				for (Category c : categories)
-					if (c.getContainingDays().size()==i) sortedList.add(c);
-			}
-			return sortedList;
+			Collections.sort(categories, Category.CategoryLengthComparator);
+			return categories;
 		}
 		else if (sortType_category==3) {
-			ArrayList<Category> sortedList = new ArrayList<Category>();
-			ArrayList<String> stringList = new ArrayList<String>();
-
-			for (Category c : categories)
-				stringList.add(c.getStartDate().toString());
-
-			Collections.sort(stringList, String.CASE_INSENSITIVE_ORDER);
-			for (Category c : categories) {
-				for (String s : stringList)
-					if (c.getStartDate().toString().equals(s)) sortedList.add(c);
-			}
-			return sortedList;
+			Collections.sort(categories, Category.ProjectStartComparator);
+			return categories;
 		}
 		else {
 			// not implemented
 			return categories;
 		}
 	}
-
 }
