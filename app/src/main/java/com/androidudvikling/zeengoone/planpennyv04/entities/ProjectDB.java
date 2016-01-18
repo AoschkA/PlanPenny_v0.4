@@ -22,9 +22,17 @@ public class ProjectDB implements Serializable{
     	projectList.add(p);
     }
 
-    public ArrayList<Project> getProjectList() {
-    	return projectList;
+    public ArrayList<Project> getProjectList(int sortType_category) {
+    	for (Project temp : projectList) {
+            temp.sortCategories(sortType_category);
+        }
+        return projectList;
     }
+
+    public void setProjectList(ArrayList<Project> projectList) {
+        this.projectList=projectList;
+    }
+
     public void clearList(){
         projectList.clear();
     }
