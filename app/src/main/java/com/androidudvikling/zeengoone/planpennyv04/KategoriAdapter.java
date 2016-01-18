@@ -7,39 +7,38 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
-
-import java.util.ArrayList;
+import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 
 /**
  * Created by zeengoone on 1/8/16.
  */
 public class KategoriAdapter extends BaseExpandableListAdapter {
     protected Context ctx;
-    protected ArrayList<Category> kategorier;
+    private int currentProjectNumber;
+    private DataLogic dc = Fragment_Controller.dc;
 
-    public KategoriAdapter(Context ctx, ArrayList<Category> kategorier){
+    public KategoriAdapter(Context ctx, int currentProject){
         this.ctx = ctx;
-        this.kategorier = kategorier;
+        this.currentProjectNumber = currentProject;
     }
     @Override
     public int getGroupCount() {
-        return kategorier.size();
+        return dc.getProjects().get(currentProjectNumber).getCategoryList().size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return kategorier.get(groupPosition).getPlanList().size();
+        return dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return kategorier.get(groupPosition);
+        return dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return kategorier.get(groupPosition).getPlanList().get(childPosition);
+        return dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().get(childPosition);
     }
 
     @Override
@@ -66,7 +65,7 @@ public class KategoriAdapter extends BaseExpandableListAdapter {
         }
         // hent listen af kategorier og læg sæt tekst i listen til deres titler
         TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element);
-        kategori_element.setText(kategorier.get(groupPosition).getCategoryTitle());
+        kategori_element.setText(dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
         return convertView;
     }
 
@@ -79,7 +78,7 @@ public class KategoriAdapter extends BaseExpandableListAdapter {
         }
         // hent planer start og slut dato og titel og læg dem ind i submenu eller "childview"
         TextView plan_element = (TextView) convertView.findViewById(R.id.plan_liste_element);
-        plan_element.setText(kategorier.get(groupPosition).getPlanList().get(childPosition).toString());
+        plan_element.setText(dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().get(childPosition).toString());
         return convertView;
     }
 

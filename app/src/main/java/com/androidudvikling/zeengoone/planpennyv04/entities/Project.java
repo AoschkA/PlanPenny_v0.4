@@ -26,7 +26,7 @@ public class Project implements Serializable{
 			int ProjectDates2 = p2.getContainingDates().size();
 
 			//ascending order
-			return ProjectDates1 > ProjectDates2?ProjectDates1:ProjectDates2;
+			return ProjectDates1 < ProjectDates2?1:-1;
 
 			//descending order
 			//return StudentName2.compareTo(StudentName1);
@@ -39,7 +39,7 @@ public class Project implements Serializable{
 			Date ProjectDates2 = p2.getStartDate();
 
 			//ascending order
-			return ProjectDates1.before(ProjectDates2)?5:15;
+			return ProjectDates1.after(ProjectDates2)?1:-1;
 
 			}
 		};
@@ -133,7 +133,7 @@ public class Project implements Serializable{
 			return categories;
 		}
 		else if (sortType_category==3) {
-			Collections.sort(categories, Category.ProjectStartComparator);
+			Collections.sort(categories, Category.CategoryStartComparator);
 			return categories;
 		}
 		else {

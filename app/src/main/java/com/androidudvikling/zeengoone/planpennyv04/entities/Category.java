@@ -17,8 +17,8 @@ public class Category implements Serializable {
 			//ascending order
 			return CategoryTitle1.compareTo(CategoryTitle2);
 		}};
-    private ArrayList<Plan> planList;
-	/*Comparator for sorting the list by Project Length*/
+	private ArrayList<Plan> planList;
+	/*Comparator for sorting the list by Category Length*/
 	public static Comparator<Category> CategoryLengthComparator = new Comparator<Category>() {
 
 		public int compare(Category c1, Category c2) {
@@ -26,17 +26,17 @@ public class Category implements Serializable {
 			int CategoryDates2 = c2.getPlanListDates().size();
 
 			//ascending order
-			return CategoryDates1 > CategoryDates2?CategoryDates1:CategoryDates2;
+			return CategoryDates1 < CategoryDates2?1:-1;
 		}};
-	/*Comparator for sorting the list by Project Start*/
-	public static Comparator<Category> ProjectStartComparator = new Comparator<Category>() {
+	/*Comparator for sorting the list by Category Start*/
+	public static Comparator<Category> CategoryStartComparator = new Comparator<Category>() {
 
 		public int compare(Category c1, Category c2) {
 			Date CategoryDates1 = c1.getStartDate();
 			Date CategoryDates2 = c2.getStartDate();
 
 			//ascending order
-			return CategoryDates1.before(CategoryDates2)?5:15;
+			return CategoryDates1.after(CategoryDates2)?1:-1;
 
 		}
 	};
@@ -60,8 +60,8 @@ public class Category implements Serializable {
 
 	public ArrayList<String> getPlanListDates() {
 		ArrayList<String> tempPlanListDates = new ArrayList<String>();
-		for(Plan p:getPlanList()){
-			tempPlanListDates.add("StartDate: " + p.getStartDate().toString() + " EndDate: " + p.getEndDate().toString());
+		for(Date d:getContainingDays()){
+			tempPlanListDates.add("Date: " + d.toString());
 		}
 		return tempPlanListDates;
 	}

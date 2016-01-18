@@ -26,6 +26,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
     protected Settings indstillinger;
     protected PreferenceManager pManager;
     protected DataLogic logic = new DataLogic();
+    protected UserSettings us;
 
     public SettingsAdapter(Context ctx, Settings indstillinger, PreferenceManager pManager) {
         this.ctx = ctx;
@@ -102,7 +103,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        final UserSettings us = pManager.loadSettings();
+        us = pManager.loadSettings();
         if(groupPosition < 2){
             // check om subviewet findes allerede, hvis ikke lav det
                 LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ProjectDB implements Serializable{
-    private ArrayList<Project> projectList;
-
+    private static ArrayList<Project> projectList;
 
     public ProjectDB() {
     	projectList = new ArrayList<Project>();
@@ -30,8 +29,8 @@ public class ProjectDB implements Serializable{
         return projectList;
     }
 
-    public void setProjectList(ArrayList<Project> projectList) {
-        this.projectList=projectList;
+    public void setProjectList(ArrayList<Project> projectlist) {
+        projectList=projectlist;
     }
 
     public void clearList(){
