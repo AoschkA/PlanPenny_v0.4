@@ -67,6 +67,7 @@ public class OnlineFilehandler {
         Toast.makeText(ctx, "Alle projekter er gemt.", Toast.LENGTH_LONG).show();
     }
 
+    /* Virker PT ikke
     public void getAllProjects(ArrayList<String> projectNames){
         //Får alle projekter på ny
         allProjects.clear();
@@ -191,7 +192,7 @@ public class OnlineFilehandler {
                 Toast.makeText(ctx, "Alle projekter er opdateret.", Toast.LENGTH_LONG).show();
         }
     }
-
+*/
     public void getProject(String projectName){
         myFirebaseRef.child(projectName).addValueEventListener(new ValueEventListener() {
 
