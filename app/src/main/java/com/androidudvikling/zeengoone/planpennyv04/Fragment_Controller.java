@@ -150,6 +150,8 @@ public class Fragment_Controller extends AppCompatActivity {
 
             //Opsæt offline filehandler
             off = new OfflineFilehandler(ctx);
+
+
             //Opsæt actionbar burgermenu og titel
             this.setTitle(getString(R.string.app_title));
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -157,6 +159,7 @@ public class Fragment_Controller extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setLogo(R.drawable.penny_logo);
             getSupportActionBar().setDisplayUseLogoEnabled(true);
+
             //Opsæt online filehandler
             onf = new OnlineFilehandler(ctx);
 
@@ -226,7 +229,7 @@ public class Fragment_Controller extends AppCompatActivity {
 
     public void drawerFabClick(View v){
         onf.saveProject(dc.getProjects().get(0));
-        Project project = onf.getProjectTest("Redesign of company");
+        onf.getProject("Redesign of company");
 
 
 
