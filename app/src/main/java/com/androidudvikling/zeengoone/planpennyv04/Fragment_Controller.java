@@ -237,6 +237,10 @@ public class Fragment_Controller extends AppCompatActivity {
         startActivityForResult(CreateProject, 2);
     }
 
+    public void eventFabClick(View v) {
+
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.penny_projekt_drawer_layout);

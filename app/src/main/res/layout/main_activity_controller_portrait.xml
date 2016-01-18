@@ -13,7 +13,19 @@
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"></FrameLayout>
+            android:layout_weight="1">
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="16dp"
+                android:onClick="eventFabClick"
+                android:src="@mipmap/ic_event_white_24dp"
+                android:tint="@color/colorSecondaryText"
+                android:background="@color/colorPrimary"
+                app:layout_anchorGravity="bottom|right|end"
+                android:id="@+id/fabEvent" />
+        </FrameLayout>
     </LinearLayout>
 
     <!-- Liste over projekter -->
@@ -27,8 +39,8 @@
     <ListView android:id="@+id/penny_projekt_drawer_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/side_penny_drawer_bar"
         android:choiceMode="singleChoice"
+        android:background="@color/colorPrimaryDark"
         android:divider="#666"
         android:dividerHeight="1dp"
         android:paddingLeft="15sp"
@@ -42,7 +54,7 @@
             android:layout_margin="16dp"
             android:onClick="drawerFabClick"
             android:src="@android:drawable/ic_input_add"
-            android:tint="@color/colorFABCross"
+            android:tint="@color/colorSecondaryText"
             app:layout_anchorGravity="bottom|right|end" />
     </android.support.design.widget.CoordinatorLayout>
 

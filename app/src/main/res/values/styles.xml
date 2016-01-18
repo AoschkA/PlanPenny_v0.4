@@ -2,21 +2,21 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/ColorPrimary</item>
-        <item name="colorPrimaryDark">#0F0F0F</item>
-        <item name="colorAccent">@color/colorFAB</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorSecondary</item>
     </style>
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@color/ColorSliderTab</item>
+        <item name="tabIndicatorColor">@color/colorPrimaryDark</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabPaddingStart">8dp</item>
         <item name="tabPaddingEnd">8dp</item>
         <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
-        <item name="tabSelectedTextColor">@color/ColorPrimaryDark</item>
+        <item name="tabSelectedTextColor">@color/colorPrimaryDark</item>
     </style>
     <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/ColorSliderTextpassive</item>
+        <item name="android:textColor">@color/colorSliderTextpassive</item>
         <item name="textAllCaps">true</item>
     </style>
     <style name="AppTheme.PopTheme">
