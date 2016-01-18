@@ -3,6 +3,7 @@ package com.androidudvikling.zeengoone.planpennyv04;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.design.widget.CoordinatorLayout;
@@ -159,7 +160,7 @@ public class Fragment_Controller extends AppCompatActivity {
 
     public void drawerFabClick(View v){
         onf.saveProject(dc.getProjects().get(0));
-        Project project = onf.getProjectTest("Redesign of company");
+        onf.getProject("Redesign of company");
 
 
 

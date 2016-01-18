@@ -1,6 +1,9 @@
 package com.androidudvikling.zeengoone.planpennyv04.logic;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
@@ -19,7 +22,7 @@ import com.firebase.client.ValueEventListener;
 public class OnlineFilehandler {
     Context ctx;
     Firebase myFirebaseRef;
-    Project newProject;
+    Project project= new Project("testprojekt");
 
 
     public OnlineFilehandler(Context ctx){
@@ -33,6 +36,7 @@ public class OnlineFilehandler {
         return true;
     }
 
+    /*
     public Project getProjectTest(String projectName){
 
         Firebase projectRef =  myFirebaseRef.child(projectName);
@@ -50,9 +54,11 @@ public class OnlineFilehandler {
         });
     return newProject;
     }
+    */
 
-    public Project getProject(String projectName){
+    public void getProject(String projectName){
         myFirebaseRef.child(projectName).addValueEventListener(new ValueEventListener() {
+
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -60,8 +66,10 @@ public class OnlineFilehandler {
                 // Først tag projektet og titlen.
                 String projectTitle = snapshot.child("title").getValue().toString();
 
-                //Laver projekt baseret på titlen:
-                newProject = new Project(projectTitle);
+                System.out.println("Cool" + projectTitle);
+
+                Project newProject = new Project(projectTitle);
+
 
                 //Herefter kategorierne under projektet.
                 long categoryCount = snapshot.child("categoryList").getChildrenCount();
@@ -83,9 +91,9 @@ public class OnlineFilehandler {
                             .child("planList")
                             .getChildrenCount();
 
-                    for (int k = 0 ; k<planCount ; k++ ){
+                    for (int k = 0; k < planCount; k++) {
                         // Finder titlen på planen
-                        String planTitle= snapshot
+                        String planTitle = snapshot
                                 .child("categoryList")
                                 .child(Integer.toString(i))
                                 .child("planList")
@@ -93,7 +101,7 @@ public class OnlineFilehandler {
                                 .child("title").getValue().toString();
 
                         // Finder start plan
-                        String startDateDay= snapshot
+                        String startDateDay = snapshot
                                 .child("categoryList")
                                 .child(Integer.toString(i))
                                 .child("planList")
@@ -101,7 +109,7 @@ public class OnlineFilehandler {
                                 .child("startDate")
                                 .child("day").getValue().toString();
 
-                        String startDateMonth= snapshot
+                        String startDateMonth = snapshot
                                 .child("categoryList")
                                 .child(Integer.toString(i))
                                 .child("planList")
@@ -109,7 +117,7 @@ public class OnlineFilehandler {
                                 .child("startDate")
                                 .child("month").getValue().toString();
 
-                        String startDateYear= snapshot
+                        String startDateYear = snapshot
                                 .child("categoryList")
                                 .child(Integer.toString(i))
                                 .child("planList")
@@ -118,7 +126,7 @@ public class OnlineFilehandler {
                                 .child("year").getValue().toString();
 
                         // Og tilsvarende for slut date.
-                        String endDateDay= snapshot
+                        String endDateDay = snapshot
                                 .child("categoryList")
                                 .child(Integer.toString(i))
                                 .child("planList")
@@ -126,7 +134,7 @@ public class OnlineFilehandler {
                                 .child("endDate")
                                 .child("day").getValue().toString();
 
-                        String endDateMonth= snapshot
+                        String endDateMonth = snapshot
                                 .child("categoryList")
                                 .child(Integer.toString(i))
                                 .child("planList")
@@ -134,7 +142,7 @@ public class OnlineFilehandler {
                                 .child("endDate")
                                 .child("month").getValue().toString();
 
-                        String endDateYear= snapshot
+                        String endDateYear = snapshot
                                 .child("categoryList")
                                 .child(Integer.toString(i))
                                 .child("planList")
@@ -142,17 +150,17 @@ public class OnlineFilehandler {
                                 .child("endDate")
                                 .child("year").getValue().toString();
 
-                        Date startDate = new Date(Integer.parseInt(startDateYear),Integer.parseInt(startDateMonth),Integer.parseInt(startDateDay));
-                        Date endDate = new Date(Integer.parseInt(endDateYear),Integer.parseInt(endDateMonth),Integer.parseInt(endDateDay));
+                        Date startDate = new Date(Integer.parseInt(startDateYear), Integer.parseInt(startDateMonth), Integer.parseInt(startDateDay));
+                        Date endDate = new Date(Integer.parseInt(endDateYear), Integer.parseInt(endDateMonth), Integer.parseInt(endDateDay));
 
-                        Plan plan = new Plan(startDate,endDate,"#ff6600",planTitle);
+                        Plan plan = new Plan(startDate, endDate, "#ff6600", planTitle);
 
                         category.addPlan(plan);
                     }
                     newProject.addCategory(category);
+
                 }
-
-
+                project = newProject;
             }
 
             @Override
@@ -162,7 +170,7 @@ public class OnlineFilehandler {
 
         });
 
-        return newProject;
+
     }
 
 
