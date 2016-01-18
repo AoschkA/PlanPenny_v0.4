@@ -3,7 +3,7 @@
 xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
-android:background="@color/ColorPrimary"
+android:background="@color/colorPrimary"
 android:padding="5dp">
 
 <TextView
@@ -12,7 +12,7 @@ android:padding="5dp">
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="overskrift"
-    android:textColor="@color/ColorPrimaryText"
+    android:textColor="@color/colorPrimaryText"
     android:textSize="15dp"
     android:gravity="center"
     android:paddingTop="10dp"
@@ -28,7 +28,7 @@ android:padding="5dp">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/ColorPrimaryText"
+        android:background="@color/colorPrimaryText"
         android:id="@+id/aendreKategori"
         android:layout_centerVertical="true"
         android:visibility="gone"

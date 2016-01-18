@@ -9,6 +9,6 @@
     android:minHeight="35sp"
     android:paddingEnd="14.5sp"
     android:paddingStart="14.5sp"
-    android:textColor="@color/colorPrimaryText"
+    android:textColor="@color/colorSecondary"
     android:textSize="18dp"
     />

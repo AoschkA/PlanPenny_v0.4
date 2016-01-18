@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="afterDescendants"
-    android:divider="@color/ColorPrimaryText"
+    android:divider="@color/colorSecondary"
     android:dividerHeight="0.5dp"
     android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
 />
