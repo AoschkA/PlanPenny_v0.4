@@ -153,12 +153,7 @@ public class Fragment_Controller extends AppCompatActivity {
     public void drawerFabClick(View v){
         Project test = dc.getProjects().get(0);
         of.saveProject(test);
-        Project project = of.getProject("Redesign of company");
-        System.out.println(project.getTitle());
-        System.out.println(project.getCategoryList().get(0).getCategoryTitle());
-        System.out.println(project.getCategoryList().get(0).getPlanList().get(0).toString());
-        System.out.println(project.getCategoryList().get(1).getCategoryTitle());
-        System.out.println(project.getCategoryList().get(1).getPlanList().get(0).toString());
+        of.getAllProjects();
 
         Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
         startActivityForResult(CreateProject, 2);

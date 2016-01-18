@@ -1,6 +1,8 @@
 package com.androidudvikling.zeengoone.planpennyv04.logic;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.os.Environment;
 import android.util.Log;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
@@ -27,25 +29,21 @@ public class OfflineFilehandler {
     String projectHandler = "ProjectHandler";
     String projectInformation = "ProjectInformation";
     String extension = ".pp";
+    String[] allFileNames;
+    Project[] projectList;
 
     public OfflineFilehandler(Context ctx){
         this.ctx = ctx;
     }
 
-    public Project[] getProjects(){
-        try {
-            fos = ctx.openFileOutput(projectHandler, Context.MODE_PRIVATE);
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Filen findes ikke problem.");
+    public Project[] getAllProjects(){
+        allFileNames = ctx.getFilesDir().list();
+
+        for(int i = 0 ; i<allFileNames.length ; i++){
+            projectList[i] = getProject(allFileNames[i]);
         }
 
-        return null;
+        return projectList;
     }
 
     public Project getProject(String project){
@@ -116,8 +114,10 @@ public class OfflineFilehandler {
         return newProject;
     }
 
-    public boolean saveProjects(Project[] projects){
-
+    public boolean saveAllProjects(Project[] projects){
+        for(int i = 0 ; i<projects.length ; i++){
+            saveProject(projects[i]);
+        }
         return false;
     }
 
