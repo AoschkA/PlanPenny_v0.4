@@ -21,6 +21,7 @@ import java.util.ArrayList;
  * Created by alexandervpedersen on 18/01/16.
  */
 
+
 // Denne klasse er oprettet med henblik på brug af Firebase.
 public class OnlineFilehandler {
     Context ctx;
@@ -75,7 +76,7 @@ public class OnlineFilehandler {
 
         if(allProjects.size()>=1)
         allProjects.clear();
-
+        counter = 0;
         count = projectNames.size()-1;
         for(int i = 0 ; i<projectNames.size() ; i++) {
             myFirebaseRef.child(projectNames.get(i)).addValueEventListener(new ValueEventListener() {
@@ -195,7 +196,7 @@ public class OnlineFilehandler {
                 }
 
             });
-        }
+    }
     }
 
     public void getProject(String projectName){
@@ -315,5 +316,11 @@ public class OnlineFilehandler {
 
     }
 
+    public Project getSpecificProject() {
+        return project;
+    }
 
+    public ArrayList<Project> getAllProjects() {
+        return allProjects;
+    }
 }
