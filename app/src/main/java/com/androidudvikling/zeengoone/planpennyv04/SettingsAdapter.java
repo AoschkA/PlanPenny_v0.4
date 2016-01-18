@@ -10,8 +10,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Settings;
+import com.androidudvikling.zeengoone.planpennyv04.entities.UserSettings;
+import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
+import com.androidudvikling.zeengoone.planpennyv04.logic.PreferenceManager;
 
 /**
  * Created by zeengoone on 1/15/16.
@@ -20,10 +24,13 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
 
     protected Context ctx;
     protected Settings indstillinger;
+    protected PreferenceManager pManager;
+    protected DataLogic logic = new DataLogic();
 
-    public SettingsAdapter(Context ctx, Settings indstillinger) {
+    public SettingsAdapter(Context ctx, Settings indstillinger, PreferenceManager pManager) {
         this.ctx = ctx;
         this.indstillinger = indstillinger;
+        this.pManager=pManager;
     }
 
     @Override
@@ -96,7 +103,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-
+        final UserSettings us = pManager.loadSettings();
         if(groupPosition < 2){
             // check om subviewet findes allerede, hvis ikke lav det
                 LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -110,22 +117,49 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                 button1.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(0));
                 button2.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(1));
                 button3.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(2));
+                if (us.getSortSetting1()==1){
+                    button1.setChecked(true);
+                    button2.setChecked(false);
+                    button3.setChecked(false);
+                }
+                else if (us.getSortSetting1()==2){
+                    button1.setChecked(false);
+                    button2.setChecked(true);
+                    button3.setChecked(false);
+                }
+                else if (us.getSortSetting1()==3){
+                    button1.setChecked(false);
+                    button2.setChecked(false);
+                    button3.setChecked(true);
+                }
                 button1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         System.out.println("RadioButton 1 skal enables i sorteringstype");
+                        us.setSortSetting1(1);
+                        pManager.saveSettings(us);
+                        logic.setSortType_project(1);
+                        Toast.makeText(ctx, "Sorteringstype 1 for projekt gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
                 button2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         System.out.println("RadioButton 2 skal enables i sorteringstype");
+                        us.setSortSetting1(2);
+                        pManager.saveSettings(us);
+                        logic.setSortType_project(2);
+                        Toast.makeText(ctx, "Sorteringstype 2 for projekt gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
                 button3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         System.out.println("RadioButton 3 skal enables i sorteringstype");
+                        us.setSortSetting1(3);
+                        pManager.saveSettings(us);
+                        logic.setSortType_project(3);
+                        Toast.makeText(ctx, "Sorteringstype 3 for projekt gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -136,22 +170,53 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                 button4.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(0));
                 button5.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(1));
                 button6.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(2));
+                if (us.getSortSetting2()==1){
+                    button4.setChecked(true);
+                    button5.setChecked(false);
+                    button6.setChecked(false);
+                }
+                else if (us.getSortSetting2()==2){
+                    button4.setChecked(false);
+                    button5.setChecked(true);
+                    button6.setChecked(false);
+                }
+                else if (us.getSortSetting2()==3){
+                    button4.setChecked(false);
+                    button5.setChecked(false);
+                    button6.setChecked(true);
+                }
+
                 button4.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         System.out.println("RadioButton 4 skal enables i sorteringstype");
+                        UserSettings us = pManager.loadSettings();
+                        us.setSortSetting2(1);
+                        pManager.saveSettings(us);
+                        logic.setSortType_category(1);
+                        Toast.makeText(ctx, "Sorteringstype 1 for kategori gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
                 button5.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         System.out.println("RadioButton 5 skal enables i sorteringstype");
+                        UserSettings us = pManager.loadSettings();
+                        us.setSortSetting2(2);
+                        pManager.saveSettings(us);
+                        logic.setSortType_category(2);
+                        Toast.makeText(ctx, "Sorteringstype 2 for kategori gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
                 button6.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         System.out.println("RadioButton 6 skal enables i sorteringstype");
+                        UserSettings us = pManager.loadSettings();
+                        us.setSortSetting2(3);
+                        pManager.saveSettings(us);
+                        logic.setSortType_category(3);
+                        Toast.makeText(ctx, "Sorteringstype 3 for kategori gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -162,10 +227,21 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                 convertView = inflater.inflate(R.layout.settings_sublist_sync, parent, false);
             Switch syncswitch = (Switch) convertView.findViewById(R.id.sync_switch);
             syncswitch.setText(getSettingsTitle(groupPosition,childPosition));
+            syncswitch.setChecked(us.getSyncSetting1());
+
             syncswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     System.out.println("Google Calendar aktiveret: " + isChecked);
+                    UserSettings us = pManager.loadSettings();
+                    us.setSyncSetting1(isChecked);
+                    pManager.saveSettings(us);
+                    logic.setSync_google(isChecked);
+                    if (isChecked)
+                        Toast.makeText(ctx, "Synchronosering aktiveret for google calendar", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(ctx, "Synchronosering deaktiveret for google calendar", Toast.LENGTH_SHORT).show();
+
                 }
             });
 

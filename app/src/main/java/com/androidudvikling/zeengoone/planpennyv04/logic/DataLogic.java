@@ -16,6 +16,7 @@ import java.util.Collections;
 public class DataLogic implements Serializable {
 	private static int sortType_project = 2;
 	private static int sortType_category = 3;
+	private static boolean sync_google = false;
 	private ProjectDB projectDB = new ProjectDB();
 	
 	public DataLogic() {addDefaultProjects();}
@@ -34,6 +35,14 @@ public class DataLogic implements Serializable {
 
 	public void setSortType_category(int sortType) {
 		sortType_category=sortType;
+	}
+
+	public boolean getSync_google() {
+		return sync_google;
+	}
+
+	public void setSync_google(boolean sync) {
+		sync_google=sync;
 	}
 
 	public void clearProjects(){
