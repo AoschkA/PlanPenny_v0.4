@@ -228,8 +228,9 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void drawerFabClick(View v){
-        onf.saveProject(dc.getProjects().get(0));
-        onf.getProject("Redesign of company");
+        onf.saveAllProjects(dc.getProjects());
+        onf.getAllProjects(dc.getProjectsTitles());
+        // onf.getAllProjects(dc.getProjectsTitles());
 
 
 

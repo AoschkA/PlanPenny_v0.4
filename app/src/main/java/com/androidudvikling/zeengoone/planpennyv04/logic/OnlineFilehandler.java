@@ -14,6 +14,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * Created by alexandervpedersen on 18/01/16.
  */
@@ -22,7 +25,8 @@ import com.firebase.client.ValueEventListener;
 public class OnlineFilehandler {
     Context ctx;
     Firebase myFirebaseRef;
-    Project project= new Project("testprojekt");
+    Project project;
+    ArrayList<Project> allProjects;
 
 
     public OnlineFilehandler(Context ctx){
@@ -56,14 +60,147 @@ public class OnlineFilehandler {
     }
     */
 
+    public void saveAllProjects(ArrayList<Project> projects){
+        for(int i = 0 ; i<projects.size() ; i++) {
+            myFirebaseRef.child(projects.get(i).getTitle()).setValue(projects.get(i));
+        }
+        Toast.makeText(ctx, "Alle projekter er gemt.", Toast.LENGTH_LONG).show();
+    }
+
+    /* Virker PT ikke
+    public void getAllProjects(ArrayList<String> projectNames){
+        //Får alle projekter på ny
+        allProjects.clear();
+
+        for(int i = 0 ; i<projectNames.size() ; i++) {
+            myFirebaseRef.child(projectNames.get(i)).addValueEventListener(new ValueEventListener() {
+
+
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    // Først tag projektet og titlen.
+
+                    String projectTitle = snapshot.child("title").getValue().toString();
+
+                    System.out.println("Cool" + projectTitle);
+
+                    Project newProject = new Project(projectTitle);
+
+
+                    //Herefter kategorierne under projektet.
+                    long categoryCount = snapshot.child("categoryList").getChildrenCount();
+
+                    for (int i = 0; i < categoryCount; i++) {
+                        // Tager titlen på kategorien.
+                        String categoryTitle = snapshot
+                                .child("categoryList")
+                                .child(Integer.toString(i))
+                                .child("categoryTitle").getValue().toString();
+
+                        Category category = new Category(categoryTitle);
+
+
+                        // Finder ud af hvor mange planer der er for den givne titel.
+                        long planCount = snapshot
+                                .child("categoryList")
+                                .child(Integer.toString(i))
+                                .child("planList")
+                                .getChildrenCount();
+
+                        for (int k = 0; k < planCount; k++) {
+                            // Finder titlen på planen
+                            String planTitle = snapshot
+                                    .child("categoryList")
+                                    .child(Integer.toString(i))
+                                    .child("planList")
+                                    .child(Integer.toString(k))
+                                    .child("title").getValue().toString();
+
+                            // Finder start plan
+                            String startDateDay = snapshot
+                                    .child("categoryList")
+                                    .child(Integer.toString(i))
+                                    .child("planList")
+                                    .child(Integer.toString(k))
+                                    .child("startDate")
+                                    .child("day").getValue().toString();
+
+                            String startDateMonth = snapshot
+                                    .child("categoryList")
+                                    .child(Integer.toString(i))
+                                    .child("planList")
+                                    .child(Integer.toString(k))
+                                    .child("startDate")
+                                    .child("month").getValue().toString();
+
+                            String startDateYear = snapshot
+                                    .child("categoryList")
+                                    .child(Integer.toString(i))
+                                    .child("planList")
+                                    .child(Integer.toString(k))
+                                    .child("startDate")
+                                    .child("year").getValue().toString();
+
+                            // Og tilsvarende for slut date.
+                            String endDateDay = snapshot
+                                    .child("categoryList")
+                                    .child(Integer.toString(i))
+                                    .child("planList")
+                                    .child(Integer.toString(k))
+                                    .child("endDate")
+                                    .child("day").getValue().toString();
+
+                            String endDateMonth = snapshot
+                                    .child("categoryList")
+                                    .child(Integer.toString(i))
+                                    .child("planList")
+                                    .child(Integer.toString(k))
+                                    .child("endDate")
+                                    .child("month").getValue().toString();
+
+                            String endDateYear = snapshot
+                                    .child("categoryList")
+                                    .child(Integer.toString(i))
+                                    .child("planList")
+                                    .child(Integer.toString(k))
+                                    .child("endDate")
+                                    .child("year").getValue().toString();
+
+                            Date startDate = new Date(Integer.parseInt(startDateYear), Integer.parseInt(startDateMonth), Integer.parseInt(startDateDay));
+                            Date endDate = new Date(Integer.parseInt(endDateYear), Integer.parseInt(endDateMonth), Integer.parseInt(endDateDay));
+
+                            Plan plan = new Plan(startDate, endDate, "#ff6600", planTitle);
+
+                            category.addPlan(plan);
+                        }
+                        newProject.addCategory(category);
+
+                    }
+                    allProjects.add(newProject);
+                }
+
+
+
+                @Override
+                public void onCancelled(FirebaseError error) {
+                    System.out.println("Fejl");
+                }
+
+            });
+
+            if(i == allProjects.size()-1)
+                Toast.makeText(ctx, "Alle projekter er opdateret.", Toast.LENGTH_LONG).show();
+        }
+    }
+*/
     public void getProject(String projectName){
         myFirebaseRef.child(projectName).addValueEventListener(new ValueEventListener() {
 
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-
                 // Først tag projektet og titlen.
+
                 String projectTitle = snapshot.child("title").getValue().toString();
 
                 System.out.println("Cool" + projectTitle);
