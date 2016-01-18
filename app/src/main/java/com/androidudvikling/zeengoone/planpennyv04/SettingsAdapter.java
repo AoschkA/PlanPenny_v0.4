@@ -103,7 +103,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-
+        final UserSettings us = pManager.loadSettings();
         if(groupPosition < 2){
             // check om subviewet findes allerede, hvis ikke lav det
                 LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -117,11 +117,25 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                 button1.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(0));
                 button2.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(1));
                 button3.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(2));
+                if (us.getSortSetting1()==1){
+                    button1.setChecked(true);
+                    button2.setChecked(false);
+                    button3.setChecked(false);
+                }
+                else if (us.getSortSetting1()==2){
+                    button1.setChecked(false);
+                    button2.setChecked(true);
+                    button3.setChecked(false);
+                }
+                else if (us.getSortSetting1()==3){
+                    button1.setChecked(false);
+                    button2.setChecked(false);
+                    button3.setChecked(true);
+                }
                 button1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         System.out.println("RadioButton 1 skal enables i sorteringstype");
-                        UserSettings us = pManager.loadSettings();
                         us.setSortSetting1(1);
                         pManager.saveSettings(us);
                         logic.setSortType_project(1);
@@ -132,7 +146,6 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                     @Override
                     public void onClick(View v) {
                         System.out.println("RadioButton 2 skal enables i sorteringstype");
-                        UserSettings us = pManager.loadSettings();
                         us.setSortSetting1(2);
                         pManager.saveSettings(us);
                         logic.setSortType_project(2);
@@ -143,7 +156,6 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                     @Override
                     public void onClick(View v) {
                         System.out.println("RadioButton 3 skal enables i sorteringstype");
-                        UserSettings us = pManager.loadSettings();
                         us.setSortSetting1(3);
                         pManager.saveSettings(us);
                         logic.setSortType_project(3);
@@ -158,6 +170,22 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                 button4.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(0));
                 button5.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(1));
                 button6.setText(indstillinger.getHashMap().get(getSettingsKey(groupPosition)).get(2));
+                if (us.getSortSetting2()==1){
+                    button4.setChecked(true);
+                    button5.setChecked(false);
+                    button6.setChecked(false);
+                }
+                else if (us.getSortSetting2()==2){
+                    button4.setChecked(false);
+                    button5.setChecked(true);
+                    button6.setChecked(false);
+                }
+                else if (us.getSortSetting2()==3){
+                    button4.setChecked(false);
+                    button5.setChecked(false);
+                    button6.setChecked(true);
+                }
+
                 button4.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -199,6 +227,8 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                 convertView = inflater.inflate(R.layout.settings_sublist_sync, parent, false);
             Switch syncswitch = (Switch) convertView.findViewById(R.id.sync_switch);
             syncswitch.setText(getSettingsTitle(groupPosition,childPosition));
+            syncswitch.setChecked(us.getSyncSetting1());
+
             syncswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
