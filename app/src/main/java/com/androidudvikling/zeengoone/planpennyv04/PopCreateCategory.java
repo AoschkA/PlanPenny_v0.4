@@ -1,17 +1,12 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,8 +16,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
-
 import java.util.ArrayList;
 
 /**
@@ -30,6 +23,7 @@ import java.util.ArrayList;
  */
 public class PopCreateCategory extends Activity  {
 
+    public ArrayList <String> categoryNames = new ArrayList<String>();
     private TextView categoryText;
     private EditText categoryname;
     private TextView errorText;
@@ -37,9 +31,30 @@ public class PopCreateCategory extends Activity  {
     private Button categoryCreateBtn;
     private String categoryTextFromUser;
     private ListView categoryList;
-    public ArrayList <String> categoryNames = new ArrayList<String>();
     private String curProject;
     private LinearLayout ll;
+
+    // Effekt til button
+    public static void buttonEffect(View button){
+        button.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0x77000000,PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,31 +159,7 @@ public class PopCreateCategory extends Activity  {
 
                }break;
            }
-           Fragment_Controller.populateDrawer();
         }
-
-
-    // Effekt til button
-    public static void buttonEffect(View button){
-        button.setOnTouchListener(new View.OnTouchListener() {
-
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        v.getBackground().setColorFilter(0x77000000,PorterDuff.Mode.SRC_ATOP);
-                        v.invalidate();
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP: {
-                        v.getBackground().clearColorFilter();
-                        v.invalidate();
-                        break;
-                    }
-                }
-                return false;
-            }
-        });
-    }
 }
 
 

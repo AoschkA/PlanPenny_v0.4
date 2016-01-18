@@ -31,6 +31,7 @@ public class FragmentSettings extends Fragment {
         indstillinger = new Settings(getActivity());
         preferenceManager = new PreferenceManager(getActivity());
         //savedExists = readData();
+        //((Fragment_Controller)getActivity()).parentPublicMethod();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

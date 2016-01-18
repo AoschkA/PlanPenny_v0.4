@@ -64,6 +64,13 @@ public class DataLogic implements Serializable {
 	public ArrayList<Project> getProjects() {
 		return projectDB.getProjectList(sortType_category);
 	}
+	public ArrayList<String> getProjectsTitles() {
+		ArrayList<String> projectlistTitles = new ArrayList<>();
+		for(Project p:projectDB.getProjectList(sortType_project)){
+			projectlistTitles.add(p.getTitle());
+		}
+		return projectlistTitles;
+	}
 	
 	public ArrayList<Category> getCategories(String projectTitle) {
 		return projectDB.getProject(projectTitle).getCategoryList();
@@ -75,7 +82,7 @@ public class DataLogic implements Serializable {
 
 	// Returns projects for a given month
 	public ArrayList<Project> getProjectsForMonth(int year, int month) {
-		ArrayList<Project> projectList = new ArrayList<Project>();
+		ArrayList<Project> projectList = new ArrayList<>();
 		for (Project p : projectDB.getProjectList(sortType_category)){
 			for (Date d : p.getContainingDates()) {
 				if(d.getYear()==year && d.getMonth()==month) {
@@ -89,7 +96,7 @@ public class DataLogic implements Serializable {
 
 	// Returns categories in a specific project for a given month
 	public ArrayList<Category> getCategoriesForMonth(String projectTitle, int year, int month) {
-		ArrayList<Category> categoryList = new ArrayList<Category>();
+		ArrayList<Category> categoryList = new ArrayList<>();
 		for (Category c : projectDB.getProject(projectTitle).getCategoryList()){
 			for (Date d : c.getContainingDays()) {
 				if (d.getYear()==year && d.getMonth()==month) {
@@ -102,7 +109,7 @@ public class DataLogic implements Serializable {
 	}
 	// Returns categories in a specific project for a given month
 	public ArrayList<Plan> getCategoryForMonth(String projectTitle,int categoryIndex, int year, int month) {
-		ArrayList<Plan> planList = new ArrayList<Plan>();
+		ArrayList<Plan> planList = new ArrayList<>();
 		for (Plan p : projectDB.getProject(projectTitle).getCategoryList().get(categoryIndex).getPlanList()){
 				for (Date d : p.getContainingDates()) {
 					if (d.getYear()==year && d.getMonth()==month) {
@@ -115,7 +122,7 @@ public class DataLogic implements Serializable {
 
 	// returns plans in a specific category in a given month
 	public ArrayList<Plan> getPlansForMonth(String projectTitle, String categoryTitle, int year, int month) {
-		ArrayList<Plan> planList = new ArrayList<Plan>();
+		ArrayList<Plan> planList = new ArrayList<>();
 		for (Plan p : projectDB.getProject(projectTitle).getCategory(categoryTitle).getPlanList()) {
 			for (Date d : p.getContainingDates()) {
 				if (d.getYear()==year && d.getMonth()==month) {
@@ -129,7 +136,7 @@ public class DataLogic implements Serializable {
 
 	// Returns the relevant months for a given project
 	public ArrayList<Integer> getRelevantMonthsForProject(String projectTitle){
-		ArrayList<Integer> integerList = new ArrayList<Integer>();
+		ArrayList<Integer> integerList = new ArrayList<>();
 		for (Date d : projectDB.getProject(projectTitle).getContainingDates()) {
 			if (!integerList.contains(d.getMonth()))
 				integerList.add(d.getMonth());
@@ -139,7 +146,7 @@ public class DataLogic implements Serializable {
 
 	// Returns the relevant months for a given category in a specific project
 	public ArrayList<Integer> getRelevantMonthsForCategory(String projectTitle, String categoryTitle) {
-		ArrayList<Integer> integerList = new ArrayList<Integer>();
+		ArrayList<Integer> integerList = new ArrayList<>();
 		for (Date d : projectDB.getProject(projectTitle).getCategory(categoryTitle).getContainingDays()) {
 			if (!integerList.contains(d.getMonth()))
 				integerList.add(d.getMonth());
@@ -185,103 +192,18 @@ public class DataLogic implements Serializable {
 		projectDB.setProjectList(sortProjects(projectDB.getProjectList(sortType_category)));
 	}
 
-	/* type:
-	1 for alphabetic
-	2 for biggest first
-	3 for first planned first
-	4 for first created first
-	 */
-	private ArrayList<Category> sortCategories(ArrayList<Category> categories) {
-		if (sortType_category==1) {
-			ArrayList<Category> sortedList = new ArrayList<Category>();
-			ArrayList<String> titles = new ArrayList<String>();
-			for (int i=0; i<categories.size(); i++)
-				titles.add(categories.get(i).getCategoryTitle());
-
-			Collections.sort(titles, String.CASE_INSENSITIVE_ORDER);
-			for (Category c : categories) {
-				for (String s : titles)
-					if (c.getCategoryTitle().equals(s)) sortedList.add(c);
-			}
-			return sortedList;
-		}
-		else if (sortType_category==2) {
-			ArrayList<Category> sortedList = new ArrayList<Category>();
-			ArrayList<Integer> sizeList = new ArrayList<Integer>();
-			for (Category c : categories)
-				sizeList.add(c.getContainingDays().size());
-
-			Collections.sort(sizeList);
-			Collections.reverse(sizeList);
-
-			for (int i : sizeList) {
-				for (Category c : categories)
-					if (c.getContainingDays().size()==i) sortedList.add(c);
-			}
-			return sortedList;
-		}
-		else if (sortType_category==3) {
-			ArrayList<Category> sortedList = new ArrayList<Category>();
-			ArrayList<String> stringList = new ArrayList<String>();
-
-			for (Category c : categories)
-				stringList.add(c.getStartDate().toString());
-
-			Collections.sort(stringList, String.CASE_INSENSITIVE_ORDER);
-			for (Category c : categories) {
-				for (String s : stringList)
-					if (c.getStartDate().toString().equals(s)) sortedList.add(c);
-			}
-			return sortedList;
-		}
-		else {
-			// not implemented
-			return categories;
-		}
-	}
-
 	private ArrayList<Project> sortProjects(ArrayList<Project> projects) {
 		if (sortType_project==1) {
-			ArrayList<Project> sortedList = new ArrayList<Project>();
-			ArrayList<String> titles = new ArrayList<String>();
-			for (int i=0; i<projects.size(); i++)
-				titles.add(projects.get(i).getTitle());
-
-			Collections.sort(titles, String.CASE_INSENSITIVE_ORDER);
-			for (Project p : projects) {
-				for (String s : titles)
-					if (p.getTitle().equals(s)) sortedList.add(p);
-			}
-			return sortedList;
+			Collections.sort(projects, Project.ProjectNameComparator);
+			return projects;
 		}
 		else if (sortType_project==2) {
-			ArrayList<Project> sortedList = new ArrayList<Project>();
-			ArrayList<Integer> sizeList = new ArrayList<Integer>();
-			for (Project p : projects)
-				sizeList.add(p.getContainingDates().size());
-
-			Collections.sort(sizeList);
-			Collections.reverse(sizeList);
-
-			for (int i : sizeList) {
-				for (Project p : projects)
-					if (p.getContainingDates().size()==i) sortedList.add(p);
-			}
-			return sortedList;
+			Collections.sort(projects, Project.ProjectLengthComparator);
+			return projects;
 		}
 		else if (sortType_project==3) {
-			ArrayList<Project> sortedList = new ArrayList<Project>();
-			ArrayList<String> stringList = new ArrayList<String>();
-
-			for (Project p : projects)
-				stringList.add(p.getStartDate().toString());
-
-			Collections.sort(stringList, String.CASE_INSENSITIVE_ORDER);
-			for (Project p : projects) {
-				for (String s : stringList)
-					if (p.getStartDate().toString().equals(s)) sortedList.add(p);
-			}
-			return sortedList;
+			Collections.sort(projects, Project.ProjectStartComparator);
+			return projects;
 		}
 		else {
 			// not implemented

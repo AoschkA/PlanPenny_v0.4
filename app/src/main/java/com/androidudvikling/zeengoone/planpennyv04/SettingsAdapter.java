@@ -87,7 +87,6 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
     public boolean hasStableIds() {
         return false;
     }
-
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         // check om viewet findes allerede, hvis ikke lav det

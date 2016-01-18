@@ -12,17 +12,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,18 +30,15 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
-import com.androidudvikling.zeengoone.planpennyv04.entities.Settings;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OfflineFilehandler;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OnlineFilehandler;
 import com.androidudvikling.zeengoone.planpennyv04.logic.PreferenceManager;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -57,7 +50,6 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
-import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
@@ -68,12 +60,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Fragment_Controller extends AppCompatActivity {
+    static final int REQUEST_ACCOUNT_PICKER = 1000;
+    static final int REQUEST_AUTHORIZATION = 1001;
+    static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
+    private static final String PREF_ACCOUNT_NAME = "accountName";
+    private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
     public static DataLogic dc = new DataLogic();
-    private static ArrayList<String> projekt_liste = new ArrayList<>();
+    GoogleAccountCredential mCredential;
+    ProgressDialog mProgress;
     private PreferenceManager pManager = new PreferenceManager(this);
     private ListView projekt_liste_view;
     private DrawerLayout pennydrawerLayout;
-    private CoordinatorLayout coordinatorLayout;
     private ActionBarDrawerToggle penny_Projekt_Drawer_Toggle;
     private FloatingActionButton drawerFab;
     private String curProjectName;
@@ -83,119 +80,92 @@ public class Fragment_Controller extends AppCompatActivity {
     private OfflineFilehandler off;
     private OnlineFilehandler onf;
     private Context ctx;
-
-    GoogleAccountCredential mCredential;
+    private Boolean landscape;
+    private ArrayAdapter<String> adapter;
     private TextView mOutputText;
-    ProgressDialog mProgress;
-
-    static final int REQUEST_ACCOUNT_PICKER = 1000;
-    static final int REQUEST_AUTHORIZATION = 1001;
-    static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
-    private static final String PREF_ACCOUNT_NAME = "accountName";
-    private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
-
-    public static void populateDrawer(){
-        projekt_liste.clear();
-        for(Project p:dc.getProjects()){
-            projekt_liste.add(p.getTitle());
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LinearLayout activityLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        activityLayout.setLayoutParams(lp);
-        activityLayout.setOrientation(LinearLayout.VERTICAL);
-        activityLayout.setPadding(16, 16, 16, 16);
-        // Instantiere google api textview
-        ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        mOutputText = new TextView(this);
-        mOutputText.setLayoutParams(tlp);
-        mOutputText.setPadding(16, 16, 16, 16);
-        mOutputText.setVerticalScrollBarEnabled(true);
-        mOutputText.setMovementMethod(new ScrollingMovementMethod());
-        activityLayout.addView(mOutputText);
-        setContentView(activityLayout);
-
-
-        setContentView(R.layout.main_activity_controller);
 
         ctx = getApplicationContext();
+        landscape = ctx.getResources().getBoolean(R.bool.is_landscape);
 
-        // Lav default projekter at teste på
-        //dc.addDefaultProjects();
-        // Gør listen klar og smid den i projekt listen
-        populateDrawer();
+        if(!landscape) {
+            setContentView(R.layout.main_activity_controller_portrait);
+            // Sæt drawer elementer til ProjektVisning
+            projekt_liste_view = (ListView) findViewById(R.id.penny_projekt_drawer_list);
+            adapter = new ArrayAdapter<>(this,R.layout.skuffe_projekt_liste_element, dc.getProjectsTitles());
+            projekt_liste_view.setAdapter(adapter);
 
-        // Instantiere Firebase
-        Firebase.setAndroidContext(this);
-        uRef = new Firebase("https://g26planpenny.firebaseio.com/");
+            // Sæt Drawer op
+            pennydrawerLayout = (DrawerLayout) findViewById(R.id.penny_projekt_drawer_layout);
+            penny_Projekt_Drawer_Toggle = new ActionBarDrawerToggle(this, pennydrawerLayout,
+                    R.string.drawer_close, R.string.drawer_open) {
 
-        // Instantiere ProgressDialog
-        mProgress = new ProgressDialog(this);
-        mProgress.setMessage("Calling Google Calendar API ...");
+                /** Called when a drawer has settled in a completely closed state. */
+                public void onDrawerClosed(View view) {
+                    super.onDrawerClosed(view);
+                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                }
 
-        uRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+                /** Called when a drawer has settled in a completely open state. */
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                }
+            };
+            pennydrawerLayout.setDrawerListener(penny_Projekt_Drawer_Toggle);
+            // Onclick listener til projektlistemenuen
+            projekt_liste_view.setOnItemClickListener(new DrawerItemClickListener());
 
-            }
+            LinearLayout activityLayout = new LinearLayout(this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            activityLayout.setLayoutParams(lp);
+            activityLayout.setOrientation(LinearLayout.VERTICAL);
+            activityLayout.setPadding(16, 16, 16, 16);
+            // Instantiere google api textview
+            ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            mOutputText = new TextView(this);
+            mOutputText.setLayoutParams(tlp);
+            mOutputText.setPadding(16, 16, 16, 16);
+            mOutputText.setVerticalScrollBarEnabled(true);
+            mOutputText.setMovementMethod(new ScrollingMovementMethod());
+            activityLayout.addView(mOutputText);
+            setContentView(activityLayout);
+            // Instantiere Firebase
+            Firebase.setAndroidContext(this);
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            // Instantiere ProgressDialog
+            mProgress = new ProgressDialog(this);
+            mProgress.setMessage("Calling Google Calendar API ...");
 
-            }
-        });
+            //Opsæt offline filehandler
+            off = new OfflineFilehandler(ctx);
+            //Opsæt actionbar burgermenu og titel
+            this.setTitle(getString(R.string.app_title));
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setLogo(R.drawable.penny_logo);
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+            //Opsæt online filehandler
+            onf = new OnlineFilehandler(ctx);
 
-        //Opsæt offline filehandler
-        off = new OfflineFilehandler(ctx);
-
-        //Opsæt online filehandler
-        onf = new OnlineFilehandler(ctx);
-
-        // Instantiere credentials og service objekt
-        SharedPreferences googleSettings = getPreferences(Context.MODE_PRIVATE);
-        mCredential = GoogleAccountCredential.usingOAuth2(
+            // Instantiere credentials og service objekt
+            SharedPreferences googleSettings = getPreferences(Context.MODE_PRIVATE);
+            mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff())
                 .setSelectedAccountName(googleSettings.getString(PREF_ACCOUNT_NAME, null));
-
-        // Sæt drawer elementer til ProjektVisning
-        projekt_liste_view = (ListView) findViewById(R.id.penny_projekt_drawer_list);
-        projekt_liste_view.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.skuffe_projekt_liste_element, projekt_liste));
-
-        // Opsæt actionbar burgermenu og titel
-        this.setTitle(getString(R.string.app_title));
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.penny_logo);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-
-        //Opsæt coordinatorlayout:
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.penny_projekt_drawer_coordinatorlayout);
-
-        // Sæt Drawer op
-        pennydrawerLayout = (DrawerLayout) findViewById(R.id.penny_projekt_drawer_layout);
-        penny_Projekt_Drawer_Toggle = new ActionBarDrawerToggle(
-                this,
-                pennydrawerLayout,
-                R.string.drawer_open,
-                R.string.drawer_close);
-        pennydrawerLayout.setDrawerListener(penny_Projekt_Drawer_Toggle);
-
-        // Onclick listener til projektlistemenuen
-        projekt_liste_view.setOnItemClickListener(new DrawerItemClickListener());
-
-        // Få fat i ViewPager og set dens pageradapter så den kan vise items
-
+        }
+        else{
+            setContentView(R.layout.main_activity_controller_landscape);
+        }
     }
 
     // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
@@ -215,32 +185,39 @@ public class Fragment_Controller extends AppCompatActivity {
    }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // show menu when menu button is pressed
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.projekt_oversigt, menu);
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Sæt drawer elementer til ProjektVisning
+        adapter = new ArrayAdapter<>(this,
+                R.layout.skuffe_projekt_liste_element, dc.getProjectsTitles());
+        projekt_liste_view.setAdapter(adapter);
         return true;
+    }
+    public void opdaterDrawer(){
+        // Sæt drawer elementer til ProjektVisning
+        adapter.notifyDataSetChanged();
+        projekt_liste_view.setAdapter(adapter);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(!landscape){
+            // show menu when menu button is pressed
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.projekt_oversigt, menu);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public void menuClick(MenuItem menuitem){
         if (menuitem.getTitle().equals("Indstillinger")) {
-            Log.d("Click","Indstillinger");
             FragmentSettings fragment = new FragmentSettings();
-            SettingsAdapter s_adapter = new SettingsAdapter(this, new Settings(getApplicationContext()), pManager);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, "indstillinger").commit();
         }
        else if (menuitem.getTitle().equals("Hjælp")) {
             startActivity(new Intent(this, ActivityHelp.class));
         }
-    }
-
-    private void setupDrawer() {
-        penny_Projekt_Drawer_Toggle.setDrawerIndicatorEnabled(true);
-    }
-
-    public ViewPager getViewPager() {
-         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        return mViewPager;
     }
 
     public void drawerFabClick(View v){
@@ -255,7 +232,6 @@ public class Fragment_Controller extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        populateDrawer();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.penny_projekt_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -273,14 +249,18 @@ public class Fragment_Controller extends AppCompatActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        dc.clearProjects();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        penny_Projekt_Drawer_Toggle.onConfigurationChanged(newConfig);
-        penny_Projekt_Drawer_Toggle.syncState();
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -295,7 +275,10 @@ public class Fragment_Controller extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        penny_Projekt_Drawer_Toggle.syncState();
+        if(!landscape){
+            penny_Projekt_Drawer_Toggle.syncState();
+        }
+
     }
 
 
@@ -484,7 +467,6 @@ public class Fragment_Controller extends AppCompatActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            // Toast.makeText(Fragment_Controller.this, ((TextView) view).getText(), Toast.LENGTH_LONG).show();
             //Fold draweren ind
             pennydrawerLayout.closeDrawer(Gravity.LEFT);
             ViewPagerFragment vpFragment = new ViewPagerFragment().newInstance(position);

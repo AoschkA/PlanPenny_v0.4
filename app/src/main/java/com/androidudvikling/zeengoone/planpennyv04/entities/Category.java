@@ -3,22 +3,55 @@ package com.androidudvikling.zeengoone.planpennyv04.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 
 public class Category implements Serializable {
 	private String categoryTitle;
+	/*Comparator for sorting the list by Category Title*/
+	public static Comparator<Category> CategoryNameComparator = new Comparator<Category>() {
+
+		public int compare(Category c1, Category c2) {
+			String CategoryTitle1 = c1.getCategoryTitle().toUpperCase();
+			String CategoryTitle2 = c2.getCategoryTitle().toUpperCase();
+
+			//ascending order
+			return CategoryTitle1.compareTo(CategoryTitle2);
+		}};
     private ArrayList<Plan> planList;
+	/*Comparator for sorting the list by Project Length*/
+	public static Comparator<Category> CategoryLengthComparator = new Comparator<Category>() {
+
+		public int compare(Category c1, Category c2) {
+			int CategoryDates1 = c1.getPlanListDates().size();
+			int CategoryDates2 = c2.getPlanListDates().size();
+
+			//ascending order
+			return CategoryDates1 > CategoryDates2?CategoryDates1:CategoryDates2;
+		}};
+	/*Comparator for sorting the list by Project Start*/
+	public static Comparator<Category> ProjectStartComparator = new Comparator<Category>() {
+
+		public int compare(Category c1, Category c2) {
+			Date CategoryDates1 = c1.getStartDate();
+			Date CategoryDates2 = c2.getStartDate();
+
+			//ascending order
+			return CategoryDates1.before(CategoryDates2)?5:15;
+
+		}
+	};
 
     public Category(String categoryTitle) {
-    	planList = new ArrayList<Plan>(); 
+    	planList = new ArrayList<Plan>();
         this.categoryTitle = categoryTitle;
-    }
-
-    public void setCategoryTitle(String categoryTitle){
-    	this.categoryTitle=categoryTitle;
     }
 
     public String getCategoryTitle() {
     	return categoryTitle;
+    }
+
+    public void setCategoryTitle(String categoryTitle){
+    	this.categoryTitle=categoryTitle;
     }
 
     public ArrayList<Plan> getPlanList(){
@@ -44,7 +77,6 @@ public class Category implements Serializable {
 	public int numberOfMonths(Date toDate){
 		int aar = Calendar.getInstance().get(Calendar.YEAR);
 		int maaned = Calendar.getInstance().get(Calendar.MONTH) + 1;
-		int dag = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 		int countMonths = 0;
 		boolean notSame = true;
 		while(notSame){
@@ -85,9 +117,8 @@ public class Category implements Serializable {
 		return temp;
 	}
 
-    
     public ArrayList<Date> getContainingDays() {
-    	ArrayList<Date> dateList = new ArrayList<Date>();
+    	ArrayList<Date> dateList = new ArrayList<>();
     	for (Plan p : planList) {
     		for (Date d : p.getContainingDates()){
     			if (!dateList.contains(d))
