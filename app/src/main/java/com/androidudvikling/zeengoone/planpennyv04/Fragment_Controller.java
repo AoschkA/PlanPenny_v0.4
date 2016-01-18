@@ -27,6 +27,7 @@ import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Settings;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OfflineFilehandler;
+import com.androidudvikling.zeengoone.planpennyv04.logic.OnlineFilehandler;
 import com.androidudvikling.zeengoone.planpennyv04.logic.PreferenceManager;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -49,7 +50,8 @@ public class Fragment_Controller extends AppCompatActivity {
     private ArrayList categoryList;
     private ArrayList<List<String>> categoryListOfPlans;
     private Firebase uRef;
-    private OfflineFilehandler of;
+    private OfflineFilehandler off;
+    private OnlineFilehandler onf;
     private Context ctx;
 
     public static void populateDrawer(){
@@ -86,9 +88,11 @@ public class Fragment_Controller extends AppCompatActivity {
             }
         });
 
-        //Opsæt filehandler
+        //Opsæt offline filehandler
+        off = new OfflineFilehandler(ctx);
 
-        of = new OfflineFilehandler(ctx);
+        //Opsæt online filehandler
+        onf = new OnlineFilehandler(ctx);
 
 
         // Sæt drawer elementer til ProjektVisning
@@ -154,9 +158,10 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void drawerFabClick(View v){
-        Project test = dc.getProjects().get(0);
-        of.saveProject(test);
-        of.getAllProjects();
+        onf.saveProject(dc.getProjects().get(0));
+        Project project = onf.getProjectTest("Redesign of company");
+
+
 
         Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
         startActivityForResult(CreateProject, 2);
