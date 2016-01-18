@@ -2,7 +2,6 @@ package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +38,6 @@ public class Fragment_Gantt extends Fragment{
     private Date tabMonth;
     private String currentProject = "";
     private int currentProjectNumber = 0;
-    private KategoriAdapter adapter;
     private int faneposition;
     private int project;
     private int lastGroup = -1;
@@ -76,12 +74,11 @@ public class Fragment_Gantt extends Fragment{
         beregnMaanedOgAar(faneposition);
 
         // Læg listen ind i arrayadapteren for kategorier
-        adapter = new KategoriAdapter(getActivity(), dl.getProjects().get(currentProjectNumber).getCategoryList()) {
+        KategoriAdapter adapter = new KategoriAdapter(getActivity(), currentProjectNumber) {
 
             @Override
             public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
                 View view = super.getGroupView(groupPosition, isExpanded, convertView, parent);
-                final TabLayout tabLayout = (TabLayout) parent.findViewById(R.id.sliding_tabs);
                 if(dl.getCategoryForMonth(currentProject, groupPosition, tabMonth.getYear(), tabMonth.getMonth()).size() > 0) {
                     TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
                     TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
@@ -134,25 +131,13 @@ public class Fragment_Gantt extends Fragment{
                     convertView = inflater.inflate(R.layout.kategori_liste, parent, false);
                 }
                 TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element);
-                kategori_element.setText(kategorier.get(groupPosition).getCategoryTitle());
+                kategori_element.setText(dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
                 return view;
             }
         };
 
-
         // Lav listviewet og setadapter til adapteren lavet herover
         final ExpandableListView projektListeView = (ExpandableListView) view.findViewById(R.id.expandable_list_id);
-        projektListeView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                if (lastGroup != -1
-                        && groupPosition != lastGroup) {
-                    projektListeView.collapseGroup(lastGroup);
-                }
-                lastGroup = groupPosition;
-            }
-        });
         projektListeView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
