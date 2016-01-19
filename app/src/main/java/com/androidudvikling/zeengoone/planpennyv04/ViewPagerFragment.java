@@ -187,7 +187,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-    /* (Virker ikke) - Lukker ikke på hjælpemenuen
+    // Åbning og lukning af sensor
     @Override
     public void onStop(){
         super.onStop();
@@ -201,5 +201,12 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         Log.d("SENSOR", "Sensor opened");
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
-    */
+
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.d("SENSOR", "Sensor closed");
+        sensorManager.unregisterListener(this);
+    }
 }
