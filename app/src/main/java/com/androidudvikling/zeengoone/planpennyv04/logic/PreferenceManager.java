@@ -40,17 +40,17 @@ public class PreferenceManager {
         return userSettings;
     }
 
-    public void saveAppLocation(String appLocation) {
+    public void saveAppLocation(int appLocation) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("appLocation", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString("mainLocation", appLocation);
+        editor.putInt("mainLocation", appLocation);
         editor.apply();
     }
 
-    public String loadAppLocation() {
+    public int loadAppLocation() {
         SharedPreferences sharedPreferences = context.getSharedPreferences("appLocation", Context.MODE_PRIVATE);
-        String appLocation = sharedPreferences.getString("mainLocation", "");
+        int appLocation = sharedPreferences.getInt("mainLocation", -1);
 
         return appLocation;
     }

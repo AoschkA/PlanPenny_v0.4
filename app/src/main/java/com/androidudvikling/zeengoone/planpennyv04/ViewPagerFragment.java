@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
+import com.androidudvikling.zeengoone.planpennyv04.logic.PreferenceManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +35,13 @@ public class ViewPagerFragment extends Fragment {
     public static void vpChangeCurrentItem(int position){
         tabLayout.setScrollPosition(position, 0f, true);
         viewPager.setCurrentItem(position);
+        // Gemmer nuværende lokation
+        Log.d("Location save", Integer.toString(position)+" - under vpChangeCurrentItem");
+        Fragment_Controller.pManager.saveAppLocation(position);
+    }
+
+    public ViewPagerAdapter getAdapter(){
+        return adapter;
     }
 
     public ViewPagerFragment newInstance(int position){
@@ -40,6 +49,10 @@ public class ViewPagerFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt("Project_Number", position);
         temp.setArguments(args);
+
+        // Gemmer nuværende lokation
+        Log.d("Location save", Integer.toString(position)+" - under newInstance");
+        Fragment_Controller.pManager.saveAppLocation(position);
         return temp;
     }
 

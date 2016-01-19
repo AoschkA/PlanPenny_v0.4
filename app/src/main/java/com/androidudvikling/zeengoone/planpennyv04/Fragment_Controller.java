@@ -61,12 +61,12 @@ public class Fragment_Controller extends AppCompatActivity {
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
+    public static PreferenceManager pManager;
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
     public static DataLogic dc = new DataLogic();
     public static GoogleAccountCredential mCredential;
     ProgressDialog mProgress;
-    private PreferenceManager pManager = new PreferenceManager(this);
     private ListView projekt_liste_view;
     private DrawerLayout pennydrawerLayout;
     private ActionBarDrawerToggle penny_Projekt_Drawer_Toggle;
@@ -87,7 +87,7 @@ public class Fragment_Controller extends AppCompatActivity {
 
         ctx = getApplicationContext();
         landscape = ctx.getResources().getBoolean(R.bool.is_landscape);
-
+        pManager = new PreferenceManager(this);
         if(!landscape) {
             setContentView(R.layout.main_activity_controller_portrait);
             // Sæt drawer elementer til ProjektVisning
@@ -164,6 +164,17 @@ public class Fragment_Controller extends AppCompatActivity {
        if (isGooglePlayServicesAvailable()) {
            refreshResults();
        }
+       int appLocation = pManager.loadAppLocation();
+
+       Log.d("location for onResume()", Integer.toString(appLocation));
+       if (appLocation==-1) {
+           Log.d("ERROR", "Couldn't reload project - project not found");
+       }
+       else {
+           ViewPagerFragment vpFragment = new ViewPagerFragment()
+                   .newInstance(appLocation);
+           getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, vpFragment, "viewpager").commit();
+       }
    }
 
     @Override
@@ -224,12 +235,13 @@ public class Fragment_Controller extends AppCompatActivity {
     @Override
     public void onPause(){
         super.onPause();
-        //fh.saveAllData(dc.getProjects());
+        Log.d("APP STATUS", "PAUSED");
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
+        Log.d("APP STATUS", "DETROYED");
     }
 
     @Override
