@@ -17,26 +17,17 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
-import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
-import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OfflineFilehandler;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OnlineFilehandler;
@@ -85,7 +76,6 @@ public class Fragment_Controller extends AppCompatActivity {
     private Context ctx;
     private Boolean landscape;
     private ArrayAdapter<String> adapter;
-    private TextView mOutputText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,25 +85,6 @@ public class Fragment_Controller extends AppCompatActivity {
         landscape = ctx.getResources().getBoolean(R.bool.is_landscape);
 
         if(!landscape) {
-            LinearLayout activityLayout = new LinearLayout(this);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            activityLayout.setLayoutParams(lp);
-            activityLayout.setOrientation(LinearLayout.VERTICAL);
-            activityLayout.setPadding(16, 16, 16, 16);
-            // Instantiere google api textview
-            ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            mOutputText = new TextView(this);
-            mOutputText.setLayoutParams(tlp);
-            mOutputText.setPadding(16, 16, 16, 16);
-            mOutputText.setVerticalScrollBarEnabled(true);
-            mOutputText.setMovementMethod(new ScrollingMovementMethod());
-            activityLayout.addView(mOutputText);
-            setContentView(activityLayout);
-
             setContentView(R.layout.main_activity_controller_portrait);
             // Sæt drawer elementer til ProjektVisning
             projekt_liste_view = (ListView) findViewById(R.id.penny_projekt_drawer_list);
@@ -124,13 +95,11 @@ public class Fragment_Controller extends AppCompatActivity {
             pennydrawerLayout = (DrawerLayout) findViewById(R.id.penny_projekt_drawer_layout);
             penny_Projekt_Drawer_Toggle = new ActionBarDrawerToggle(this, pennydrawerLayout,
                     R.string.drawer_close, R.string.drawer_open) {
-
                 /** Called when a drawer has settled in a completely closed state. */
                 public void onDrawerClosed(View view) {
                     super.onDrawerClosed(view);
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
-
                 /** Called when a drawer has settled in a completely open state. */
                 public void onDrawerOpened(View drawerView) {
                     super.onDrawerOpened(drawerView);
@@ -150,7 +119,6 @@ public class Fragment_Controller extends AppCompatActivity {
 
             //Opsæt offline filehandler
             off = new OfflineFilehandler(ctx);
-
 
             //Opsæt actionbar burgermenu og titel
             this.setTitle(getString(R.string.app_title));
@@ -172,6 +140,12 @@ public class Fragment_Controller extends AppCompatActivity {
         }
         else{
             setContentView(R.layout.main_activity_controller_landscape);
+            // Instantiere credentials og service objekt
+            SharedPreferences googleSettings = getPreferences(Context.MODE_PRIVATE);
+            mCredential = GoogleAccountCredential.usingOAuth2(
+                    getApplicationContext(), Arrays.asList(SCOPES))
+                    .setBackOff(new ExponentialBackOff())
+                    .setSelectedAccountName(googleSettings.getString(PREF_ACCOUNT_NAME, null));
         }
     }
 
@@ -185,9 +159,6 @@ public class Fragment_Controller extends AppCompatActivity {
        super.onResume();
        if (isGooglePlayServicesAvailable()) {
            refreshResults();
-       } else {
-           mOutputText.setText("Google Play Services required: " +
-                   "after installing, close and relaunch this app.");
        }
    }
 
@@ -230,8 +201,6 @@ public class Fragment_Controller extends AppCompatActivity {
     public void drawerFabClick(View v){
         onf.getAllProjects(dc.getProjectsTitles());
         // onf.getAllProjects(dc.getProjectsTitles());
-
-
 
         Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
         startActivityForResult(CreateProject, 2);
@@ -289,9 +258,7 @@ public class Fragment_Controller extends AppCompatActivity {
         if(!landscape){
             penny_Projekt_Drawer_Toggle.syncState();
         }
-
     }
-
 
     // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
     /**
@@ -308,7 +275,6 @@ public class Fragment_Controller extends AppCompatActivity {
                 new MakeRequestTask(mCredential).execute();
                 Toast.makeText(ctx, "Forbindelse til Google Oprettet: Login: "+mCredential.getSelectedAccountName(), Toast.LENGTH_SHORT).show();
             } else {
-                mOutputText.setText("No network connection available.");
                 Toast.makeText(ctx, "Forbindelse til Google IKKE oprettet, tjek internetforbindelse", Toast.LENGTH_SHORT).show();
             }
         }
@@ -408,7 +374,6 @@ public class Fragment_Controller extends AppCompatActivity {
                         editor.apply();
                     }
                 } else if (resultCode == RESULT_CANCELED) {
-                    mOutputText.setText("Account unspecified.");
                 }
                 break;
             case REQUEST_AUTHORIZATION:
@@ -551,24 +516,21 @@ public class Fragment_Controller extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            mOutputText.setText("");
-            mProgress.show();
+            if(!landscape)mProgress.show();
         }
 
         @Override
         protected void onPostExecute(List<String> output) {
-            mProgress.hide();
+            if(!landscape)mProgress.hide();
             if (output == null || output.size() == 0) {
-                mOutputText.setText("No results returned.");
             } else {
                 output.add(0, "Data retrieved using the Google Calendar API:");
-                mOutputText.setText(TextUtils.join("\n", output));
             }
         }
 
         @Override
         protected void onCancelled() {
-            mProgress.hide();
+            if(!landscape)mProgress.hide();
             if (mLastError != null) {
                 if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
                     showGooglePlayServicesAvailabilityErrorDialog(
@@ -578,14 +540,8 @@ public class Fragment_Controller extends AppCompatActivity {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             Fragment_Controller.REQUEST_AUTHORIZATION);
-                } else {
-                    mOutputText.setText("The following error occurred:\n"
-                            + mLastError.getMessage());
                 }
-            } else {
-                mOutputText.setText("Request cancelled.");
             }
         }
     }
-
 }
