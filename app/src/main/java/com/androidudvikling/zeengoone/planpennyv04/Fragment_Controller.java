@@ -8,6 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -441,6 +445,10 @@ public class Fragment_Controller extends AppCompatActivity {
                         }
                     }
     }
+
+    /* Sensor metoder
+     * Kun onSensorChanged benyttes
+     */
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
