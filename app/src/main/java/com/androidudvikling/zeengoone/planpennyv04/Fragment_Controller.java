@@ -17,6 +17,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +28,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
+import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OfflineFilehandler;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OnlineFilehandler;
@@ -46,6 +49,7 @@ import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
@@ -60,7 +64,7 @@ public class Fragment_Controller extends AppCompatActivity {
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
     public static DataLogic dc = new DataLogic();
-    GoogleAccountCredential mCredential;
+    public static GoogleAccountCredential mCredential;
     ProgressDialog mProgress;
     private PreferenceManager pManager = new PreferenceManager(this);
     private ListView projekt_liste_view;
@@ -459,7 +463,7 @@ public class Fragment_Controller extends AppCompatActivity {
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
             mService = new com.google.api.services.calendar.Calendar.Builder(
                     transport, jsonFactory, credential)
-                    .setApplicationName("Google Calendar API Android Quickstart")
+                    .setApplicationName("Plan Penny")
                     .build();
         }
 
@@ -478,7 +482,6 @@ public class Fragment_Controller extends AppCompatActivity {
                 return null;
             }
         }
-
         // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
         /**
          * Fetch a list of the next 10 events from the primary calendar.
@@ -539,6 +542,50 @@ public class Fragment_Controller extends AppCompatActivity {
                             Fragment_Controller.REQUEST_AUTHORIZATION);
                 }
             }
+        }
+        public void createEvent() {
+            Project project = dc.getProjects().get(0);
+            Log.d("Fragment_Controller","testing createEvent i Google Event Creater");
+            for (Category c: project.getCategoryList()) {
+                // Opretter Event
+                Event event = new Event()
+                        .setDescription(c.getCategoryTitle())
+                        .setSummary(project.getTitle());
+
+                // Sætter starttidspunkt
+                DateTime startDateTime = new DateTime(c.getStartDate().toGoogleDateTime());
+                EventDateTime start = new EventDateTime()
+                        .setDate(startDateTime)
+                        .setTimeZone("Denmark/Copenhagen");
+                event.setStart(start);
+
+                // Sætter sluttidspunkt
+                DateTime endDateTime = new DateTime(c.getEndDate().toGoogleDateTime());
+                EventDateTime end = new EventDateTime()
+                        .setDate(endDateTime)
+                        .setTimeZone("Denmark/Copenhagen");
+                event.setEnd(end);
+
+            /*
+                Hjemmesider:
+                https://developers.google.com/google-apps/calendar/create-events
+                https://developers.google.com/gdata/javadoc/com/google/gdata/client/Service
+             */
+                String calendarId = "primary";
+                try {
+                    mService.events().insert(calendarId, event).execute();
+                    Log.d("GoogleEventCreater", "Event created: %s\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("GoogleEventCreator Exception!");
+                }
+            }
+        }
+
+        private Project findCurrentProject(String projectName) {
+            for (Project p : dc.getProjects())
+                if (p.getTitle().equals(projectName)) return p;
+            return null;
         }
     }
 }

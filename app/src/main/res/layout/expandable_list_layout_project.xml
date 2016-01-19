@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 <ExpandableListView
-    android:id="@+id/expandable_list_id"
+    android:id="@+id/expandable_list_projects_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="afterDescendants"
