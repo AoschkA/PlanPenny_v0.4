@@ -48,7 +48,7 @@ public class PopCreateEvent extends Activity implements View.OnClickListener{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
         //Sætter stilen for pop
-        getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.border_style, null));
+        getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.google_style, null));
 
         // Finder views
         tv_Event = (TextView) findViewById(R.id.textViewEvent);
