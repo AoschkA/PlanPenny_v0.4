@@ -137,6 +137,8 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("SENSOR", "Sensor opened");
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         Log.d("APP STATUS", "RESUMED - In ViewPagerFragment");
         int tabLocation = Fragment_Controller.pManager.loadTabLocation(dc.getProjects().get(projectNumber).getTitle());
         Log.d("Tab Location", Integer.toString(tabLocation));
@@ -180,7 +182,24 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
             }
         }
     }
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+    /* (Virker ikke) - Lukker ikke på hjælpemenuen
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.d("SENSOR", "Sensor closed");
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("SENSOR", "Sensor opened");
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+    */
 }
