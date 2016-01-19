@@ -1,5 +1,6 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.zip.Inflater;
 
 /**
  * Created by zeengoone on 1/15/16.
@@ -35,9 +37,6 @@ public class ViewPagerFragment extends Fragment {
     public static void vpChangeCurrentItem(int position){
         tabLayout.setScrollPosition(position, 0f, true);
         viewPager.setCurrentItem(position);
-        // Gemmer nuværende lokation
-        Log.d("Location save", Integer.toString(position)+" - under vpChangeCurrentItem");
-        Fragment_Controller.pManager.saveAppLocation(position);
     }
 
     public ViewPagerAdapter getAdapter(){
@@ -53,6 +52,7 @@ public class ViewPagerFragment extends Fragment {
         // Gemmer nuværende lokation
         Log.d("Location save", Integer.toString(position)+" - under newInstance");
         Fragment_Controller.pManager.saveAppLocation(position);
+
         return temp;
     }
 
@@ -78,6 +78,9 @@ public class ViewPagerFragment extends Fragment {
             tabMaaneder.add(new SimpleDateFormat("MMM").format(cal.getTime()));
         }
     }
+    public void setTabItem(int tab) {
+        vpChangeCurrentItem(tab);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,6 +105,10 @@ public class ViewPagerFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+
+                // Gemmer Tab location
+                Log.d("Location save", "TAB "+tab.getPosition());
+                Fragment_Controller.pManager.saveTabLocation(tab.getPosition());
             }
 
             @Override
@@ -113,5 +120,13 @@ public class ViewPagerFragment extends Fragment {
             }
         });
         return root;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("APP STATUS", "RESUMED - In ViewPagerFragment");
+        int tabLocation = Fragment_Controller.pManager.loadTabLocation();
+        Log.d("Tab Location", Integer.toString(tabLocation));
+        vpChangeCurrentItem(tabLocation);
     }
 }

@@ -17,6 +17,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -159,12 +160,12 @@ public class Fragment_Controller extends AppCompatActivity {
    @Override
    public void onResume(){
        super.onResume();
+       Log.d("APP STATUS", "RESUMED");
        if (isGooglePlayServicesAvailable()) {
            refreshResults();
        }
        int appLocation = pManager.loadAppLocation();
-
-       Log.d("location for onResume()", Integer.toString(appLocation));
+       Log.d("App Location", Integer.toString(appLocation));
        if (appLocation==-1) {
            Log.d("ERROR", "Couldn't reload project - project not found");
        }
@@ -172,6 +173,7 @@ public class Fragment_Controller extends AppCompatActivity {
            ViewPagerFragment vpFragment = new ViewPagerFragment()
                    .newInstance(appLocation);
            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, vpFragment, "viewpager").commit();
+
        }
    }
 
