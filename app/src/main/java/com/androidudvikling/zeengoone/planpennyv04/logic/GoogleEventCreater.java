@@ -1,5 +1,6 @@
 package com.androidudvikling.zeengoone.planpennyv04.logic;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.androidudvikling.zeengoone.planpennyv04.Fragment_Controller;
@@ -20,15 +21,64 @@ import java.util.ArrayList;
 /**
  * Created by jonasandreassen on 19/01/16.
  */
-public class GoogleEventCreater {
+public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
     HttpTransport transport    = AndroidHttp.newCompatibleTransport();
     JacksonFactory jsonFactory = new JacksonFactory();
-    private DataLogic dl = new DataLogic();
-    private Calendar service;
+    private DataLogic dc = Fragment_Controller.dc;
+    private Calendar service = Fragment_Controller.mService;
+    private String currentProjectTitle;
 
-    public GoogleEventCreater() {
+    public GoogleEventCreater(String currentProject) {
         service = new Calendar.Builder(transport, jsonFactory, Fragment_Controller.mCredential)
                 .setApplicationName("PlanPenny").build();
+        createEvent(currentProject);
+    }
+    public static GoogleEventCreater newInstance(String currentProject) {
+        GoogleEventCreater event = new GoogleEventCreater(currentProject);
+
+        return event;
+    }
+
+    @Override
+    protected Void doInBackground(Void... params) {
+        Project project = dc.getProjectDB().getProject(currentProjectTitle);
+        Log.d("Fragment_Controller", "testing createEvent i Google Event Creater");
+        for (Category c: project.getCategoryList()) {
+
+            // Opretter Event
+            Event event = new Event()
+                    .setDescription(project.getTitle())
+                    .setSummary(c.getCategoryTitle())
+                    .setColorId("4");
+
+            // Sætter starttidspunkt
+            DateTime startDateTime = new DateTime(c.getStartDate().toGoogleDateTime());
+            EventDateTime start = new EventDateTime()
+                    .setDateTime(startDateTime)
+                    .setTimeZone("Europe/Copenhagen");
+            event.setStart(start);
+
+            // Sætter sluttidspunkt
+            DateTime endDateTime = new DateTime(c.getEndDate().toGoogleDateTime());
+            EventDateTime end = new EventDateTime()
+                    .setDateTime(endDateTime)
+                    .setTimeZone("Europe/Copenhagen");
+            event.setEnd(end);
+
+            /*
+                Hjemmesider:
+                https://developers.google.com/google-apps/calendar/create-events
+                https://developers.google.com/gdata/javadoc/com/google/gdata/client/Service
+             */
+            String calendarId = "primary";
+            try {
+                service.events().insert(calendarId, event).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("GoogleEventCreator Exception!");
+            }
+        }
+        return null;
     }
 
     public ArrayList<Date> getBoundaryDates(String projectName){
@@ -39,49 +89,27 @@ public class GoogleEventCreater {
         return boundaries;
     }
 
-    public void createEvent(String projectName) {
-        Project project = findCurrentProject(projectName);
-        System.out.println("testing createEvent i Google Event Creater");
-        for (Category c: project.getCategoryList()) {
-            // Opretter Event
-            Event event = new Event()
-                    .setDescription(c.getCategoryTitle())
-                    .setSummary(project.getTitle());
-
-            // Sætter starttidspunkt
-            DateTime startDateTime = new DateTime(c.getStartDate().toGoogleDateTime());
-            EventDateTime start = new EventDateTime()
-                    .setDate(startDateTime)
-                    .setTimeZone("Denmark/Copenhagen");
-            event.setStart(start);
-
-            // Sætter sluttidspunkt
-            DateTime endDateTime = new DateTime(c.getEndDate().toGoogleDateTime());
-            EventDateTime end = new EventDateTime()
-                    .setDate(endDateTime)
-                    .setTimeZone("Denmark/Copenhagen");
-            event.setEnd(end);
-
-            /*
-                Hjemmesider:
-                https://developers.google.com/google-apps/calendar/create-events
-                https://developers.google.com/gdata/javadoc/com/google/gdata/client/Service
-             */
-            String calendarId = "primary";
-            try {
-                event = service.events().insert(calendarId, event).execute();
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("GoogleEventCreator Exception!");
-            }
-            Log.d("GoogleEventCreater","Event created: %s\n" + " " + event.getHtmlLink());
-        }
+    public void createEvent(String currentProjectTitle) {
+        this.currentProjectTitle = currentProjectTitle;
+    }
+    @Override
+    protected void onPostExecute(Void ie) {
+        Log.d("GoogleEventCreater", "Event created: %s\n");
     }
 
     private Project findCurrentProject(String projectName) {
-        for (Project p : dl.getProjects())
+        for (Project p : dc.getProjects())
             if (p.getTitle().equals(projectName)) return p;
         return null;
     }
+    @Override
+    protected void onPreExecute() {
 
+    }
+
+
+    @Override
+    protected void onCancelled() {
+
+    }
 }

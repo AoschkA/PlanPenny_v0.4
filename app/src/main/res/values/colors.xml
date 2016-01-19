@@ -7,4 +7,11 @@
     <color name="colorPrimaryOrange">#e7ab7a</color>
     <color name="colorSliderTextpassive">#FFCDD2</color>
     <color name="accent">#6179af</color>
+    <color name="planFarveEt">#e8f3e2</color>
+    <color name="planFarveTo">#d8ad9d</color>
+    <color name="planFarveTre">#925856</color>
+    <color name="planFarveFire">#f0cd7c</color>
+    <color name="planFarveFem">#b97c4d</color>
+    <color name="planFarveSeks">#76968b</color>
+    <color name="planFarveSyv">#e7ab7a</color>
 </resources>

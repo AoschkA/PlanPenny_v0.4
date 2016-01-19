@@ -64,7 +64,10 @@ public class PopCreateEvent extends Activity implements View.OnClickListener{
         current_projectName = bundle.getString("currentProjectName");
 
         if(googleEventCreater==null)
-            googleEventCreater = new GoogleEventCreater();
+            googleEventCreater = new GoogleEventCreater(current_projectName);
+        else{
+            GoogleEventCreater.newInstance(current_projectName);
+        }
 
         ArrayList<Date> boundaries = googleEventCreater.getBoundaryDates(current_projectName);
 
@@ -84,8 +87,9 @@ public class PopCreateEvent extends Activity implements View.OnClickListener{
             finish();
         else if (v.getId()==button_ok.getId()) {
             // opret event
-            googleEventCreater.createEvent(current_projectName);
+            googleEventCreater.execute();
             Log.d("PopCreateEvent", "kører onclick i popcreateevent");
+            finish();
         }
     }
 }
