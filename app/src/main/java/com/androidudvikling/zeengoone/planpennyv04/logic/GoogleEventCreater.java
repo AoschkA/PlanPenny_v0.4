@@ -62,7 +62,7 @@ public class GoogleEventCreater {
                 https://developers.google.com/gdata/javadoc/com/google/gdata/client/Service
              */
             String calendarId = "primary";
-            event = service.events().insert(calendarId, event).execute();
+            // event = service.events().insert(calendarId, event).execute();
             System.out.printf("Event created: %s\n", event.getHtmlLink());
         }
 

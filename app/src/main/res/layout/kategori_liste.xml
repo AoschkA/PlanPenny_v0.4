@@ -12,7 +12,7 @@ android:padding="5dp">
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="overskrift"
-    android:textColor="@color/colorPrimaryText"
+    android:textColor="@color/colorSecondary"
     android:textSize="15dp"
     android:gravity="center"
     android:paddingTop="10dp"
@@ -28,7 +28,7 @@ android:padding="5dp">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryText"
+        android:background="@color/colorSecondary"
         android:id="@+id/aendreKategori"
         android:layout_centerVertical="true"
         android:visibility="gone"

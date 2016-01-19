@@ -3,16 +3,16 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryOrange</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorSecondary</item>
     </style>
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@color/colorPrimaryOrange</item>
+        <item name="tabIndicatorColor">@color/colorSecondaryText</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabPaddingStart">8dp</item>
         <item name="tabPaddingEnd">8dp</item>
         <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
-        <item name="tabSelectedTextColor">@color/colorPrimaryOrange</item>
+        <item name="tabSelectedTextColor">@color/colorSecondaryText</item>
     </style>
     <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">10sp</item>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#EB5D3E</color>
-    <color name="colorPrimaryText">#fef3ea</color>
     <color name="colorSecondary">#fef3ea</color>
     <color name="colorSecondaryText">#4b4843</color>
+    <color name="colorSecondaryTextBackground">#edecec</color>
     <color name="colorPrimaryOrange">#e7ab7a</color>
     <color name="colorSliderTextpassive">#FFCDD2</color>
 </resources>

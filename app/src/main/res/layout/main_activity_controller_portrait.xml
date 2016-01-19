@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:choiceMode="singleChoice"
-        android:background="@color/colorPrimaryOrange"
+        android:background="@color/colorPrimary"
         android:divider="#666"
         android:dividerHeight="1dp"
         android:paddingLeft="15sp"
