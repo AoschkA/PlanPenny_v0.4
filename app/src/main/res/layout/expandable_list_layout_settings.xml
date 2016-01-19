@@ -3,8 +3,8 @@
     android:id="@+id/expandable_list_settings_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorSecondary"
     android:descendantFocusability="afterDescendants"
     android:divider="@color/colorSecondary"
     android:dividerHeight="0.5dp"
-    android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-/>
+    android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
