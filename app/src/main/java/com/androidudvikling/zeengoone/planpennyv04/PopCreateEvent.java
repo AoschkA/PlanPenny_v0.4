@@ -72,10 +72,10 @@ public class PopCreateEvent extends Activity implements View.OnClickListener{
         ArrayList<Date> boundaries = googleEventCreater.getBoundaryDates(current_projectName);
 
         // sætter information om projectet i textviewet
-        String info = "Projektet "+ current_projectName + " vil oprette et google event fra " +
-                boundaries.get(0).toString() +
-                " til " + boundaries.get(1).toString() +
-                " \n vil du fortsætte?";
+        String info = "Projektet "+ current_projectName + " vil oprette et google event fra \n" +
+                boundaries.get(0).toString() + "\n" +
+                "til \n" + boundaries.get(1).toString() +
+                "\n"+"vil du fortsætte?";
         tv_Event.setText(info);
 
     }
