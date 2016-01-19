@@ -64,6 +64,7 @@ public class DataLogic implements Serializable {
 	public ArrayList<Project> getProjects() {
 		return projectDB.getProjectList(sortType_category);
 	}
+    public ProjectDB getProjectDB() { return projectDB; }
 	public void setProjectList(ArrayList<Project> projectlist){ projectDB.setProjectList(projectlist); }
 	public ArrayList<String> getProjectsTitles() {
 		ArrayList<String> projectlistTitles = new ArrayList<>();
@@ -99,7 +100,7 @@ public class DataLogic implements Serializable {
 	public ArrayList<Category> getCategoriesForMonth(String projectTitle, int year, int month) {
 		ArrayList<Category> categoryList = new ArrayList<>();
 		for (Category c : projectDB.getProject(projectTitle).getCategoryList()){
-			for (Date d : c.getContainingDays()) {
+			for (Date d : c.getContainingDates()) {
 				if (d.getYear()==year && d.getMonth()==month) {
 					categoryList.add(c);
 					break;
@@ -148,7 +149,7 @@ public class DataLogic implements Serializable {
 	// Returns the relevant months for a given category in a specific project
 	public ArrayList<Integer> getRelevantMonthsForCategory(String projectTitle, String categoryTitle) {
 		ArrayList<Integer> integerList = new ArrayList<>();
-		for (Date d : projectDB.getProject(projectTitle).getCategory(categoryTitle).getContainingDays()) {
+		for (Date d : projectDB.getProject(projectTitle).getCategory(categoryTitle).getContainingDates()) {
 			if (!integerList.contains(d.getMonth()))
 				integerList.add(d.getMonth());
 		}

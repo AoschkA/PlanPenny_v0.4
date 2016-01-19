@@ -5,24 +5,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.logic.GoogleEventCreater;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopCreateEvent extends Activity implements View.OnClickListener{
+    private static GoogleEventCreater googleEventCreater;
     TextView tv_Event;
     Button button_regret;
     Button button_ok;
     String current_projectName;
-    private static GoogleEventCreater googleEventCreater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class PopCreateEvent extends Activity implements View.OnClickListener{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
         //Sætter stilen for pop
-        getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.border_style, null));
+        getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.google_style, null));
 
         // Finder views
         tv_Event = (TextView) findViewById(R.id.textViewEvent);
@@ -65,15 +64,18 @@ public class PopCreateEvent extends Activity implements View.OnClickListener{
         current_projectName = bundle.getString("currentProjectName");
 
         if(googleEventCreater==null)
-            googleEventCreater = new GoogleEventCreater();
+            googleEventCreater = new GoogleEventCreater(current_projectName);
+        else{
+            GoogleEventCreater.newInstance(current_projectName);
+        }
 
         ArrayList<Date> boundaries = googleEventCreater.getBoundaryDates(current_projectName);
 
         // sætter information om projectet i textviewet
-        String info = "Projektet "+ current_projectName + " vil oprette et google event fra " +
-                boundaries.get(0).toString() +
-                " til " + boundaries.get(1).toString() +
-                " \n vil du fortsætte?";
+        String info = "Projektet "+ current_projectName + " vil oprette et google event fra \n" +
+                boundaries.get(0).toString() + "\n" +
+                "til \n" + boundaries.get(1).toString() +
+                "\n"+"vil du fortsætte?";
         tv_Event.setText(info);
 
     }
@@ -81,11 +83,15 @@ public class PopCreateEvent extends Activity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if (v.getId()==button_regret.getId())
+        if (v.getId()==button_regret.getId()) {
+            googleEventCreater.setDelete(true);
+            googleEventCreater.execute();
             finish();
+        }
         else if (v.getId()==button_ok.getId()) {
             // opret event
-            Toast.makeText(this, "Projekt synkroniseret med din Google kalender", Toast.LENGTH_SHORT);
+            googleEventCreater.execute();
+            Log.d("PopCreateEvent", "kører onclick i popcreateevent");
             finish();
         }
     }

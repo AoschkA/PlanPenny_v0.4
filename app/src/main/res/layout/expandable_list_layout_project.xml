@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 <ExpandableListView
-    android:id="@+id/expandable_list_id"
+    android:id="@+id/expandable_list_projects_id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="afterDescendants"
@@ -23,8 +23,7 @@
     android:layout_marginBottom="30dp"
     android:layout_marginEnd="30dp"
     android:layout_marginRight="30dp"
-    android:background="@color/colorPrimary"
     android:onClick="eventFabClick"
     android:src="@mipmap/ic_event_white_24dp"
-    android:tint="@color/colorSecondaryText" />
+    android:tint="@color/colorSecondary" />
 </RelativeLayout>

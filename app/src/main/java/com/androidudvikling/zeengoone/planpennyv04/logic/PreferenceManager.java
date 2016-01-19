@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.entities.UserSettings;
 
 /**
@@ -37,5 +38,35 @@ public class PreferenceManager {
 
         userSettings = new UserSettings(setting1, setting2, setting3);
         return userSettings;
+    }
+
+    public void saveAppLocation(int appLocation) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("appLocation", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt("mainLocation", appLocation);
+        editor.apply();
+    }
+
+    public int loadAppLocation() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("appLocation", Context.MODE_PRIVATE);
+        int appLocation = sharedPreferences.getInt("mainLocation", -1);
+
+        return appLocation;
+    }
+
+    public void saveTabLocation(String projectName, int tabLocation) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(projectName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt("tabLocation", tabLocation);
+        editor.apply();
+    }
+
+    public int loadTabLocation(String projectName) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(projectName, Context.MODE_PRIVATE);
+        int tabLocation = sharedPreferences.getInt("tabLocation", -1);
+
+        return tabLocation;
     }
 }

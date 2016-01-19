@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
     <LinearLayout
+        android:id="@+id/fragment_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_layout"
         android:orientation="vertical">
         <FrameLayout
             android:id="@+id/fragment_container"
@@ -28,8 +28,8 @@
     <ListView android:id="@+id/penny_projekt_drawer_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
         android:choiceMode="singleChoice"
-        android:background="@color/colorPrimaryOrange"
         android:divider="#666"
         android:dividerHeight="1dp"
         android:paddingLeft="15sp"
@@ -43,7 +43,7 @@
             android:layout_margin="16dp"
             android:onClick="drawerFabClick"
             android:src="@android:drawable/ic_input_add"
-            android:tint="@color/colorSecondaryText"
+            android:tint="@color/colorSecondary"
             app:layout_anchorGravity="bottom|right|end" />
     </android.support.design.widget.CoordinatorLayout>
 
