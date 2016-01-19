@@ -6,4 +6,5 @@
     <color name="colorSecondaryTextBackground">#edecec</color>
     <color name="colorPrimaryOrange">#e7ab7a</color>
     <color name="colorSliderTextpassive">#FFCDD2</color>
+    <color name="accent">#6179af</color>
 </resources>
