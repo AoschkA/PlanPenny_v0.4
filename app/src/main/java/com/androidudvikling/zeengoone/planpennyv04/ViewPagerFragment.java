@@ -108,7 +108,7 @@ public class ViewPagerFragment extends Fragment {
 
                 // Gemmer Tab location
                 Log.d("Location save", "TAB "+tab.getPosition());
-                Fragment_Controller.pManager.saveTabLocation(tab.getPosition());
+                Fragment_Controller.pManager.saveTabLocation(dc.getProjects().get(projectNumber).getTitle(),tab.getPosition());
             }
 
             @Override
@@ -125,7 +125,7 @@ public class ViewPagerFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d("APP STATUS", "RESUMED - In ViewPagerFragment");
-        int tabLocation = Fragment_Controller.pManager.loadTabLocation();
+        int tabLocation = Fragment_Controller.pManager.loadTabLocation(dc.getProjects().get(projectNumber).getTitle());
         Log.d("Tab Location", Integer.toString(tabLocation));
         vpChangeCurrentItem(tabLocation);
     }

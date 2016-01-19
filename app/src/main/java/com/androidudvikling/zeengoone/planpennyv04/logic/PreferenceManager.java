@@ -55,16 +55,16 @@ public class PreferenceManager {
         return appLocation;
     }
 
-    public void saveTabLocation(int tabLocation) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("appLocation", Context.MODE_PRIVATE);
+    public void saveTabLocation(String projectName, int tabLocation) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(projectName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putInt("tabLocation", tabLocation);
         editor.apply();
     }
 
-    public int loadTabLocation() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("appLocation", Context.MODE_PRIVATE);
+    public int loadTabLocation(String projectName) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(projectName, Context.MODE_PRIVATE);
         int tabLocation = sharedPreferences.getInt("tabLocation", -1);
 
         return tabLocation;
