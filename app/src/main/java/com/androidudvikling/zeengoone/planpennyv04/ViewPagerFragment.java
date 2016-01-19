@@ -1,20 +1,24 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
+import com.androidudvikling.zeengoone.planpennyv04.logic.PreferenceManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.zip.Inflater;
 
 /**
  * Created by zeengoone on 1/15/16.
@@ -35,11 +39,20 @@ public class ViewPagerFragment extends Fragment {
         viewPager.setCurrentItem(position);
     }
 
+    public ViewPagerAdapter getAdapter(){
+        return adapter;
+    }
+
     public ViewPagerFragment newInstance(int position){
         ViewPagerFragment temp = new ViewPagerFragment();
         Bundle args = new Bundle();
         args.putInt("Project_Number", position);
         temp.setArguments(args);
+
+        // Gemmer nuværende lokation
+        Log.d("Location save", Integer.toString(position)+" - under newInstance");
+        Fragment_Controller.pManager.saveAppLocation(position);
+
         return temp;
     }
 
@@ -65,6 +78,9 @@ public class ViewPagerFragment extends Fragment {
             tabMaaneder.add(new SimpleDateFormat("MMM").format(cal.getTime()));
         }
     }
+    public void setTabItem(int tab) {
+        vpChangeCurrentItem(tab);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,6 +105,10 @@ public class ViewPagerFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+
+                // Gemmer Tab location
+                Log.d("Location save", "TAB "+tab.getPosition());
+                Fragment_Controller.pManager.saveTabLocation(dc.getProjects().get(projectNumber).getTitle(),tab.getPosition());
             }
 
             @Override
@@ -100,5 +120,13 @@ public class ViewPagerFragment extends Fragment {
             }
         });
         return root;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("APP STATUS", "RESUMED - In ViewPagerFragment");
+        int tabLocation = Fragment_Controller.pManager.loadTabLocation(dc.getProjects().get(projectNumber).getTitle());
+        Log.d("Tab Location", Integer.toString(tabLocation));
+        vpChangeCurrentItem(tabLocation);
     }
 }
