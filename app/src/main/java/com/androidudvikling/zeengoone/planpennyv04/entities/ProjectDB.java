@@ -29,6 +29,14 @@ public class ProjectDB implements Serializable{
         return projectList;
     }
 
+    public ArrayList<Date> getContainingDates() {
+        ArrayList<Date> containingDates = new ArrayList<Date>();
+        for ( Project p : projectList) {
+            containingDates.addAll(p.getContainingDates());
+        }
+        return containingDates;
+    }
+
     public void setProjectList(ArrayList<Project> projectlist) {
         projectList=projectlist;
     }

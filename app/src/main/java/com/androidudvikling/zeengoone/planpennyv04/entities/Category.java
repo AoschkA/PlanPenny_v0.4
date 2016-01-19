@@ -60,7 +60,7 @@ public class Category implements Serializable {
 
 	public ArrayList<String> getPlanListDates() {
 		ArrayList<String> tempPlanListDates = new ArrayList<String>();
-		for(Date d:getContainingDays()){
+		for(Date d: getContainingDates()){
 			tempPlanListDates.add("Date: " + d.toString());
 		}
 		return tempPlanListDates;
@@ -117,7 +117,7 @@ public class Category implements Serializable {
 		return temp;
 	}
 
-    public ArrayList<Date> getContainingDays() {
+    public ArrayList<Date> getContainingDates() {
     	ArrayList<Date> dateList = new ArrayList<>();
     	for (Plan p : planList) {
     		for (Date d : p.getContainingDates()){

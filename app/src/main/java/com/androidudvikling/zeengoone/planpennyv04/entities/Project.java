@@ -88,7 +88,7 @@ public class Project implements Serializable{
     public ArrayList<Date> getContainingDates() {
     	ArrayList<Date> dateList = new ArrayList<>();
     	for (Category c : categoryList) {
-    		for (Date d : c.getContainingDays()) {
+    		for (Date d : c.getContainingDates()) {
     			if (!dateList.contains(d))
     				dateList.add(d);
     		}
