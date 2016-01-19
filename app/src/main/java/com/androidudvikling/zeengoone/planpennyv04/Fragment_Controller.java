@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
@@ -35,21 +34,10 @@ import com.androidudvikling.zeengoone.planpennyv04.logic.PreferenceManager;
 import com.firebase.client.Firebase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
-import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.Events;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -271,7 +259,6 @@ public class Fragment_Controller extends AppCompatActivity {
             chooseAccount();
         } else {
             if (isDeviceOnline()) {
-                new MakeRequestTask(mCredential).execute();
                 Toast.makeText(ctx, "Forbindelse til Google Oprettet: Login: "+mCredential.getSelectedAccountName(), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(ctx, "Forbindelse til Google IKKE oprettet, tjek internetforbindelse", Toast.LENGTH_SHORT).show();
@@ -448,96 +435,6 @@ public class Fragment_Controller extends AppCompatActivity {
             pennydrawerLayout.closeDrawer(Gravity.LEFT);
             ViewPagerFragment vpFragment = new ViewPagerFragment().newInstance(position);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, vpFragment, "viewpager").commit();
-        }
-    }
-
-    // Hel klasse taget fra https://developers.google.com/google-apps/calendar/quickstart/android
-    private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
-        private Exception mLastError = null;
-
-        public MakeRequestTask(GoogleAccountCredential credential) {
-            HttpTransport transport = AndroidHttp.newCompatibleTransport();
-            JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-            mService = new Calendar.Builder(
-                    transport, jsonFactory, credential)
-                    .setApplicationName("Plan Penny")
-                    .build();
-        }
-                            // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
-                            /**
-                             * Background task to call Google Calendar API.
-                             * @param params no parameters needed for this task.
-                             * */
-        @Override
-        protected List<String> doInBackground(Void... params) {
-            try {
-                return getDataFromApi();
-            } catch (Exception e) {
-                mLastError = e;
-                cancel(true);
-                return null;
-            }
-        }
-        // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
-        /**
-         * Fetch a list of the next 10 events from the primary calendar.
-         * @return List of Strings describing returned events.
-         * @throws IOException
-         */
-        private List<String> getDataFromApi() throws IOException {
-            // List the next 10 events from the primary calendar.
-            DateTime now = new DateTime(System.currentTimeMillis());
-            List<String> eventStrings = new ArrayList<String>();
-            Events events = mService.events().list("primary")
-                    .setMaxResults(10)
-                    .setTimeMin(now)
-                    .setOrderBy("startTime")
-                    .setSingleEvents(true)
-                    .execute();
-            List<Event> items = events.getItems();
-
-            for (Event event : items) {
-                DateTime start = event.getStart().getDateTime();
-                if (start == null) {
-                    // All-day events don't have start times, so just use
-                    // the start date.
-                    start = event.getStart().getDate();
-                }
-                eventStrings.add(
-                        String.format("%s (%s)", event.getSummary(), start));
-            }
-            return eventStrings;
-        }
-
-
-        @Override
-        protected void onPreExecute() {
-            if(!landscape)mProgress.show();
-        }
-
-        @Override
-        protected void onPostExecute(List<String> output) {
-            if(!landscape)mProgress.hide();
-            if (output == null || output.size() == 0) {
-            } else {
-                output.add(0, "Data retrieved using the Google Calendar API:");
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            if(!landscape)mProgress.hide();
-            if (mLastError != null) {
-                if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
-                    showGooglePlayServicesAvailabilityErrorDialog(
-                            ((GooglePlayServicesAvailabilityIOException) mLastError)
-                                    .getConnectionStatusCode());
-                } else if (mLastError instanceof UserRecoverableAuthIOException) {
-                    startActivityForResult(
-                            ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                            Fragment_Controller.REQUEST_AUTHORIZATION);
-                }
-            }
         }
     }
 }

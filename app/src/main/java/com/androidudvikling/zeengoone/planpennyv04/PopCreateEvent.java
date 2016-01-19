@@ -83,8 +83,11 @@ public class PopCreateEvent extends Activity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if (v.getId()==button_regret.getId())
+        if (v.getId()==button_regret.getId()) {
+            googleEventCreater.setDelete(true);
+            googleEventCreater.execute();
             finish();
+        }
         else if (v.getId()==button_ok.getId()) {
             // opret event
             googleEventCreater.execute();

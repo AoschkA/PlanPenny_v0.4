@@ -11,7 +11,7 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.model.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 
@@ -25,59 +25,103 @@ public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
     HttpTransport transport    = AndroidHttp.newCompatibleTransport();
     JacksonFactory jsonFactory = new JacksonFactory();
     private DataLogic dc = Fragment_Controller.dc;
-    private Calendar service = Fragment_Controller.mService;
+    private com.google.api.services.calendar.Calendar service = Fragment_Controller.mService;
     private String currentProjectTitle;
+    private boolean deleteCalendarProject = false;
 
     public GoogleEventCreater(String currentProject) {
-        service = new Calendar.Builder(transport, jsonFactory, Fragment_Controller.mCredential)
-                .setApplicationName("PlanPenny").build();
+
+        // Initialize Calendar service with valid OAuth credentials
+        service = new com.google.api.services.calendar.Calendar.Builder(transport, jsonFactory, Fragment_Controller.mCredential)
+                .setApplicationName("applicationName").build();
+
+        //service = new com.google.api.services.calendar.Calendar.Builder(transport, jsonFactory, Fragment_Controller.mCredential)
+        //        .setApplicationName("PlanPenny").build();
         createEvent(currentProject);
     }
+
     public static GoogleEventCreater newInstance(String currentProject) {
         GoogleEventCreater event = new GoogleEventCreater(currentProject);
 
         return event;
     }
-
+    public void setDelete(boolean delete){
+        this.deleteCalendarProject = delete;
+    }
     @Override
     protected Void doInBackground(Void... params) {
         Project project = dc.getProjectDB().getProject(currentProjectTitle);
         Log.d("Fragment_Controller", "testing createEvent i Google Event Creater");
-        for (Category c: project.getCategoryList()) {
+        if(deleteCalendarProject){
+            for (Category c : project.getCategoryList()) {
+            /*
+                Hjemmesider:
+                https://developers.google.com/google-apps/calendar/v3/reference/events/delete
+                https://developers.google.com/google-apps/calendar/create-events
+                https://developers.google.com/gdata/javadoc/com/google/gdata/client/Service
+             */
+                String calendarId = currentProjectTitle;
+                try {
+                    // Delete an event
+                    service.calendarList().delete(currentProjectTitle);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("GoogleEventCreator Exception!");
+                }
+            }
+        }
+        else{
+            // Create a new calendar
+            com.google.api.services.calendar.model.Calendar calendar = new com.google.api.services.calendar.model.Calendar();
+            calendar.setSummary(currentProjectTitle);
+            calendar.setTimeZone("Europe/Copenhagen");
 
-            // Opretter Event
-            Event event = new Event()
-                    .setDescription(project.getTitle())
-                    .setSummary(c.getCategoryTitle())
-                    .setColorId("4");
+            // Insert the new calendar
+            Calendar createdCalendar = null;
+            try {
+                createdCalendar = service.calendars().insert(calendar).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println(createdCalendar.getSummary());
+            System.out.println(createdCalendar.getId());
+            for (Category c: project.getCategoryList()) {
 
-            // Sætter starttidspunkt
-            DateTime startDateTime = new DateTime(c.getStartDate().toGoogleDateTime());
-            EventDateTime start = new EventDateTime()
-                    .setDateTime(startDateTime)
-                    .setTimeZone("Europe/Copenhagen");
-            event.setStart(start);
+                // Opretter Event
+                Event event = new Event()
+                        .setDescription(project.getTitle())
+                        .setSummary(c.getCategoryTitle())
+                        .setColorId("4");
 
-            // Sætter sluttidspunkt
-            DateTime endDateTime = new DateTime(c.getEndDate().toGoogleDateTime());
-            EventDateTime end = new EventDateTime()
-                    .setDateTime(endDateTime)
-                    .setTimeZone("Europe/Copenhagen");
-            event.setEnd(end);
+                // Sætter starttidspunkt
+                DateTime startDateTime = new DateTime(c.getStartDate().toGoogleDateTime());
+                EventDateTime start = new EventDateTime()
+                        .setDateTime(startDateTime)
+                        .setTimeZone("Europe/Copenhagen");
+                event.setStart(start);
+
+                // Sætter sluttidspunkt
+                DateTime endDateTime = new DateTime(c.getEndDate().toGoogleDateTime());
+                EventDateTime end = new EventDateTime()
+                        .setDateTime(endDateTime)
+                        .setTimeZone("Europe/Copenhagen");
+                event.setEnd(end);
 
             /*
                 Hjemmesider:
                 https://developers.google.com/google-apps/calendar/create-events
                 https://developers.google.com/gdata/javadoc/com/google/gdata/client/Service
              */
-            String calendarId = "primary";
-            try {
-                service.events().insert(calendarId, event).execute();
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("GoogleEventCreator Exception!");
+                String calendarId = currentProjectTitle;
+                try {
+                    service.events().insert(createdCalendar.getId(), event).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("GoogleEventCreator Exception!");
+                }
             }
         }
+        this.deleteCalendarProject = false;
         return null;
     }
 
