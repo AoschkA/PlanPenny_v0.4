@@ -5,24 +5,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.logic.GoogleEventCreater;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopCreateEvent extends Activity implements View.OnClickListener{
+    private static GoogleEventCreater googleEventCreater;
     TextView tv_Event;
     Button button_regret;
     Button button_ok;
     String current_projectName;
-    private static GoogleEventCreater googleEventCreater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +84,8 @@ public class PopCreateEvent extends Activity implements View.OnClickListener{
             finish();
         else if (v.getId()==button_ok.getId()) {
             // opret event
-            Toast.makeText(this, "Projekt synkroniseret med din Google kalender", Toast.LENGTH_SHORT);
-            finish();
+            googleEventCreater.createEvent(current_projectName);
+            Log.d("PopCreateEvent", "kører onclick i popcreateevent");
         }
     }
 }

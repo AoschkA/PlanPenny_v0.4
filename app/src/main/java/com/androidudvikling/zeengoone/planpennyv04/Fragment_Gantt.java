@@ -68,7 +68,7 @@ public class Fragment_Gantt extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.expandable_list_layout, container, false);
+        View view = inflater.inflate(R.layout.expandable_list_layout_project, container, false);
 
         faneposition = getArguments().getInt(Fragment_Gantt.POSITION_KEY);
         project = getArguments().getInt(Fragment_Gantt.PROJECT_KEY);
@@ -148,7 +148,7 @@ public class Fragment_Gantt extends Fragment{
         };
 
         // Lav listviewet og setadapter til adapteren lavet herover
-        final ExpandableListView projektListeView = (ExpandableListView) view.findViewById(R.id.expandable_list_id);
+        final ExpandableListView projektListeView = (ExpandableListView) view.findViewById(R.id.expandable_list_projects_id);
         projektListeView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {

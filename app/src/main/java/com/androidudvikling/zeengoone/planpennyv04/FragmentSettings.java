@@ -36,12 +36,12 @@ public class FragmentSettings extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.expandable_list_layout, container, false);
+        View view = inflater.inflate(R.layout.expandable_list_layout_settings, container, false);
         // Læg listen ind i arrayadapteren for kategorier
         adapter = new SettingsAdapter(getActivity(), indstillinger, preferenceManager);
 
         // Lav listviewet og setadapter til adapteren lavet herover
-        final ExpandableListView settingsView = (ExpandableListView) view.findViewById(R.id.expandable_list_id);
+        final ExpandableListView settingsView = (ExpandableListView) view.findViewById(R.id.expandable_list_settings_id);
         settingsView.setAdapter(adapter);
         return view;
     }

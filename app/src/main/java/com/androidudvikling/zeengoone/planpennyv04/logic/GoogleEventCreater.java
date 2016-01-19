@@ -1,28 +1,34 @@
 package com.androidudvikling.zeengoone.planpennyv04.logic;
 
+import android.util.Log;
+
+import com.androidudvikling.zeengoone.planpennyv04.Fragment_Controller;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by jonasandreassen on 19/01/16.
  */
 public class GoogleEventCreater {
+    HttpTransport transport    = AndroidHttp.newCompatibleTransport();
+    JacksonFactory jsonFactory = new JacksonFactory();
     private DataLogic dl = new DataLogic();
-    private Service service;
+    private Calendar service;
 
     public GoogleEventCreater() {
-        initializeService();
+        service = new Calendar.Builder(transport, jsonFactory, Fragment_Controller.mCredential)
+                .setApplicationName("PlanPenny").build();
     }
 
     public ArrayList<Date> getBoundaryDates(String projectName){
@@ -35,7 +41,7 @@ public class GoogleEventCreater {
 
     public void createEvent(String projectName) {
         Project project = findCurrentProject(projectName);
-
+        System.out.println("testing createEvent i Google Event Creater");
         for (Category c: project.getCategoryList()) {
             // Opretter Event
             Event event = new Event()
@@ -62,10 +68,14 @@ public class GoogleEventCreater {
                 https://developers.google.com/gdata/javadoc/com/google/gdata/client/Service
              */
             String calendarId = "primary";
-            // event = service.events().insert(calendarId, event).execute();
-            System.out.printf("Event created: %s\n", event.getHtmlLink());
+            try {
+                event = service.events().insert(calendarId, event).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("GoogleEventCreator Exception!");
+            }
+            Log.d("GoogleEventCreater","Event created: %s\n" + " " + event.getHtmlLink());
         }
-
     }
 
     private Project findCurrentProject(String projectName) {
@@ -74,57 +84,4 @@ public class GoogleEventCreater {
         return null;
     }
 
-    private void initializeService() {
-        service = new Service() {
-            @Override
-            public Service startAsync() {
-                return null;
-            }
-
-            @Override
-            public boolean isRunning() {
-                return false;
-            }
-
-            @Override
-            public State state() {
-                return null;
-            }
-
-            @Override
-            public Service stopAsync() {
-                return null;
-            }
-
-            @Override
-            public void awaitRunning() {
-
-            }
-
-            @Override
-            public void awaitRunning(long timeout, TimeUnit unit) throws TimeoutException {
-
-            }
-
-            @Override
-            public void awaitTerminated() {
-
-            }
-
-            @Override
-            public void awaitTerminated(long timeout, TimeUnit unit) throws TimeoutException {
-
-            }
-
-            @Override
-            public Throwable failureCause() {
-                return null;
-            }
-
-            @Override
-            public void addListener(Listener listener, Executor executor) {
-
-            }
-        };
-    }
 }

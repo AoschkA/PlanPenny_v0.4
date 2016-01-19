@@ -94,8 +94,22 @@ public class Date implements Serializable {
 	}
 
 	public String toGoogleDateTime() {
+		String tempMonth;
+		String tempDay;
+		if(getMonth() < 10){
+			tempMonth = "0" + getMonth();
+		}
+		else{
+			tempMonth = getMonth() + "";
+		}
+		if(getDay() < 10){
+			tempDay = "0" + getDay();
+		}
+		else{
+			tempDay = getDay() + "";
+		}
 		return "" + getYear() + "-" +
-				getMonth() + "-" + getDay() +
+				tempMonth + "-" + tempDay +
 				"T01:00:00-00:00";
 	}
 }
