@@ -27,6 +27,7 @@ public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
     private DataLogic dc = Fragment_Controller.dc;
     private com.google.api.services.calendar.Calendar service = Fragment_Controller.mService;
     private String currentProjectTitle;
+    private String calendarID;
     private boolean deleteCalendarProject = false;
 
     public GoogleEventCreater(String currentProject) {
@@ -53,21 +54,11 @@ public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
         Project project = dc.getProjectDB().getProject(currentProjectTitle);
         Log.d("Fragment_Controller", "testing createEvent i Google Event Creater");
         if(deleteCalendarProject){
-            for (Category c : project.getCategoryList()) {
-            /*
-                Hjemmesider:
-                https://developers.google.com/google-apps/calendar/v3/reference/events/delete
-                https://developers.google.com/google-apps/calendar/create-events
-                https://developers.google.com/gdata/javadoc/com/google/gdata/client/Service
-             */
-                String calendarId = currentProjectTitle;
-                try {
                     // Delete an event
-                    service.calendarList().delete(currentProjectTitle);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    System.out.println("GoogleEventCreator Exception!");
-                }
+            try {
+                service.calendarList().delete(calendarID);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         else{
@@ -113,6 +104,7 @@ public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
                 https://developers.google.com/gdata/javadoc/com/google/gdata/client/Service
              */
                 String calendarId = currentProjectTitle;
+                calendarID = createdCalendar.getId();
                 try {
                     service.events().insert(createdCalendar.getId(), event).execute();
                 } catch (IOException e) {
