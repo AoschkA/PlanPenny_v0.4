@@ -82,7 +82,8 @@
             android:id="@+id/buttonCreateProject"
             android:layout_below="@+id/errorText"
             android:layout_centerHorizontal="true"
-            android:onClick="OnBtnClicked"/>
+            android:onClick="OnBtnClicked"
+            android:background="@drawable/button_gradient"/>
     </RelativeLayout>
 
 </RelativeLayout>
