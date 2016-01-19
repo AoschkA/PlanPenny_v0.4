@@ -477,11 +477,11 @@ public class Fragment_Controller extends AppCompatActivity {
                     .setApplicationName("Plan Penny")
                     .build();
         }
-                            // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
-                            /**
-                             * Background task to call Google Calendar API.
-                             * @param params no parameters needed for this task.
-                             * */
+        // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
+        /**
+         * Background task to call Google Calendar API.
+         * @param params no parameters needed for this task.
+         * */
         @Override
         protected List<String> doInBackground(Void... params) {
             try {

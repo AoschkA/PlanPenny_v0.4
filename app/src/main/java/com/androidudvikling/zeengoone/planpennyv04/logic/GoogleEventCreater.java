@@ -55,6 +55,7 @@ public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
             DateTime startDateTime = new DateTime(c.getStartDate().toGoogleDateTime());
             EventDateTime start = new EventDateTime()
                     .setDateTime(startDateTime)
+                    // Timezones at https://developers.google.com/adwords/api/docs/appendix/timezones
                     .setTimeZone("Europe/Copenhagen");
             event.setStart(start);
 
@@ -62,6 +63,7 @@ public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
             DateTime endDateTime = new DateTime(c.getEndDate().toGoogleDateTime());
             EventDateTime end = new EventDateTime()
                     .setDateTime(endDateTime)
+                    // Timezones at https://developers.google.com/adwords/api/docs/appendix/timezones
                     .setTimeZone("Europe/Copenhagen");
             event.setEnd(end);
 
