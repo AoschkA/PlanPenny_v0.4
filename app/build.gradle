@@ -27,6 +27,9 @@ android {
 ext {
     supportLibVersion = '23.1.1'  // variable that can be referenced to keep support libs consistent
 }
+repositories {
+    mavenCentral()
+}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -47,6 +50,7 @@ dependencies {
     compile('com.google.apis:google-api-services-calendar:v3-rev125-1.20.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+    compile 'com.google.apis:google-api-services-calendar:v3-rev159-1.21.0'
 }
 dependencies {
     compile 'com.firebase:firebase-client-android:2.5.0+'

@@ -92,4 +92,10 @@ public class Date implements Serializable {
 	public String toString() {
 		return Integer.toString(year)+"/"+Integer.toString(month) + "/" + Integer.toString(day);
 	}
+
+	public String toGoogleDateTime() {
+		return "" + getYear() + "-" +
+				getMonth() + "-" + getDay() +
+				"T01:00:00-00:00";
+	}
 }
