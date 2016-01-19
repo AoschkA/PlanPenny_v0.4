@@ -64,6 +64,7 @@ public class DataLogic implements Serializable {
 	public ArrayList<Project> getProjects() {
 		return projectDB.getProjectList(sortType_category);
 	}
+    public ProjectDB getProjectDB() { return projectDB; }
 	public void setProjectList(ArrayList<Project> projectlist){ projectDB.setProjectList(projectlist); }
 	public ArrayList<String> getProjectsTitles() {
 		ArrayList<String> projectlistTitles = new ArrayList<>();
