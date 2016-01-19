@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:orientation="vertical"
-    >
+    android:background="@color/colorSecondary">
 
 
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
