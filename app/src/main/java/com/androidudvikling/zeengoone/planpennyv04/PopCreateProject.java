@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
@@ -59,7 +60,7 @@ public class PopCreateProject extends Activity  {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
         //Sætter stilen for pop
-        getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.border_style));
+        getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.border_style, null));
 
         // Top Text
         projectText = (TextView) findViewById(R.id.textNytProjekt);

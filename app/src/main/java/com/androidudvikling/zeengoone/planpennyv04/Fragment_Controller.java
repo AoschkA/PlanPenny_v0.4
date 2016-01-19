@@ -204,6 +204,7 @@ public class Fragment_Controller extends AppCompatActivity {
 
         Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
         startActivityForResult(CreateProject, 2);
+
     }
 
     public void eventFabClick(View v) {

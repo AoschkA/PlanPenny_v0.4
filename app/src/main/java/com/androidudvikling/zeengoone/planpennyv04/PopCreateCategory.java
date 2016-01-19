@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -75,8 +76,8 @@ public class PopCreateCategory extends Activity  {
         double scaleHeight = 0.8;
         double scaleWidth = 0.8;
 
-        int width = (int) ((dpm.widthPixels) * scaleWidth);
-        int height = (int) ((dpm.heightPixels) * scaleHeight);
+        int width = (int) (320);
+        int height = (int) (640);
 
         //Sætter layout dimensionerne på pop
         getWindow().setLayout(width, height);
@@ -87,7 +88,7 @@ public class PopCreateCategory extends Activity  {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
         //Sætter stilen for pop
-        getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.border_style));
+        getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.border_style, null));
 
         // Top Text
         categoryText = (TextView) findViewById(R.id.textNytProjekt);
