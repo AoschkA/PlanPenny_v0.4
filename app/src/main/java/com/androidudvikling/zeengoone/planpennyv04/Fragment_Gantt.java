@@ -89,6 +89,26 @@ public class Fragment_Gantt extends Fragment{
                 dl = Fragment_Controller.dc;
                 if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList() == null ||
                         dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().isEmpty()) {
+                    int day;
+                    int max = Plan.maxDaysInMonth(
+                            Calendar.getInstance().get(Calendar.YEAR),
+                            Calendar.getInstance().get(Calendar.MONTH)+1);
+                    if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH)>=max) {
+                        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                    } else day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
+                    dl.getProjects().get(currentProjectNumber).getCategoryList().
+                                    get(groupPosition)
+                                    .addPlan(
+                                            new Plan(
+                                                    new Date(Calendar.getInstance().get(Calendar.YEAR),
+                                                            Calendar.getInstance().get(Calendar.MONTH)+1,
+                                                            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)),
+                                                    new Date(Calendar.getInstance().get(Calendar.YEAR),
+                                                            Calendar.getInstance().get(Calendar.MONTH)+1,
+                                                            day),
+                                                    "",
+                                                    dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle()));
 
                 } else {
                     if (dl.getCategoryForMonth(currentProject, groupPosition, tabMonth.getYear(), tabMonth.getMonth()).size() > 0) {

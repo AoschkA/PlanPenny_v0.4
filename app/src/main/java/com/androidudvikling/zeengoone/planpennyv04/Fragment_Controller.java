@@ -29,6 +29,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
+import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OfflineFilehandler;
@@ -43,6 +44,7 @@ import com.google.api.services.calendar.CalendarScopes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class Fragment_Controller extends AppCompatActivity {
@@ -258,6 +260,25 @@ public class Fragment_Controller extends AppCompatActivity {
     public void mainFabClick(View v) {
         int location = pManager.loadAppLocation();
         dc.addCategory(dc.getProjects().get(location).getTitle(), "new");
+
+
+        /*
+        int categoryposition = dc.getProjects().get(location).getCategoryList().size()-1;
+
+        // tilføj default plan
+        dc.getProjects().get(location).getCategoryList().
+                get(categoryposition)
+                .addPlan(
+                new Plan(
+                        new Date(Calendar.getInstance().get(Calendar.YEAR),
+                        Calendar.getInstance().get(Calendar.MONTH),
+                        Calendar.getInstance().get(Calendar.DAY_OF_MONTH)),
+                        new Date(Calendar.getInstance().get(Calendar.YEAR)+1,
+                                Calendar.getInstance().get(Calendar.MONTH),
+                                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)),
+                        "",
+                        dc.getProjects().get(location).getCategoryList().get(categoryposition).getCategoryTitle()));
+        */
         Fragment_Gantt.notifyAdapter();
     }
 
