@@ -137,7 +137,7 @@ public class Fragment_Controller extends AppCompatActivity {
             onf = new OnlineFilehandler(ctx);
 
             //Lav et timestamp check
-            filehand.post(run);
+            //filehand.post(run);
 
             //Opsæt actionbar burgermenu og titel
             this.setTitle(getString(R.string.app_title));
@@ -146,9 +146,6 @@ public class Fragment_Controller extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setLogo(R.drawable.penny_logo);
             getSupportActionBar().setDisplayUseLogoEnabled(true);
-
-            //Opsæt online filehandler
-            onf = new OnlineFilehandler(ctx);
 
             // Instantiere credentials og service objekt
             SharedPreferences googleSettings = getPreferences(Context.MODE_PRIVATE);

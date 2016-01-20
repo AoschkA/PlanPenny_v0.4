@@ -60,13 +60,8 @@ public class PopCreateEvent extends Activity implements View.OnClickListener{
         button_regret.setOnClickListener(this);
         button_ok.setOnClickListener(this);
 
-
-        if(googleEventCreater==null)
-            googleEventCreater = new GoogleEventCreater(dc.getProjects().get(Fragment_Controller.pManager.loadAppLocation()).getTitle());
-        else{
-            GoogleEventCreater.newInstance(dc.getProjects().get(Fragment_Controller.pManager.loadAppLocation()).getTitle());
-        }
-
+        googleEventCreater = new GoogleEventCreater(dc.getProjects().get(Fragment_Controller.pManager.loadAppLocation()).getTitle());
+        GoogleEventCreater.newInstance(dc.getProjects().get(Fragment_Controller.pManager.loadAppLocation()).getTitle());
         ArrayList<Date> boundaries = googleEventCreater.getBoundaryDates(dc.getProjects().get(Fragment_Controller.pManager.loadAppLocation()).getTitle());
 
         // sætter information om projectet i textviewet
