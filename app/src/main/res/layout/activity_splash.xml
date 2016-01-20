@@ -8,20 +8,16 @@
         android:id="@+id/imgSplash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
         android:foregroundGravity="center"
-        android:src="@drawable/penny_logo" />
+        android:src="@mipmap/black_logo_large"
+        android:scaleType="fitXY"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:tint="@color/colorSecondary" />
 
-    <TextView
-        android:id="@+id/txtSplash"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/imgSplash"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="43dp"
-        android:text="Plan Penny"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/colorSecondary" />
 </RelativeLayout>
