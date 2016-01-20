@@ -56,13 +56,12 @@
             android:layout_marginTop="25dp" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="222dp"
             android:layout_height="wrap_content"
             android:id="@+id/createEdit"
             android:background="@drawable/border_style_text"
             android:layout_below="@+id/planName"
             android:layout_alignLeft="@+id/planName"
-            android:layout_marginLeft="5dp"
             android:padding="5dp"
             android:inputType="textLongMessage"
             />
@@ -76,14 +75,14 @@
             android:layout_alignStart="@+id/planName" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="40dp"
             android:text="Opret Projekt"
             android:id="@+id/buttonCreateProject"
-            android:layout_below="@+id/errorText"
-            android:layout_centerHorizontal="true"
             android:onClick="OnBtnClicked"
-            android:background="@drawable/button_gradient"/>
+            android:background="@drawable/button_gradient"
+            android:layout_below="@+id/errorText"
+            android:layout_marginLeft="10dp" />
     </RelativeLayout>
 
 </RelativeLayout>

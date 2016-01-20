@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by alexandervpedersen on 08/01/16.
@@ -34,10 +35,15 @@ public class PopCreateProject extends Activity  {
     private Button projectCreateBtn;
     private String projectTextFromUser;
     private DataLogic dl;
+    private ArrayList<String> prevProjectnames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent i = getIntent();
+        Bundle bundle = i.getExtras();
+        prevProjectnames = bundle.getStringArrayList("ProjectNames");
+        System.out.println("Modtag til create project: " + prevProjectnames.get(0));
 
         // Sætter layout
         setContentView(R.layout.create_pop_window);
@@ -73,7 +79,6 @@ public class PopCreateProject extends Activity  {
         //Content opret
         projectName = (EditText) findViewById(R.id.createEdit);
         errorText = (TextView) findViewById(R.id.errorText);
-        projectName.getLayoutParams().width = 330;
         projectCreateBtn = (Button) findViewById(R.id.buttonCreateProject);
 
         }
@@ -109,7 +114,9 @@ public class PopCreateProject extends Activity  {
                case R.id.buttonCreateProject: {
                    if (projectName.getText().toString().isEmpty()) {
                        errorText.setText("Projektnavnet skal mindst have et bogstav.");
-                   } else {
+                   } else if(isProjectTaken()) {
+                       errorText.setText("Projekt navnet er allerede brugt");
+                   }else{
                        projectTextFromUser = projectName.getText().toString();
                        Intent i = getIntent();
                        i.putExtra("NyDl", projectTextFromUser);
@@ -118,6 +125,15 @@ public class PopCreateProject extends Activity  {
                    }
                }break;
            }
+        }
+
+        public boolean isProjectTaken(){
+            for(int k = 0 ; k<prevProjectnames.size() ; k++) {
+                if (prevProjectnames.get(k).equals(projectName.getText().toString())) {
+                    return true;
+                }
+            }
+            return false;
         }
 }
 

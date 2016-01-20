@@ -251,10 +251,8 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void drawerFabClick(View v){
-        onf.getAllProjects();
-        // onf.getAllProjects(dc.getProjectsTitles());
-
-        Intent createProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
+        Intent createProject = new Intent(Fragment_Controller.this,PopCreateProject.class)
+                .putExtra("ProjectNames",dc.getProjectsTitles());
         startActivityForResult(createProject, 2);
 
     }

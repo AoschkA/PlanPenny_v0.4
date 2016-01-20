@@ -22,9 +22,9 @@ import java.util.ArrayList;
 /**
  * Created by alexandervpedersen on 08/01/16.
  */
-public class PopCreateCategory extends Activity  {
+public class PopCreateCategory extends Activity {
 
-    public ArrayList <String> categoryNames = new ArrayList<String>();
+    public ArrayList<String> categoryNames = new ArrayList<String>();
     private TextView categoryText;
     private EditText categoryname;
     private TextView errorText;
@@ -36,13 +36,13 @@ public class PopCreateCategory extends Activity  {
     private LinearLayout ll;
 
     // Effekt til button
-    public static void buttonEffect(View button){
+    public static void buttonEffect(View button) {
         button.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        v.getBackground().setColorFilter(0x77000000,PorterDuff.Mode.SRC_ATOP);
+                        v.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
                         v.invalidate();
                         break;
                     }
@@ -100,68 +100,74 @@ public class PopCreateCategory extends Activity  {
         //Content opret
         categoryname = (EditText) findViewById(R.id.createEdit);
         errorText = (TextView) findViewById(R.id.errorText);
-        categoryname.getLayoutParams().width = 330;
         categoryCreateBtn = (Button) findViewById(R.id.buttonCreateProject);
         categoryList = (ListView) findViewById(R.id.categoryList);
 
 
-        }
+    }
 
-        //Knap i content
-       public void OnBtnClicked(View v){
+    //Knap i content
+    public void OnBtnClicked(View v) {
         buttonEffect(v);
-           switch (v.getId()) {
-               // Knap opret projekt
-               case R.id.buttonCreateProject: {
-                   if (categoryname.getText().toString().isEmpty()) {
-                       errorText.setText("Kategori navnet skal mindst have et bogstav.");
-                   } else {
-                       boolean previousCategory = false;
-                       for(int i = 0;i<categoryNames.size();i++){
-                           String catName = categoryNames.get(i).toString();
-                           System.out.println(catName);
-                           System.out.println(categoryname.getText().toString());
+        switch (v.getId()) {
+            // Knap opret projekt
+            case R.id.buttonCreateProject: {
+                if (categoryname.getText().toString().isEmpty()) {
+                    errorText.setText("Kategori navnet skal mindst have et bogstav.");
+                } else {
+                    boolean previousCategory = false;
+                    for (int i = 0; i < categoryNames.size(); i++) {
+                        String catName = categoryNames.get(i).toString();
 
-                           if(catName.equals(categoryname.getText().toString())) {
-                               System.out.println("Ja!");
-                               previousCategory = true;
-                           }
-                       }
+                        if (catName.equals(categoryname.getText().toString())) {
+                            System.out.println("Ja!");
+                            previousCategory = true;
+                        }
+                    }
 
-                       if(previousCategory == true) {
-                           errorText.setText("Denne kategori er allerede oprettet.");
-                       } else {
-                           categoryTextFromUser = categoryname.getText().toString();
-                           System.out.println(categoryTextFromUser);
-                           categoryNames.add(categoryTextFromUser);
-                           categoryname.setText("");
+                    if (previousCategory == true) {
+                        errorText.setText("Denne kategori er allerede oprettet.");
+                    } else {
+                        categoryTextFromUser = categoryname.getText().toString();
+                        System.out.println(categoryTextFromUser);
+                        categoryNames.add(categoryTextFromUser);
+                        categoryname.setText("");
 
-                           // Tilføjer ArrayAdapter til at tage imod arraylist til fremvisning.
-                           ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                                   this,
-                                   android.R.layout.simple_list_item_1,
-                                   categoryNames);
-                           categoryList.setAdapter(arrayAdapter);
+                        // Tilføjer ArrayAdapter til at tage imod arraylist til fremvisning.
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                                this,
+                                android.R.layout.simple_list_item_1,
+                                categoryNames);
+                        categoryList.setAdapter(arrayAdapter);
 
-                       }
-                   }
-               }break;
+                    }
+                }
+            }
+            break;
 
-               case R.id.buttonDone: {
-                   if (categoryNames.isEmpty()){
-                       errorText.setText("Ingen kategorier er oprettet.");
-                   }else{
-                       System.out.println("Farvel");
-                       Intent i = getIntent();
-                       i.putExtra("CategoryNames", categoryNames);
-                       setResult(3, i);
-                       finish();
-                   }
+            case R.id.buttonDone: {
+                if (categoryNames.isEmpty()) {
+                    System.out.println("Ingen forrige kategori navne.");
+                    if (categoryname.getText().toString().isEmpty()) {
+                        errorText.setText("Kategori navnet skal mindst have et bogstav.");
+                    } else {
+                        categoryTextFromUser = categoryname
+                                .getText()
+                                .toString();
+                        System.out.println(categoryTextFromUser);
+                        categoryNames.add(categoryTextFromUser);
 
-               }break;
-           }
+
+                    }
+                    break;
+                }
+
+                System.out.println("Farvel");
+                Intent i = getIntent();
+                i.putExtra("CategoryNames", categoryNames);
+                setResult(3, i);
+                finish();
+            }
         }
+    }
 }
-
-
-
