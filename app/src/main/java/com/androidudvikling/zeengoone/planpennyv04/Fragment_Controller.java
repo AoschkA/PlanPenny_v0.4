@@ -120,7 +120,7 @@ public class Fragment_Controller extends AppCompatActivity {
             onf = new OnlineFilehandler(ctx);
 
             //Lav et timestamp check
-            filehand.post(run);
+            // filehand.post(run);
 
             //Opsæt actionbar burgermenu og titel
             this.setTitle(getString(R.string.app_title));
@@ -233,8 +233,6 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void drawerFabClick(View v){
-        onf.getAllProjects();
-        // onf.getAllProjects(dc.getProjectsTitles());
 
         Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
         startActivityForResult(CreateProject, 2);
@@ -373,13 +371,14 @@ public class Fragment_Controller extends AppCompatActivity {
         {
             if(onf.getTimeStamp() == null) {
                 onf.checkTimeStamp();
-                filehand.postDelayed(run,100);
+                filehand.postDelayed(run,200);
             }else if(off.getUsedProject() == null){
-                System.out.println(onf.getTimeStamp());
                 off.checkUsedProject(onf.getTimeStamp());
-                filehand.postDelayed(run,100);
+                filehand.postDelayed(run,200);
+                System.out.println(off.getUsedProject());
             }else{
                 dc.setProjectList(off.getAllProjects(off.getUsedProject()));
+
             }
         }
     };
@@ -485,6 +484,9 @@ public class Fragment_Controller extends AppCompatActivity {
                                 dc.addPlan(curProjectName,categoryList.get(i).toString(),start_date,end_date,"#ff6600", date_end[3]);
                             }
                         }
+
+                        off.saveAllProjects(dc.getProjects());
+                        onf.saveAllProjects(dc.getProjects());
                     }
     }
 

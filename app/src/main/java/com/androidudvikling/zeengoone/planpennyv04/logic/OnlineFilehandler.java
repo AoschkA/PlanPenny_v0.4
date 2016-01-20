@@ -356,6 +356,8 @@ public class OnlineFilehandler {
     }
 
     public ArrayList<Project> getAllProjectsArrayList() {
+        System.out.println(allProjects.get(0));
         return allProjects;
+
     }
 }

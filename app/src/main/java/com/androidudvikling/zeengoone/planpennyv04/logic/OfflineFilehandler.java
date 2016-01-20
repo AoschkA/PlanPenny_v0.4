@@ -52,6 +52,7 @@ public class OfflineFilehandler {
 
 
 
+
         // For offline
         try {
             InputStream inputStream = ctx.openFileInput("VersionTimeStampOffline" + extension);
@@ -78,14 +79,17 @@ public class OfflineFilehandler {
                 }
 
                 offlineTimeStamp = stringBuilder.toString();
+                System.out.println("Offline timestamp: " + offlineTimeStamp);
 
             }
         } catch (FileNotFoundException e) {
             usedProject = "OnlineTimestamp";
+            onf.getAllProjects();
         }
 
         if(offlineTimeStamp == null) {
             usedProject = "OnlineTimestamp";
+            onf.getAllProjects();
         } else if(onfTimeStamp == null)
         {
             usedProject = "OfflineTimestamp";
@@ -146,7 +150,9 @@ public class OfflineFilehandler {
     public ArrayList<Project> getAllProjects(String usedProject){
         // Først undersøg om Firebase versionen er nyere end den lokale
         if(usedProject == "OnlineTimestamp"){
-           projectList = onf.getAllProjectsArrayList();
+            projectList = onf.getAllProjectsArrayList();
+            System.out.println(projectList.get(0).getTitle());
+            saveAllProjects(projectList);
         }
         else if(usedProject == "OfflineTimestamp"){
             projectList = new ArrayList<Project>();
@@ -160,6 +166,7 @@ public class OfflineFilehandler {
                 if(!allFileNames[i].equals("VersionTimeStampOffline.pp"))
                     projectList.add(getProject(filename[0]));
             }
+            onf.saveAllProjects(projectList);
         }
         return projectList;
     }
