@@ -217,6 +217,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                                                    + day_y + "," + month_y + "," + year_y + "," + planName;
                                    System.out.println(catID);
                                    listOfPlansInCategories.get(catID).add(plan);
+                                   planTitle.setText("");
 
                                    errorText.setText("Planen: " + plan + " er oprettet.");
                                }else{errorText.setText("Start dag er efter slut dag");}

@@ -120,8 +120,12 @@ public class Fragment_Controller extends AppCompatActivity {
             // Opsæt online filehandler
             onf = new OnlineFilehandler(ctx);
 
-            //Lav et timestamp check
-            //filehand.post(run);
+            //Henter filer fra filehandler
+            onf.saveAllProjects(off.getAllProjects());
+            if(off.isEmpty())
+                off.saveAllProjects(dc.getProjects());
+            else
+                off.getAllProjects();
 
             //Opsæt actionbar burgermenu og titel
             this.setTitle(getString(R.string.app_title));
