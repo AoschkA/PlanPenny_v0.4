@@ -8,10 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -46,19 +42,19 @@ import com.google.api.services.calendar.CalendarScopes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 public class Fragment_Controller extends AppCompatActivity {
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
-    public static PreferenceManager pManager;
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { CalendarScopes.CALENDAR };
+    public static PreferenceManager pManager;
     public static DataLogic dc = new DataLogic();
     public static GoogleAccountCredential mCredential;
     public static com.google.api.services.calendar.Calendar mService = null;
+    public static Context ctx;
     ProgressDialog mProgress;
     private ListView projekt_liste_view;
     private DrawerLayout pennydrawerLayout;
@@ -70,10 +66,24 @@ public class Fragment_Controller extends AppCompatActivity {
     private Firebase uRef;
     private OfflineFilehandler off;
     private OnlineFilehandler onf;
-    private Context ctx;
     private Boolean landscape;
     private ArrayAdapter<String> adapter;
     private Handler filehand = new Handler();
+    Runnable run = new Runnable() {
+        @Override
+        public void run()
+        {
+            if(onf.getTimeStamp() == null) {
+                onf.checkTimeStamp();
+                filehand.postDelayed(run,100);
+            }else{
+                System.out.println(onf.getTimeStamp());
+                off.checkUsedProject(onf.getTimeStamp());
+            }
+        }
+    };
+
+    // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +163,6 @@ public class Fragment_Controller extends AppCompatActivity {
         }
     }
 
-    // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
     /**
      * Called whenever this activity is pushed to the foreground, such as after
      * a call to onCreate().
@@ -186,11 +195,13 @@ public class Fragment_Controller extends AppCompatActivity {
         projekt_liste_view.setAdapter(adapter);
         return true;
     }
+
     public void opdaterDrawer(){
         // Sæt drawer elementer til ProjektVisning
         adapter.notifyDataSetChanged();
         projekt_liste_view.setAdapter(adapter);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if(!landscape){
@@ -264,7 +275,7 @@ public class Fragment_Controller extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -275,6 +286,7 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
+
     /**
      * Attempt to get a set of data from the Google Calendar API to display. If the
      * email address isn't known yet, then call chooseAccount() method so the
@@ -294,6 +306,7 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
+
     /**
      * Starts an activity in Google Play Services so the user can pick an
      * account.
@@ -304,6 +317,7 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
+
     /**
      * Checks whether the device currently has a network connection.
      * @return true if the device has a network connection, false otherwise.
@@ -316,6 +330,7 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
+
     /**
      * Check that Google Play services APK is installed and up to date. Will
      * launch an error dialog for the user to update Google Play Services if
@@ -335,7 +350,6 @@ public class Fragment_Controller extends AppCompatActivity {
         return true;
     }
 
-    // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
     /**
      * Display an error dialog showing that Google Play Services is missing
      * or out of date.
@@ -350,20 +364,6 @@ public class Fragment_Controller extends AppCompatActivity {
                 REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
     }
-
-    Runnable run = new Runnable() {
-        @Override
-        public void run()
-        {
-            if(onf.getTimeStamp() == null) {
-                onf.checkTimeStamp();
-                filehand.postDelayed(run,100);
-            }else{
-                System.out.println(onf.getTimeStamp());
-                off.checkUsedProject(onf.getTimeStamp());
-            }
-        }
-    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
