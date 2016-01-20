@@ -79,16 +79,15 @@ public class Plan implements Serializable {
 		return dateList;
 		
 	}
-	public int maxDaysInMonth(int year, int month){
+	public static int maxDaysInMonth(int year, int month){
 		int februaryDays = 28;
 		if (isLeapYear(year))
 			februaryDays++;
-		ArrayList<Date> dateList = new ArrayList<Date>();
 		// January, February, March, April, May, June, July, August, September, October, November, December
 		int[] dayLimit = {31, februaryDays, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 		return dayLimit[month-1];
 	}
-	private boolean isLeapYear(int year) {
+	private static boolean isLeapYear(int year) {
 		if (year%4==0){
 			if (year%100==0){
 				return year % 400 == 0;

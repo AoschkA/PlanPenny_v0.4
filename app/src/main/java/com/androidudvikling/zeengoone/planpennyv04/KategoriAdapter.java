@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
@@ -63,11 +65,12 @@ public class KategoriAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        if (dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList() == null ||
-                dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().isEmpty()) {
-            LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.kategori_liste_empty, parent, false);
-
+         if (dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList() == null ||
+                 dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().isEmpty()) {
+             if(convertView == null) {
+                 LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                 convertView = inflater.inflate(R.layout.kategori_liste_empty, parent, false);
+             }
             TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element2);
             kategori_element.setText(dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
 
@@ -82,48 +85,47 @@ public class KategoriAdapter extends BaseExpandableListAdapter {
             TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element);
             kategori_element.setText(dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
         }
-
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         // check om subviewet findes allerede, hvis ikke lav det
-        if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.plan_liste, parent, false);
-        }
-        // hent planer start og slut dato og titel og læg dem ind i submenu eller "childview"
-        TextView plan_element = (TextView) convertView.findViewById(R.id.plan_liste_element);
-        plan_element.setText(dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().get(childPosition).toString());
-        switch(groupPosition){
-            case 0:
-                plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveEt));
-                plan_element.setTextColor(ContextCompat.getColor(ctx, R.color.colorSecondaryText));
-                break;
-            case 1:
-                plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveTo));
-                break;
-            case 2:
-                plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveTre));
-                break;
-            case 3:
-                plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveFire));
-                break;
-            case 4:
-                plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveFem));
-                break;
-            case 5:
-                plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveSeks));
-                break;
-            default:
-                plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveEt));
-                plan_element.setTextColor(ContextCompat.getColor(ctx, R.color.colorSecondaryText));
-                break;
-        }
-        if(childPosition > 0){
-            plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveSyv));
-        }
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.plan_liste, parent, false);
+            }
+            // hent planer start og slut dato og titel og læg dem ind i submenu eller "childview"
+            TextView plan_element = (TextView) convertView.findViewById(R.id.plan_liste_element);
+            plan_element.setText(dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().get(childPosition).toString());
+            switch (groupPosition) {
+                case 0:
+                    plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveEt));
+                    plan_element.setTextColor(ContextCompat.getColor(ctx, R.color.colorSecondaryText));
+                    break;
+                case 1:
+                    plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveTo));
+                    break;
+                case 2:
+                    plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveTre));
+                    break;
+                case 3:
+                    plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveFire));
+                    break;
+                case 4:
+                    plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveFem));
+                    break;
+                case 5:
+                    plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveSeks));
+                    break;
+                default:
+                    plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveEt));
+                    plan_element.setTextColor(ContextCompat.getColor(ctx, R.color.colorSecondaryText));
+                    break;
+            }
+            if (childPosition > 0) {
+                plan_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.planFarveSyv));
+            }
         return convertView;
     }
 
