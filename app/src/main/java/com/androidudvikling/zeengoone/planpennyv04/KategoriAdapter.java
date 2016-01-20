@@ -8,7 +8,11 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
+import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
+
+import java.util.Calendar;
 
 /**
  * Created by zeengoone on 1/8/16.
@@ -66,6 +70,7 @@ public class KategoriAdapter extends BaseExpandableListAdapter {
 
             TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element2);
             kategori_element.setText(dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
+
         }
         else {
             // check om viewet findes allerede, hvis ikke lav det
