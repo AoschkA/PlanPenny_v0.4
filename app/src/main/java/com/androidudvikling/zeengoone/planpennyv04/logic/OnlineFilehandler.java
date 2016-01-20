@@ -132,7 +132,7 @@ public class OnlineFilehandler {
                             // Tager titlen på kategorien.
                             String categoryTitle = projectSnapshot
                                     .child("categoryList")
-                                    .child(Integer.toString(i))
+                                    .child(Integer.toString(k))
                                     .child("categoryTitle").getValue().toString();
 
                             Category category = new Category(categoryTitle);
@@ -141,66 +141,68 @@ public class OnlineFilehandler {
                             // Finder ud af hvor mange planer der er for den givne titel.
                             long planCount = projectSnapshot
                                     .child("categoryList")
-                                    .child(Integer.toString(i))
+                                    .child(Integer.toString(k))
                                     .child("planList")
                                     .getChildrenCount();
+
+                            System.out.println(categoryTitle);
 
                             for (int j = 0; j < planCount; j++) {
                                 // Finder titlen på planen
                                 String planTitle = projectSnapshot
                                         .child("categoryList")
-                                        .child(Integer.toString(i))
-                                        .child("planList")
                                         .child(Integer.toString(k))
+                                        .child("planList")
+                                        .child(Integer.toString(j))
                                         .child("title").getValue().toString();
 
                                 // Finder start plan
                                 String startDateDay = projectSnapshot
                                         .child("categoryList")
-                                        .child(Integer.toString(i))
-                                        .child("planList")
                                         .child(Integer.toString(k))
+                                        .child("planList")
+                                        .child(Integer.toString(j))
                                         .child("startDate")
                                         .child("day").getValue().toString();
 
                                 String startDateMonth = projectSnapshot
                                         .child("categoryList")
-                                        .child(Integer.toString(i))
-                                        .child("planList")
                                         .child(Integer.toString(k))
+                                        .child("planList")
+                                        .child(Integer.toString(j))
                                         .child("startDate")
                                         .child("month").getValue().toString();
 
                                 String startDateYear = projectSnapshot
                                         .child("categoryList")
-                                        .child(Integer.toString(i))
-                                        .child("planList")
                                         .child(Integer.toString(k))
+                                        .child("planList")
+                                        .child(Integer.toString(j))
                                         .child("startDate")
                                         .child("year").getValue().toString();
 
                                 // Og tilsvarende for slut date.
                                 String endDateDay = projectSnapshot
                                         .child("categoryList")
-                                        .child(Integer.toString(i))
-                                        .child("planList")
                                         .child(Integer.toString(k))
+                                        .child("planList")
+                                        .child(Integer.toString(j))
                                         .child("endDate")
                                         .child("day").getValue().toString();
 
                                 String endDateMonth = projectSnapshot
                                         .child("categoryList")
-                                        .child(Integer.toString(i))
-                                        .child("planList")
                                         .child(Integer.toString(k))
+                                        .child("planList")
+                                        .child(Integer.toString(j))
                                         .child("endDate")
                                         .child("month").getValue().toString();
 
                                 String endDateYear = projectSnapshot
                                         .child("categoryList")
-                                        .child(Integer.toString(i))
-                                        .child("planList")
                                         .child(Integer.toString(k))
+                                        .child("planList")
+                                        .child(Integer.toString(j))
                                         .child("endDate")
                                         .child("year").getValue().toString();
 

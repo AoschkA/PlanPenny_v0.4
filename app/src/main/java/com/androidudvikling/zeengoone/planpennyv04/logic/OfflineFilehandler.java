@@ -93,15 +93,19 @@ public class OfflineFilehandler {
         else {
 
 
+            System.out.println(onfTimeStamp);
+            System.out.println(offlineTimeStamp);
             // For online
             String[] onlineDate = onfTimeStamp.split("_");
             String[] onlineDateymd = onlineDate[0].split("/");
-            String[] onlineDatetime = onlineDate[1].split(".");
+            String[] onlineDatetime = onlineDate[1].split("\\.");
 
             // For offline
             String[] offlineDate = offlineTimeStamp.split("_");
             String[] offlineDateymd = offlineDate[0].split("/");
-            String[] offlineDatetime = offlineDate[1].split(".");
+            String[] offlineDatetime = offlineDate[1].split("\\.");
+            System.out.println(offlineDatetime[0]);
+            System.out.println(onlineDatetime[0]);
 
             Date dateOnlineTimeStamp = new Date(Integer.parseInt(onlineDateymd[0]), Integer.parseInt(onlineDateymd[1]), Integer.parseInt(onlineDateymd[2]));
             Date dateOfflineTimeStamp = new Date(Integer.parseInt(offlineDateymd[0]), Integer.parseInt(offlineDateymd[1]), Integer.parseInt(offlineDateymd[2]));
@@ -113,14 +117,22 @@ public class OfflineFilehandler {
                 usedProject = "OfflineTimestamp";
             } else if (dateOfflineTimeStamp.equals(dateOnlineTimeStamp)) {
                 if (Integer.parseInt(offlineDatetime[0]) > Integer.parseInt(onlineDatetime[0])) {
-                    usedProject = "OnlineTimestamp";
-                } else if (Integer.parseInt(offlineDatetime[0]) < Integer.parseInt(onlineDatetime[0])) {
                     usedProject = "OfflineTimestamp";
+                } else if (Integer.parseInt(offlineDatetime[0]) < Integer.parseInt(onlineDatetime[0])) {
+                    usedProject = "OnlineTimestamp";
                 } else if (Integer.parseInt(offlineDatetime[0]) == Integer.parseInt(onlineDatetime[0])) {
                     if (Integer.parseInt(offlineDatetime[1]) > Integer.parseInt(onlineDatetime[1])) {
                         usedProject = "OfflineTimestamp";
-                    } else {
+                    } else if(Integer.parseInt(offlineDatetime[1]) < Integer.parseInt(onlineDatetime[1])){
                         usedProject = "OnlineTimestamp";
+                    }
+                    else if(Integer.parseInt(offlineDatetime[1]) == Integer.parseInt(onlineDatetime[1])){
+                        if(Integer.parseInt(offlineDatetime[2]) > Integer.parseInt(onlineDatetime[2])){
+                            usedProject = "OfflineTimestamp";
+                        }
+                        else{
+                            usedProject = "OnlineTimestamp";
+                        }
                     }
                 }
             }
