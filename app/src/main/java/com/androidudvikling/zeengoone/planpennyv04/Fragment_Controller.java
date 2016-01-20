@@ -215,6 +215,9 @@ public class Fragment_Controller extends AppCompatActivity {
                 else if(dc.getProjects().size() == position){
                     Toast.makeText(getApplicationContext(), "Du kan ikke stå i det projekt du vil slette!", Toast.LENGTH_SHORT).show();
                 }
+                else if(position < dc.getProjects().size() && position == 0){
+                    Toast.makeText(getApplicationContext(), "Du må kun slette projekter under første projekt!", Toast.LENGTH_SHORT).show();
+                }
                 else{
                     dc.getProjects().remove(position);
                     opdaterDrawer();
