@@ -46,10 +46,6 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         viewPager.setCurrentItem(position);
     }
 
-    public ViewPagerAdapter getAdapter(){
-        return adapter;
-    }
-
     public ViewPagerFragment newInstance(int position){
         ViewPagerFragment temp = new ViewPagerFragment();
         Bundle args = new Bundle();
@@ -87,12 +83,6 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
             year = cal.get(Calendar.YEAR);
             tabMaaneder.add(new SimpleDateFormat("MMM").format(cal.getTime()));
         }
-    }
-    public void flipTab(int value, String orientation) {
-        Log.d("APP STATUS", "ORIENTATION: "+orientation);
-        int tabLocation = Fragment_Controller.pManager.loadTabLocation(dc.getProjects().get(projectNumber).getTitle());
-        Log.d("Tab Location", Integer.toString(tabLocation+value));
-        vpChangeCurrentItem(tabLocation);
     }
 
     @Override
@@ -137,13 +127,14 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("APP STATUS", "RESUMED - In ViewPagerFragment");
         Log.d("SENSOR", "Sensor opened");
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         // Åbner det rigtige projekt
         int appLocation = Fragment_Controller.pManager.loadAppLocation();
         Log.d("App Location", Integer.toString(appLocation));
-        if (appLocation==-1) {
+        if (appLocation<0) {
             Log.d("ERROR", "Couldn't reload project - project not found");
         }
         else {
@@ -151,10 +142,9 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         }
 
         // åbner den rigtige tab
-        Log.d("APP STATUS", "RESUMED - In ViewPagerFragment");
         int tabLocation = Fragment_Controller.pManager.loadTabLocation(dc.getProjects().get(projectNumber).getTitle());
         Log.d("Tab Location", Integer.toString(tabLocation));
-        vpChangeCurrentItem(tabLocation);
+        if (tabLocation>-1) vpChangeCurrentItem(tabLocation);
     }
 
     /* Sensor metoder
@@ -195,6 +185,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         }
     }
 
+    // Skal være der for at sensor virker - lad den være tom
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 

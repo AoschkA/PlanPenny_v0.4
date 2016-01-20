@@ -156,6 +156,14 @@ public class Fragment_Controller extends AppCompatActivity {
        if (isGooglePlayServicesAvailable()) {
            refreshResults();
        }
+       int appLocation = pManager.loadAppLocation();
+       if (appLocation==-10 || appLocation==-11) {
+           startActivity(new Intent(this, ActivityHelp.class));
+       } else if (appLocation==-15) {
+           FragmentSettings fragment = new FragmentSettings();
+           getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, "indstillinger").commit();
+       }
+
    }
 
     @Override
@@ -188,9 +196,15 @@ public class Fragment_Controller extends AppCompatActivity {
         if (menuitem.getTitle().equals("Indstillinger")) {
             FragmentSettings fragment = new FragmentSettings();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, "indstillinger").commit();
+            // Gemmer nuværende lokation
+            Log.d("Location save", Integer.toString(-15) + " - (settings)");
+            Fragment_Controller.pManager.saveAppLocation(-15);
         }
        else if (menuitem.getTitle().equals("Hjælp")) {
             startActivity(new Intent(this, ActivityHelp.class));
+            // Gemmer nuværende lokation
+            Log.d("Location save", Integer.toString(-10) + " - (help)");
+            Fragment_Controller.pManager.saveAppLocation(-10);
         }
     }
 
