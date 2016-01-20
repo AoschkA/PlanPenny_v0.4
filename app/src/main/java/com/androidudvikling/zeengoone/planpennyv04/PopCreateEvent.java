@@ -12,16 +12,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
+import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 import com.androidudvikling.zeengoone.planpennyv04.logic.GoogleEventCreater;
 
 import java.util.ArrayList;
 
 public class PopCreateEvent extends Activity implements View.OnClickListener{
     private static GoogleEventCreater googleEventCreater;
-    TextView tv_Event;
-    Button button_regret;
-    Button button_ok;
-    String current_projectName;
+    private DataLogic dc = Fragment_Controller.dc;
+    private TextView tv_Event;
+    private Button button_regret;
+    private Button button_ok;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,20 +60,17 @@ public class PopCreateEvent extends Activity implements View.OnClickListener{
         button_regret.setOnClickListener(this);
         button_ok.setOnClickListener(this);
 
-        // Finder information fra intent
-        Bundle bundle = intent.getExtras();
-        current_projectName = bundle.getString("currentProjectName");
 
         if(googleEventCreater==null)
-            googleEventCreater = new GoogleEventCreater(current_projectName);
+            googleEventCreater = new GoogleEventCreater(dc.getProjects().get(Fragment_Controller.pManager.loadAppLocation()).getTitle());
         else{
-            GoogleEventCreater.newInstance(current_projectName);
+            GoogleEventCreater.newInstance(dc.getProjects().get(Fragment_Controller.pManager.loadAppLocation()).getTitle());
         }
 
-        ArrayList<Date> boundaries = googleEventCreater.getBoundaryDates(current_projectName);
+        ArrayList<Date> boundaries = googleEventCreater.getBoundaryDates(dc.getProjects().get(Fragment_Controller.pManager.loadAppLocation()).getTitle());
 
         // sætter information om projectet i textviewet
-        String info = "Projektet "+ current_projectName + " vil oprette et google event fra \n" +
+        String info = "Projektet "+ dc.getProjects().get(Fragment_Controller.pManager.loadAppLocation()).getTitle() + " vil oprette et google event fra \n" +
                 boundaries.get(0).toString() + "\n" +
                 "til \n" + boundaries.get(1).toString() +
                 "\n"+"vil du fortsætte?";

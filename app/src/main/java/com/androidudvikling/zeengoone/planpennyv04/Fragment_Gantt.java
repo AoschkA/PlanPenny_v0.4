@@ -1,7 +1,6 @@
 package com.androidudvikling.zeengoone.planpennyv04;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -75,14 +74,6 @@ public class Fragment_Gantt extends Fragment{
         currentProject = dl.getProjects().get(project).getTitle();
         setProjectNumber(project);
         beregnMaanedOgAar(faneposition);
-
-        fab = (FloatingActionButton) view.findViewById(R.id.fabEvent);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                eventFabClick(v);
-            }
-        });
 
         // Læg listen ind i arrayadapteren for kategorier
         KategoriAdapter adapter = new KategoriAdapter(getActivity(), currentProjectNumber) {
@@ -281,11 +272,6 @@ public class Fragment_Gantt extends Fragment{
 
         projektListeView.setAdapter(adapter);
         return view;
-    }
-    public void eventFabClick(View v) {
-        Intent intent = new Intent(getActivity(), PopCreateEvent.class);
-        intent.putExtra("currentProjectName", currentProject);
-        startActivity(intent);
     }
 
     @Override

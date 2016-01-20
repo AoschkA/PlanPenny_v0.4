@@ -7,6 +7,11 @@
             android:title="Indstillinger">
         </item>
         <item
+            android:id="@+id/textSaveCalendar"
+            android:onClick="menuClick"
+            android:title="Gem I Kalender">
+        </item>
+        <item
             android:id="@+id/textViewHelp"
             android:onClick="menuClick"
             android:title="Hjælp"/>
