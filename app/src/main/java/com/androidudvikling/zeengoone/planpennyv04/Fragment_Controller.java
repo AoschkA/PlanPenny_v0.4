@@ -123,7 +123,6 @@ public class Fragment_Controller extends AppCompatActivity {
             //Henter filer fra filehandler
             off.saveAllProjects(dc.getProjects());
 
-
             //Opsæt actionbar burgermenu og titel
             this.setTitle(getString(R.string.app_title));
             getSupportActionBar().setDisplayShowHomeEnabled(true);
