@@ -121,11 +121,13 @@ public class Fragment_Controller extends AppCompatActivity {
             onf = new OnlineFilehandler(ctx);
 
             //Henter filer fra filehandler
+
             onf.saveAllProjects(off.getAllProjects());
             if(off.isEmpty())
                 off.saveAllProjects(dc.getProjects());
             else
                 off.getAllProjects();
+
 
             //Opsæt actionbar burgermenu og titel
             this.setTitle(getString(R.string.app_title));
