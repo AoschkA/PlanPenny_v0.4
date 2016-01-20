@@ -146,6 +146,7 @@ public class OfflineFilehandler {
             for(int i = 0 ; i<allFileNames.length ; i++){
                 String[] filename = allFileNames[i].split("\\.");
                 projectList.add(getProject(filename[0]));
+                    projectList.add(getProject(filename[0]));
             }
 
         return projectList;
@@ -153,7 +154,10 @@ public class OfflineFilehandler {
 
     public boolean isEmpty(){
         String[] projects = ctx.getFilesDir().list();
-        return projects.length == 0;
+        if(projects.length == 0){
+            return true;
+        }
+        return false;
     }
 
     public Project getProject(String project){
