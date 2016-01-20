@@ -37,7 +37,7 @@ public class OfflineFilehandler {
     ArrayList<Project> projectList;
     String firebaseTimeStamp;
     String offlineTimeStamp;
-    String usedProject;
+    String usedProject = null;
     OnlineFilehandler onf;
 
 
@@ -81,7 +81,7 @@ public class OfflineFilehandler {
 
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            usedProject = "OnlineTimestamp";
         }
 
         if(offlineTimeStamp == null) {
@@ -125,23 +125,28 @@ public class OfflineFilehandler {
                 }
             }
             if (usedProject == "OnlineTimestamp") {
+                System.out.println("Det blev online timestamp!");
                 onf.getAllProjects();
             }
         }
     }
 
-    public ArrayList<Project> getAllProjects(){
+    public ArrayList<Project> getAllProjects(String usedProject){
         // Først undersøg om Firebase versionen er nyere end den lokale
         if(usedProject == "OnlineTimestamp"){
            projectList = onf.getAllProjectsArrayList();
         }
         else if(usedProject == "OfflineTimestamp"){
+            projectList = new ArrayList<Project>();
             allFileNames = ctx.getFilesDir().list();
+            System.out.println(allFileNames[0]);
+            System.out.println(allFileNames[1]);
 
             for(int i = 0 ; i<allFileNames.length ; i++){
-                String[] filenames = allFileNames[i].split(".");
+                String[] filename = allFileNames[i].split("\\.");
+                System.out.println(filename[0]);
                 if(!allFileNames[i].equals("VersionTimeStampOffline.pp"))
-                    projectList.add(getProject(filenames[0]));
+                    projectList.add(getProject(filename[0]));
             }
         }
         return projectList;
@@ -256,7 +261,7 @@ public class OfflineFilehandler {
 
 
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(ctx.openFileOutput("/" + projectTitle + extension, Context.MODE_PRIVATE));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(ctx.openFileOutput(projectTitle + extension, Context.MODE_PRIVATE));
             // Indskriv alle kategorier under projekt.
             // Foregår efter syntax: kategorinavn,plannavn.start.slut,plannavn.start.slut-kategorinavn,plannavn.start.slut...
             for(int i = 0; i<project.getCategoryList().size();i++){
@@ -294,6 +299,10 @@ public class OfflineFilehandler {
         }
 
         return true;
+    }
+
+    public String getUsedProject() {
+        return usedProject;
     }
 
 }

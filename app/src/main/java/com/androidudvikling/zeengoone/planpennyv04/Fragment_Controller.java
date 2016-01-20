@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
+import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OfflineFilehandler;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OnlineFilehandler;
@@ -44,6 +45,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -74,6 +76,7 @@ public class Fragment_Controller extends AppCompatActivity {
     private Boolean landscape;
     private ArrayAdapter<String> adapter;
     private Handler filehand = new Handler();
+    private ArrayList<Project> allProjects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +104,7 @@ public class Fragment_Controller extends AppCompatActivity {
                 /** Called when a drawer has settled in a completely open state. */
                 public void onDrawerOpened(View drawerView) {
                     super.onDrawerOpened(drawerView);
+
                     invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 }
             };
@@ -215,7 +219,6 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void drawerFabClick(View v){
-        onf.getAllProjects();
         // onf.getAllProjects(dc.getProjectsTitles());
 
         Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
@@ -353,14 +356,17 @@ public class Fragment_Controller extends AppCompatActivity {
 
     Runnable run = new Runnable() {
         @Override
-        public void run()
-        {
-            if(onf.getTimeStamp() == null) {
+        public void run() {
+            if (onf.getTimeStamp() == null) {
                 onf.checkTimeStamp();
-                filehand.postDelayed(run,100);
-            }else{
-                System.out.println(onf.getTimeStamp());
+                filehand.postDelayed(run, 100);
+            } else if (off.getUsedProject() == null) {
                 off.checkUsedProject(onf.getTimeStamp());
+                System.out.println(off.getUsedProject());
+                filehand.postDelayed(run, 100);
+            } else {
+                allProjects = off.getAllProjects(off.getUsedProject());
+                dc.setProjectList(allProjects);
             }
         }
     };
