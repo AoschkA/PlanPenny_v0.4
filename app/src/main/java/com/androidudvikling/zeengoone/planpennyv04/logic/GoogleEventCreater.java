@@ -26,6 +26,7 @@ public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
     JacksonFactory jsonFactory = new JacksonFactory();
     private DataLogic dc = Fragment_Controller.dc;
     private com.google.api.services.calendar.Calendar service = Fragment_Controller.mService;
+
     //private boolean deleteCalendarProject = false;
     //private Context ctx;
 
