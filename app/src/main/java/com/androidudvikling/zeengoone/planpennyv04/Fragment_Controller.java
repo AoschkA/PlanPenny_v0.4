@@ -443,8 +443,6 @@ public class Fragment_Controller extends AppCompatActivity {
                         // Projekt
                         Bundle bundle = data.getExtras();
                         curProjectName= bundle.getString("NyDl");
-                        dc.addProject(curProjectName);
-                        System.out.println(dc.getProjects().get(dc.getProjects().size()-1).getTitle().toString());
 
                         //Kategorier
                         Intent CreateCategory = new Intent(Fragment_Controller.this,PopCreateCategory.class)
@@ -456,10 +454,6 @@ public class Fragment_Controller extends AppCompatActivity {
                         Bundle bundle = data.getExtras();
 
                         categoryList = (ArrayList) bundle.get("CategoryNames");
-                         for(int i=0;i<categoryList.size();i++) {
-                             dc.addCategory(curProjectName,categoryList.get(i).toString());
-
-                        }
 
                         Intent CreateCategory = new Intent(Fragment_Controller.this,PopCreatePlan.class)
                                 .putExtra("ProjectName", curProjectName).putExtra("Categories", categoryList);
@@ -469,6 +463,13 @@ public class Fragment_Controller extends AppCompatActivity {
                     if(resultCode == 4){
                         Bundle bundle = data.getExtras();
                         categoryListOfPlans = (ArrayList<List<String>>) bundle.get("Plans");
+
+                        dc.addProject(curProjectName);
+
+                        for(int i=0;i<categoryList.size();i++) {
+                            dc.addCategory(curProjectName,categoryList.get(i).toString());
+
+                        }
 
                         // For kategorier
                         for(int i=0;i<categoryListOfPlans.size();i++) {
