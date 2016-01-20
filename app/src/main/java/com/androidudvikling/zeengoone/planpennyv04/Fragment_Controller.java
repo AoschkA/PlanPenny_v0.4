@@ -126,7 +126,8 @@ public class Fragment_Controller extends AppCompatActivity {
             if(off.isEmpty())
                 off.saveAllProjects(dc.getProjects());
             else
-                off.getAllProjects();
+                dc.setProjectList(off.getAllProjects());
+
 
 
             //Opsæt actionbar burgermenu og titel
