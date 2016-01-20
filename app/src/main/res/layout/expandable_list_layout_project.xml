@@ -12,18 +12,4 @@
     android:dividerHeight="0.5dp"
     android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
 />
-<android.support.design.widget.FloatingActionButton
-    android:id="@+id/fabEvent"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentEnd="true"
-    android:layout_alignParentRight="true"
-    android:layout_gravity="bottom|right"
-    android:layout_marginBottom="30dp"
-    android:layout_marginEnd="30dp"
-    android:layout_marginRight="30dp"
-    android:onClick="eventFabClick"
-    android:src="@mipmap/ic_event_white_24dp"
-    android:tint="@color/colorSecondary" />
 </RelativeLayout>
