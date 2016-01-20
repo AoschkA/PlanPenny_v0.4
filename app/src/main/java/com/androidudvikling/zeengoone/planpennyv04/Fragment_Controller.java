@@ -156,17 +156,6 @@ public class Fragment_Controller extends AppCompatActivity {
        if (isGooglePlayServicesAvailable()) {
            refreshResults();
        }
-       int appLocation = pManager.loadAppLocation();
-       Log.d("App Location", Integer.toString(appLocation));
-       if (appLocation==-1) {
-           Log.d("ERROR", "Couldn't reload project - project not found");
-       }
-       else {
-           ViewPagerFragment vpFragment = new ViewPagerFragment()
-                   .newInstance(appLocation);
-           getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, vpFragment, "viewpager").commit();
-
-       }
    }
 
     @Override

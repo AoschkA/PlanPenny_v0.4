@@ -57,7 +57,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         temp.setArguments(args);
 
         // Gemmer nuværende lokation
-        Log.d("Location save", Integer.toString(position)+" - under newInstance");
+        Log.d("Location save", Integer.toString(position) + " - under newInstance");
         Fragment_Controller.pManager.saveAppLocation(position);
 
         return temp;
@@ -139,6 +139,18 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         super.onResume();
         Log.d("SENSOR", "Sensor opened");
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        // Åbner det rigtige projekt
+        int appLocation = Fragment_Controller.pManager.loadAppLocation();
+        Log.d("App Location", Integer.toString(appLocation));
+        if (appLocation==-1) {
+            Log.d("ERROR", "Couldn't reload project - project not found");
+        }
+        else {
+            newInstance(appLocation);
+        }
+
+        // åbner den rigtige tab
         Log.d("APP STATUS", "RESUMED - In ViewPagerFragment");
         int tabLocation = Fragment_Controller.pManager.loadTabLocation(dc.getProjects().get(projectNumber).getTitle());
         Log.d("Tab Location", Integer.toString(tabLocation));
