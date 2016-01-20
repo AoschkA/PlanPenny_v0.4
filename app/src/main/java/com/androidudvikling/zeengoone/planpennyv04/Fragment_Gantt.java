@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +31,11 @@ public class Fragment_Gantt extends Fragment{
     public static final String PROJECT_KEY = "FragmentProjectKey";
     private static ArrayList<Category> tempCategories;
     private static DataLogic dl = Fragment_Controller.dc;
+    private static KategoriAdapter adapter;
     protected TextView kategoriTitel;
     protected EditText kategoriAendreTitel;
     protected Button btnkategoriGem, btnPlanGem;
     protected NumberPicker nbAar, nbMaaned, nbDag;
-    private static KategoriAdapter adapter;
     private Date currentMonth;
     private Date tabMonth;
     private String currentProject = "";
@@ -90,12 +89,7 @@ public class Fragment_Gantt extends Fragment{
                 dl = Fragment_Controller.dc;
                 if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList() == null ||
                         dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().isEmpty()) {
-                    LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    convertView = inflater.inflate(R.layout.kategori_liste_empty, parent, false);
 
-                    TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element2);
-                    kategori_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.accent));
-                    kategori_element.setText(dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
                 } else {
                     if (dl.getCategoryForMonth(currentProject, groupPosition, tabMonth.getYear(), tabMonth.getMonth()).size() > 0) {
                         TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);

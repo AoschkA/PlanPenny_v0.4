@@ -59,14 +59,25 @@ public class KategoriAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        // check om viewet findes allerede, hvis ikke lav det
-        if(convertView == null){
+        if (dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList() == null ||
+                dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().isEmpty()) {
             LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.kategori_liste, parent, false);
+            convertView = inflater.inflate(R.layout.kategori_liste_empty, parent, false);
+
+            TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element2);
+            kategori_element.setText(dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
         }
-        // hent listen af kategorier og læg sæt tekst i listen til deres titler
-        TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element);
-        kategori_element.setText(dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
+        else {
+            // check om viewet findes allerede, hvis ikke lav det
+            if(convertView == null){
+                LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.kategori_liste, parent, false);
+            }
+            // hent listen af kategorier og læg sæt tekst i listen til deres titler
+            TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element);
+            kategori_element.setText(dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
+        }
+
         return convertView;
     }
 
