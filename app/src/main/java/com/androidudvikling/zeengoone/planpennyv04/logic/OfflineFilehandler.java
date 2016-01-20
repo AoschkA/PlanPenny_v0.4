@@ -150,7 +150,6 @@ public class OfflineFilehandler {
 
             for(int i = 0 ; i<allFileNames.length ; i++){
                 String[] filename = allFileNames[i].split("\\.");
-                System.out.println(filename[0]);
                     projectList.add(getProject(filename[0]));
             }
 

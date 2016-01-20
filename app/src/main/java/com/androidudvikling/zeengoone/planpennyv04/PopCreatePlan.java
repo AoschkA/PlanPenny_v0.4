@@ -52,6 +52,8 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
     private Spinner categoryChooser;
     private String chosenCategory = "not set";
     private EditText planTitle;
+    private String spinnerSelectedName;
+
     private DatePickerDialog.OnDateSetListener dpickerListnerStart
             = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -226,9 +228,13 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
 
                case R.id.buttonDone: {
                    String errorCategories = null;
+                   int errorCat = 0;
+                   String currentErrorCategory = null;
                    for(int i=0;i<listOfPlansInCategories.size();i++)
                    {
                        if(listOfPlansInCategories.get(i).isEmpty()) {
+                           errorCat++;
+                           currentErrorCategory = curCategories.get(i);
                            if (errorCategories == null) {
                                errorCategories = curCategories.get(i).toString() + ",";
                            } else {
@@ -237,7 +243,41 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                        }
 
                    }
-                   if (errorCategories != null){
+                   if(errorCat == 1){
+                       System.out.println(currentErrorCategory);
+                       System.out.println(spinnerSelectedName);
+                       if(currentErrorCategory == spinnerSelectedName){
+                           if (!startIsSet) {
+                               errorText.setText("Du skal vælge en start dato.");
+                           }else if(!endIsSet) {
+                               errorText.setText("Du skal vælge en slut dato.");
+                           }
+                           else {
+                               checkOverlap(day_x,month_x,year_x,day_y,month_y,year_y,catId);
+                           }if(overlap != "unset") {
+                               errorText.setText("Datoen overlapper en forrige plan for denne kategori: " + overlap);
+                           }else if (year_x <= year_y) {
+                               if ((year_x == year_y && month_x <= month_y) || year_x < year_y) {
+                                   if ((month_x == month_y && day_x <= day_y) || month_x < month_y || year_x < year_y) {
+
+                                       // Hvis alt er ok, opret:
+                                       int catID = catId;
+                                       String planName = planTitle.getText().toString();
+                                       String plan =
+                                               day_x + "," + month_x + "," + year_x + "-"
+                                                       + day_y + "," + month_y + "," + year_y + "," + planName;
+                                       System.out.println(catID);
+                                       listOfPlansInCategories.get(catID).add(plan);
+                                       createProject();
+
+                                       errorText.setText("Planen: " + plan + " er oprettet.");
+                                   }else{errorText.setText("Start dag er efter slut dag");}
+                               }else{errorText.setText("Start måned er efter slut måned");}
+                           }else{errorText.setText("Start år er efter slut år");}
+                       }
+
+                   }
+                   else if (errorCategories != null && !(errorCat == 1 && currentErrorCategory == spinnerSelectedName) ){
                        errorText.setText("Følgende kategorier mangler planer: " + errorCategories);
                    }else{
 
@@ -254,12 +294,29 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
            }
         }
 
+
+    public void createProject(){
+        Intent i = getIntent();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Plans", listOfPlansInCategories);
+        i.putExtra("Plans",listOfPlansInCategories);
+        setResult(4, i);
+        finish();
+    }
+
+
     @Override
     protected Dialog onCreateDialog(int id) {
-        if (id == start)
-            return new DatePickerDialog(this,dpickerListnerStart,year_x,month_x,day_x);
-        if(id == end)
-            return new DatePickerDialog(this,dpickerListnerEnd,year_y,month_y,day_y);
+        if (id == start) {
+            DatePickerDialog sdpd = new DatePickerDialog(this, dpickerListnerStart, year_x, month_x, day_x);
+            sdpd.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            return sdpd;
+        }
+        if(id == end) {
+            DatePickerDialog edpd = new DatePickerDialog(this, dpickerListnerEnd, year_x, month_x, day_x);
+            edpd.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            return edpd;
+        }
 
         return null;
 
@@ -270,10 +327,10 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
 
 
         // Navnet defineret
-        String item = parent.getItemAtPosition(position).toString();
+        spinnerSelectedName = parent.getItemAtPosition(position).toString();
 
         // Valgte spinner item
-        Toast.makeText(parent.getContext(), "Valgt: " + item, Toast.LENGTH_LONG).show();
+        Toast.makeText(parent.getContext(), "Valgt: " + spinnerSelectedName, Toast.LENGTH_LONG).show();
         catId = position;
     }
 
