@@ -35,9 +35,6 @@ public class OfflineFilehandler {
     String extension = ".pp";
     String[] allFileNames;
     ArrayList<Project> projectList;
-    String firebaseTimeStamp;
-    String offlineTimeStamp;
-    String usedProject = null;
     OnlineFilehandler onf;
 
 
@@ -46,14 +43,12 @@ public class OfflineFilehandler {
         onf =  new OnlineFilehandler(ctx);
     }
 
+    /* Til evt. brug af timestamp (Virker ikke)
     public void checkUsedProject(String timestamp){
         String onfTimeStamp = timestamp;
         System.out.println(onfTimeStamp);
 
 
-
-
-        // For offline
         try {
             InputStream inputStream = ctx.openFileInput("VersionTimeStampOffline" + extension);
 
@@ -146,28 +141,19 @@ public class OfflineFilehandler {
             }
         }
     }
+    */
 
     public ArrayList<Project> getAllProjects(String usedProject){
         // Først undersøg om Firebase versionen er nyere end den lokale
-        if(usedProject == "OnlineTimestamp"){
-            projectList = onf.getAllProjectsArrayList();
-            System.out.println(projectList.get(0).getTitle());
-            saveAllProjects(projectList);
-        }
-        else if(usedProject == "OfflineTimestamp"){
             projectList = new ArrayList<Project>();
             allFileNames = ctx.getFilesDir().list();
-            System.out.println(allFileNames[0]);
-            System.out.println(allFileNames[1]);
 
             for(int i = 0 ; i<allFileNames.length ; i++){
                 String[] filename = allFileNames[i].split("\\.");
                 System.out.println(filename[0]);
-                if(!allFileNames[i].equals("VersionTimeStampOffline.pp"))
                     projectList.add(getProject(filename[0]));
             }
-            onf.saveAllProjects(projectList);
-        }
+
         return projectList;
     }
 
@@ -243,20 +229,6 @@ public class OfflineFilehandler {
         // Først fjern de forrige projekter for så at lave dem igen.
         deleteFilesInFolder();
 
-        // Sæt timestamp fil
-        String timeStamp = new SimpleDateFormat("yyyy/MM/dd_HH.mm.ss").format(Calendar.getInstance().getTime());
-        try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(ctx.openFileOutput("VersionTimeStampOffline" + extension, Context.MODE_PRIVATE));
-            try {
-                outputStreamWriter.write(timeStamp);
-                outputStreamWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
         for(int i = 0 ; i<projects.size() ; i++){
             saveProject(projects.get(i));
         }
@@ -306,22 +278,5 @@ public class OfflineFilehandler {
 
     }
 
-    public boolean testProjectSave(String text){
-        String extension = ".pp";
-        try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(ctx.openFileOutput(projectHandler + extension, Context.MODE_PRIVATE));
-            outputStreamWriter.write(text);
-            outputStreamWriter.close();
-        }
-        catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
-
-        return true;
-    }
-
-    public String getUsedProject() {
-        return usedProject;
-    }
 
 }

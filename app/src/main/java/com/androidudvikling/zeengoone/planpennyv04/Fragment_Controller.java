@@ -70,22 +70,6 @@ public class Fragment_Controller extends AppCompatActivity {
     private Boolean landscape;
     private ArrayAdapter<String> adapter;
     private Handler filehand = new Handler();
-    Runnable run = new Runnable() {
-        @Override
-        public void run()
-        {
-            if(onf.getTimeStamp() == null) {
-                onf.checkTimeStamp();
-                filehand.postDelayed(run,100);
-            }else if(off.getUsedProject() == null){
-                System.out.println(onf.getTimeStamp());
-                off.checkUsedProject(onf.getTimeStamp());
-                filehand.postDelayed(run,100);
-            }else{
-                dc.setProjectList(off.getAllProjects(off.getUsedProject()));
-            }
-        }
-    };
     private ArrayList<Project> allProjects;
 
     // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
@@ -490,6 +474,7 @@ public class Fragment_Controller extends AppCompatActivity {
                                 dc.addPlan(curProjectName,categoryList.get(i).toString(),start_date,end_date,"#ff6600", date_end[3]);
                             }
                         }
+                        off.saveAllProjects(dc.getProjects());
                     }
     }
 
