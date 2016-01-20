@@ -136,7 +136,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
         //Sætter stilen for pop
-        getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.border_style, null));
+        getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.google_style, null));
 
         // Top tekst
         planText = (TextView) findViewById(R.id.textNytProjekt);

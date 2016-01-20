@@ -237,9 +237,16 @@ public class Fragment_Controller extends AppCompatActivity {
         onf.getAllProjects();
         // onf.getAllProjects(dc.getProjectsTitles());
 
-        Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
-        startActivityForResult(CreateProject, 2);
+        Intent createProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
+        startActivityForResult(createProject, 2);
 
+    }
+
+    public void mainFabClick(View v) {
+        Intent createCategory = new Intent(Fragment_Controller.this,PopCreateCategory.class);
+        createCategory.putExtra("ProjectName", curProjectName);
+
+        startActivity(createCategory);
     }
 
     @Override
