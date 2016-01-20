@@ -143,7 +143,7 @@ public class OfflineFilehandler {
     }
     */
 
-    public ArrayList<Project> getAllProjects(String usedProject){
+    public ArrayList<Project> getAllProjects(){
         // Først undersøg om Firebase versionen er nyere end den lokale
             projectList = new ArrayList<Project>();
             allFileNames = ctx.getFilesDir().list();
@@ -155,6 +155,14 @@ public class OfflineFilehandler {
             }
 
         return projectList;
+    }
+
+    public boolean isEmpty(){
+        String[] projects = ctx.getFilesDir().list();
+        if(projects.length == 0){
+            return true;
+        }
+        return false;
     }
 
     public Project getProject(String project){
