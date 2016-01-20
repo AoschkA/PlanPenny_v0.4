@@ -67,7 +67,6 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                 = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
                     year_y = year;
                     month_y = monthOfYear + 1;
                     day_y = dayOfMonth;
@@ -217,6 +216,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                                                    + day_y + "," + month_y + "," + year_y + "," + planName;
                                    System.out.println(catID);
                                    listOfPlansInCategories.get(catID).add(plan);
+                                   planTitle.setText("");
 
                                    errorText.setText("Planen: " + plan + " er oprettet.");
                                }else{errorText.setText("Start dag er efter slut dag");}
@@ -325,6 +325,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
         }
         return false;
     }
+
 }
 
 

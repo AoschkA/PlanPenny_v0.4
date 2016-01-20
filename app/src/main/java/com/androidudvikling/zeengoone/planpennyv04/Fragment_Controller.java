@@ -122,8 +122,13 @@ public class Fragment_Controller extends AppCompatActivity {
             // Opsæt online filehandler
             onf = new OnlineFilehandler(ctx);
 
-            //Lav et timestamp check
-            //filehand.post(run);
+            //Henter filer fra filehandler
+
+            onf.saveAllProjects(off.getAllProjects());
+            if(off.isEmpty())
+                off.saveAllProjects(dc.getProjects());
+            else
+                dc.setProjectList(off.getAllProjects());
 
             //Opsæt actionbar burgermenu og titel
             this.setTitle(getString(R.string.app_title));
@@ -188,6 +193,16 @@ public class Fragment_Controller extends AppCompatActivity {
         // Sæt drawer elementer til ProjektVisning
         adapter = new ArrayAdapter<>(this,
                 R.layout.skuffe_projekt_liste_element, dc.getProjectsTitles());
+        projekt_liste_view.setAdapter(adapter);
+        projekt_liste_view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                dc.deleteProject(position);
+                off.saveAllProjects(dc.getProjects());
+                return false;
+            }
+        });
+        adapter.notifyDataSetChanged();
         projekt_liste_view.setAdapter(adapter);
         return true;
     }
@@ -483,6 +498,7 @@ public class Fragment_Controller extends AppCompatActivity {
                             }
                         }
                         off.saveAllProjects(dc.getProjects());
+                        opdaterDrawer();
                     }
     }
 

@@ -19,7 +19,13 @@ public class DataLogic implements Serializable {
 	private static boolean sync_google = false;
 	private static ProjectDB projectDB = new ProjectDB();
 	
-	public DataLogic() {addDefaultProjects();}
+	public DataLogic() {
+		if(getProjects().size() > 0) {
+	    }
+		else{
+			addDefaultProjects();
+		}
+	}
 
 	public int getSortType_project() {
 		return sortType_project;
@@ -48,6 +54,10 @@ public class DataLogic implements Serializable {
 	public void clearProjects(){
 		projectDB.clearList();
 	}
+
+    public void deleteProject(int projectNumber) {
+        projectDB.deleteProject(projectNumber);
+    }
 	
 	public void addProject(String projectTitle) {
 		projectDB.addProject(new Project(projectTitle));
@@ -217,7 +227,6 @@ public class DataLogic implements Serializable {
 	// Creates some data for startup
 	public void addDefaultProjects() {
 		String color = "#ff6600";
-		projectDB.clearList();
 		// Project 1
 		addProject("Redesign of company");
 		addCategory("Redesign of company", "Design");
@@ -243,8 +252,5 @@ public class DataLogic implements Serializable {
 		addProject("Preparing for marathon");
 		addCategory("Preparing for marathon", "Run training sessions");
 		addPlan("Preparing for marathon", "Run training sessions", new Date(2016, 2, 2), new Date(2016, 5, 28), color, "Løb");
-		
 	}
-	
-	
 }

@@ -1,8 +1,6 @@
 package com.androidudvikling.zeengoone.planpennyv04.logic;
 
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.os.Environment;
 import android.util.Log;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
@@ -18,10 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by alexandervpedersen on 15/01/16.
@@ -143,18 +138,22 @@ public class OfflineFilehandler {
     }
     */
 
-    public ArrayList<Project> getAllProjects(String usedProject){
+    public ArrayList<Project> getAllProjects(){
         // Først undersøg om Firebase versionen er nyere end den lokale
             projectList = new ArrayList<Project>();
             allFileNames = ctx.getFilesDir().list();
 
             for(int i = 0 ; i<allFileNames.length ; i++){
                 String[] filename = allFileNames[i].split("\\.");
-                System.out.println(filename[0]);
-                    projectList.add(getProject(filename[0]));
+                projectList.add(getProject(filename[0]));
             }
 
         return projectList;
+    }
+
+    public boolean isEmpty(){
+        String[] projects = ctx.getFilesDir().list();
+        return projects.length == 0;
     }
 
     public Project getProject(String project){
