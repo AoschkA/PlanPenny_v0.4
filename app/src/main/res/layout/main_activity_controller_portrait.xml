@@ -17,6 +17,7 @@
             android:layout_weight="1">
 
             <android.support.design.widget.FloatingActionButton
+                android:id="@+id/mainFab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|bottom"
@@ -24,6 +25,7 @@
                 android:onClick="mainFabClick"
                 android:src="@android:drawable/ic_input_add"
                 android:tint="@color/colorSecondary"
+                android:visibility="gone"
                 app:layout_anchorGravity="bottom|right|end" />
         </FrameLayout>
     </LinearLayout>
@@ -48,6 +50,7 @@
         />
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabDrawer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"

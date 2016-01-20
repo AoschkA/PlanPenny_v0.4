@@ -3,6 +3,5 @@
     android:id="@+id/landscape_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-</LinearLayout>
+    android:background="@mipmap/penny_gantt_view"
+    android:orientation="vertical"></LinearLayout>

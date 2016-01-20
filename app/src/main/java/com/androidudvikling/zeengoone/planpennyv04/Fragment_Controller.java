@@ -29,7 +29,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
-import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OfflineFilehandler;
@@ -44,7 +43,6 @@ import com.google.api.services.calendar.CalendarScopes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 public class Fragment_Controller extends AppCompatActivity {
@@ -58,6 +56,12 @@ public class Fragment_Controller extends AppCompatActivity {
     public static GoogleAccountCredential mCredential;
     public static com.google.api.services.calendar.Calendar mService = null;
     public static Context ctx;
+    public static boolean isFinalized = false;
+    private static FloatingActionButton mainFab;
+    private static OfflineFilehandler off;
+    private static OnlineFilehandler onf;
+    private static boolean mainFabClick = false;
+    private static boolean drawerFabClick = false;
     ProgressDialog mProgress;
     private ListView projekt_liste_view;
     private DrawerLayout pennydrawerLayout;
@@ -67,24 +71,41 @@ public class Fragment_Controller extends AppCompatActivity {
     private ArrayList categoryList;
     private ArrayList<List<String>> categoryListOfPlans;
     private Firebase uRef;
-    private OfflineFilehandler off;
-    private OnlineFilehandler onf;
     private Boolean landscape;
     private ArrayAdapter<String> adapter;
     private Handler filehand = new Handler();
     private ArrayList<Project> allProjects;
-
     // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
+
+    public static void removeMainFab(){
+        isFinalized = true;
+        mainFab.setVisibility(View.GONE);
+    }
+
+    public static void insertMainFab(){
+        isFinalized = false;
+        mainFab.setVisibility(View.VISIBLE);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ctx = getApplicationContext();
+        // Instantiere Firebase
+        Firebase.setAndroidContext(this);
+
+        off = new OfflineFilehandler(ctx);
+        onf = new OnlineFilehandler(ctx);
+
         landscape = ctx.getResources().getBoolean(R.bool.is_landscape);
         pManager = new PreferenceManager(this);
         if(!landscape) {
             setContentView(R.layout.main_activity_controller_portrait);
+            drawerFab = (FloatingActionButton) findViewById(R.id.fabDrawer);
+            mainFab = (FloatingActionButton) findViewById(R.id.mainFab);
+            mainFab.setVisibility(View.GONE);
+
             // Sæt drawer elementer til ProjektVisning
             projekt_liste_view = (ListView) findViewById(R.id.penny_projekt_drawer_list);
             adapter = new ArrayAdapter<>(this,R.layout.skuffe_projekt_liste_element, dc.getProjectsTitles());
@@ -109,18 +130,9 @@ public class Fragment_Controller extends AppCompatActivity {
             // Onclick listener til projektlistemenuen
             projekt_liste_view.setOnItemClickListener(new DrawerItemClickListener());
 
-            // Instantiere Firebase
-            Firebase.setAndroidContext(this);
-
             // Instantiere ProgressDialog
             mProgress = new ProgressDialog(this);
             mProgress.setMessage("Calling Google Calendar API ...");
-
-            //Opsæt offline filehandler
-            off = new OfflineFilehandler(ctx);
-
-            // Opsæt online filehandler
-            onf = new OnlineFilehandler(ctx);
 
             //Henter filer fra filehandler
 
@@ -149,17 +161,12 @@ public class Fragment_Controller extends AppCompatActivity {
             int location = pManager.loadAppLocation();
             if (location>-1) {
                 ViewPagerFragment vpFragment = new ViewPagerFragment().newInstance(location);
+                mainFab.setVisibility(View.VISIBLE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, vpFragment, "viewpager").commit();
             }
         }
         else{
             setContentView(R.layout.main_activity_controller_landscape);
-            // Instantiere credentials og service objekt
-            SharedPreferences googleSettings = getPreferences(Context.MODE_PRIVATE);
-            mCredential = GoogleAccountCredential.usingOAuth2(
-                    getApplicationContext(), Arrays.asList(SCOPES))
-                    .setBackOff(new ExponentialBackOff())
-                    .setSelectedAccountName(googleSettings.getString(PREF_ACCOUNT_NAME, null));
         }
     }
 
@@ -174,7 +181,6 @@ public class Fragment_Controller extends AppCompatActivity {
        if (isGooglePlayServicesAvailable()) {
            refreshResults();
        }
-
        // Mulighed for at gemme activiteter
        /*
        int appLocation = pManager.loadAppLocation();
@@ -197,18 +203,26 @@ public class Fragment_Controller extends AppCompatActivity {
         projekt_liste_view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                dc.deleteProject(position);
-                off.saveAllProjects(dc.getProjects());
+                dc.getProjects().remove(position);
+                Bundle args = new Bundle();
+                args.putInt(Fragment_Gantt.POSITION_KEY, 0);
+                args.putInt(Fragment_Gantt.PROJECT_KEY, 0);
+                Fragment_Gantt.newInstance(args);
+                opdaterDrawer();
+                ViewPagerFragment.updateViewPagerList();
                 return false;
             }
         });
-        adapter.notifyDataSetChanged();
-        projekt_liste_view.setAdapter(adapter);
+
+        if (isFinalized)
+            menu.getItem(1).setEnabled(false);
         return true;
     }
 
     public void opdaterDrawer(){
         // Sæt drawer elementer til ProjektVisning
+        adapter = new ArrayAdapter<>(this,
+                R.layout.skuffe_projekt_liste_element, dc.getProjectsTitles());
         adapter.notifyDataSetChanged();
         projekt_liste_view.setAdapter(adapter);
     }
@@ -251,6 +265,7 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void drawerFabClick(View v){
+        drawerFabClick = true;
         Intent createProject = new Intent(Fragment_Controller.this,PopCreateProject.class)
                 .putExtra("ProjectNames",dc.getProjectsTitles());
         startActivityForResult(createProject, 2);
@@ -258,8 +273,11 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void mainFabClick(View v) {
-        int location = pManager.loadAppLocation();
-        dc.addCategory(dc.getProjects().get(location).getTitle(), "new");
+        mainFabClick = true;
+        curProjectName = dc.getProjectsTitles().get(pManager.loadAppLocation());
+        Intent CreateCategory = new Intent(Fragment_Controller.this,PopCreateCategory.class)
+                .putExtra("ProjectName", curProjectName);
+        startActivityForResult(CreateCategory, 3);
 
 
         /*
@@ -295,12 +313,16 @@ public class Fragment_Controller extends AppCompatActivity {
     @Override
     public void onPause(){
         super.onPause();
+        onf.saveAllProjects(off.getAllProjects());
+        off.saveAllProjects(dc.getProjects());
         Log.d("APP STATUS", "PAUSED");
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
+        onf.saveAllProjects(off.getAllProjects());
+        off.saveAllProjects(dc.getProjects());
         Log.d("APP STATUS", "DETROYED");
     }
 
@@ -376,7 +398,12 @@ public class Fragment_Controller extends AppCompatActivity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
     }
-
+    @Override
+    public void onStop(){
+        super.onStop();
+        onf.saveAllProjects(off.getAllProjects());
+        off.saveAllProjects(dc.getProjects());
+    }
     // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
 
     /**
@@ -485,8 +512,12 @@ public class Fragment_Controller extends AppCompatActivity {
                         Bundle bundle = data.getExtras();
                         categoryListOfPlans = (ArrayList<List<String>>) bundle.get("Plans");
 
-                        dc.addProject(curProjectName);
+                        if(mainFabClick){
 
+                        }
+                        else{
+                            dc.addProject(curProjectName);
+                        }
                         for(int i=0;i<categoryList.size();i++) {
                             dc.addCategory(curProjectName,categoryList.get(i).toString());
 
@@ -516,7 +547,15 @@ public class Fragment_Controller extends AppCompatActivity {
                             }
                         }
                         off.saveAllProjects(dc.getProjects());
-                        opdaterDrawer();
+                        System.out.println("Opdaterer Drawer");
+                        if(drawerFabClick){
+                            opdaterDrawer();
+                            drawerFabClick = false;
+                        }
+                        else if(mainFabClick){
+                            ViewPagerFragment.updateViewPagerList();
+                            mainFabClick = false;
+                        }
                     }
     }
 

@@ -4,7 +4,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -16,13 +15,11 @@ import android.view.ViewGroup;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
-import com.androidudvikling.zeengoone.planpennyv04.logic.PreferenceManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.zip.Inflater;
 
 /**
  * Created by zeengoone on 1/15/16.
@@ -35,12 +32,12 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
     public static Sensor sensor;
     private static TabLayout tabLayout;
     private static ViewPager viewPager;
+    private static int projectNumber;
+    private static DataLogic dc = Fragment_Controller.dc;
+    private static ViewPagerAdapter adapter;
     private ArrayList<String> tabMaaneder = new ArrayList<String>();
     private int currentMonth;
-    private static int projectNumber;
     private Calendar cal = new GregorianCalendar();
-    private static DataLogic dc = Fragment_Controller.dc;
-    private ViewPagerAdapter adapter;
     private long lastUpdate = 0;
 
     public static void vpChangeCurrentItem(int position){
@@ -53,6 +50,12 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
 
     }
 
+    public static void updateViewPagerList(){
+        dc = Fragment_Controller.dc;
+        adapter.notifyDataSetChanged();
+        viewPager.setAdapter(adapter);
+
+    }
 
     public ViewPagerFragment newInstance(int position){
         ViewPagerFragment temp = new ViewPagerFragment();
@@ -97,6 +100,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // forbered view, viewpager og set adapter
         // Læg to års måneder ind i tab-listen
+        Fragment_Controller.insertMainFab();
         int aar = Calendar.getInstance().get(Calendar.YEAR);
         int maaned = Calendar.getInstance().get(Calendar.MONTH);
         int dag = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
@@ -137,7 +141,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
     public void onResume() {
         super.onResume();
         Log.d("VIEWPAGE", "onResume");
-
+        Fragment_Controller.insertMainFab();
         Log.d("SENSOR", "Sensor opened");
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
@@ -229,7 +233,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
     public void onDestroy() {
         super.onDestroy();
         Log.d("VIEWPAGE", "onDestroy");
-
+        Fragment_Controller.removeMainFab();
         Log.d("SENSOR", "Sensor closed");
         sensorManager.unregisterListener(this);
     }

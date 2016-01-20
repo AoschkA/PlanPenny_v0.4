@@ -38,7 +38,6 @@ public class ProjectDB implements Serializable{
     }
 
     public void setProjectList(ArrayList<Project> projectlist) {
-        projectList.clear();
         projectList=projectlist;
     }
 

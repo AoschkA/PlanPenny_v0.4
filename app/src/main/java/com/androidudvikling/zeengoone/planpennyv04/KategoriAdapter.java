@@ -6,15 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
-import com.androidudvikling.zeengoone.planpennyv04.entities.Plan;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
-
-import java.util.Calendar;
 
 /**
  * Created by zeengoone on 1/8/16.
@@ -65,26 +59,14 @@ public class KategoriAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-         if (dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList() == null ||
-                 dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().isEmpty()) {
-             if(convertView == null) {
-                 LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                 convertView = inflater.inflate(R.layout.kategori_liste_empty, parent, false);
-             }
-            TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element2);
-            kategori_element.setText(dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
-
-        }
-        else {
             // check om viewet findes allerede, hvis ikke lav det
             if(convertView == null){
                 LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.kategori_liste, parent, false);
             }
             // hent listen af kategorier og læg sæt tekst i listen til deres titler
-            TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element);
+            TextView kategori_element = (TextView) convertView.findViewById(R.id.txtkategori_liste_element);
             kategori_element.setText(dc.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
-        }
         return convertView;
     }
 

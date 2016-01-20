@@ -32,9 +32,9 @@ public class Fragment_Gantt extends Fragment{
     private static ArrayList<Category> tempCategories;
     private static DataLogic dl = Fragment_Controller.dc;
     private static KategoriAdapter adapter;
-    protected TextView kategoriTitel;
+    protected TextView kategoriTitel, txthoejre, txtvenstre,kategori_element;
     protected EditText kategoriAendreTitel;
-    protected Button btnkategoriGem, btnPlanGem;
+    protected Button btnkategoriGem, btnPlanGem,btnKategoriSlet;
     protected NumberPicker nbAar, nbMaaned, nbDag;
     private Date currentMonth;
     private Date tabMonth;
@@ -73,7 +73,8 @@ public class Fragment_Gantt extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.expandable_list_layout_project, container, false);
-
+        System.out.println("Position KEY: " + getArguments().getInt(Fragment_Gantt.POSITION_KEY));
+        System.out.println("Project KEY: " + getArguments().getInt(Fragment_Gantt.PROJECT_KEY));
         faneposition = getArguments().getInt(Fragment_Gantt.POSITION_KEY);
         project = getArguments().getInt(Fragment_Gantt.PROJECT_KEY);
         currentProject = dl.getProjects().get(project).getTitle();
@@ -87,40 +88,16 @@ public class Fragment_Gantt extends Fragment{
             public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
                 View view = super.getGroupView(groupPosition, isExpanded, convertView, parent);
                 dl = Fragment_Controller.dc;
-                if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList() == null ||
-                        dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().isEmpty()) {
-                    int day;
-                    int max = Plan.maxDaysInMonth(
-                            Calendar.getInstance().get(Calendar.YEAR),
-                            Calendar.getInstance().get(Calendar.MONTH)+1);
-                    if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH)>=max) {
-                        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                    } else day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-
-                    dl.getProjects().get(currentProjectNumber).getCategoryList().
-                                    get(groupPosition)
-                                    .addPlan(
-                                            new Plan(
-                                                    new Date(Calendar.getInstance().get(Calendar.YEAR),
-                                                            Calendar.getInstance().get(Calendar.MONTH)+1,
-                                                            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)),
-                                                    new Date(Calendar.getInstance().get(Calendar.YEAR),
-                                                            Calendar.getInstance().get(Calendar.MONTH)+1,
-                                                            day),
-                                                    "",
-                                                    dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle()));
-
-                } else {
                     if (dl.getCategoryForMonth(currentProject, groupPosition, tabMonth.getYear(), tabMonth.getMonth()).size() > 0) {
-                        TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
-                        TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
+                        txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
+                        txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
                         txthoejre.setBackgroundResource(R.drawable.pil_ingen);
                         txtvenstre.setBackgroundResource(R.drawable.pil_ingen);
                         txthoejre.setText("");
                         txtvenstre.setText("");
                     } else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate().after(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getEndDate().after(tabMonth)) {
-                        TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
-                        TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
+                        txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
+                        txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
                         txthoejre.setBackgroundResource(R.mipmap.pil_hoejre_ny);
                         txtvenstre.setBackgroundResource(R.drawable.pil_ingen);
                         final Date dato = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate();
@@ -134,8 +111,8 @@ public class Fragment_Gantt extends Fragment{
                             }
                         });
                     } else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate().before(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getEndDate().before(tabMonth)) {
-                        TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
-                        TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
+                        txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
+                        txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
                         txthoejre.setBackgroundResource(R.drawable.pil_ingen);
                         txtvenstre.setBackgroundResource(R.mipmap.pil_venstre_ny);
                         final Date dato = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate();
@@ -149,8 +126,8 @@ public class Fragment_Gantt extends Fragment{
                             }
                         });
                     } else {
-                        TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
-                        TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
+                        txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
+                        txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
                         txthoejre.setBackgroundResource(R.drawable.pil_ingen);
                         txtvenstre.setBackgroundResource(R.drawable.pil_ingen);
                         txthoejre.setText("");
@@ -160,9 +137,8 @@ public class Fragment_Gantt extends Fragment{
                         LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = inflater.inflate(R.layout.kategori_liste, parent, false);
                     }
-                    TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element);
+                    kategori_element = (TextView) convertView.findViewById(R.id.txtkategori_liste_element);
                     kategori_element.setText(dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
-                }
                 return view;
             }
         };
@@ -213,7 +189,7 @@ public class Fragment_Gantt extends Fragment{
                             else{
                                 nbDag.setMinValue(1);
                             }
-                            nbDag.setMaxValue(plandato.maxDaysInMonth(nbAar.getValue(), nbMaaned.getValue()));
+                            nbDag.setMaxValue(Plan.maxDaysInMonth(nbAar.getValue(), nbMaaned.getValue()));
 
                         }
                     });
@@ -233,7 +209,7 @@ public class Fragment_Gantt extends Fragment{
                             else{
                                 nbDag.setMinValue(1);
                             }
-                            nbDag.setMaxValue(plandato.maxDaysInMonth(nbAar.getValue(), nbMaaned.getValue()));
+                            nbDag.setMaxValue(Plan.maxDaysInMonth(nbAar.getValue(), nbMaaned.getValue()));
                         }
                     });
                     nbAar.setValue(Calendar.getInstance().get(Calendar.YEAR));
@@ -272,12 +248,30 @@ public class Fragment_Gantt extends Fragment{
                 } else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
                     groupPosition = ExpandableListView.getPackedPositionGroup(id);
                     //do your per-group callback here
-                    kategoriTitel = (TextView) view.findViewById(R.id.kategori_liste_element);
-                    kategoriAendreTitel = (EditText) view.findViewById(R.id.aendreKategori);
-                    btnkategoriGem = (Button) view.findViewById(R.id.kategoriAendringKnap);
+                    kategoriTitel = (TextView) view.findViewById(R.id.txtkategori_liste_element);
+                    kategoriAendreTitel = (EditText) view.findViewById(R.id.editaendreKategori);
+                    btnkategoriGem = (Button) view.findViewById(R.id.btnkategoriAendring);
+                    btnKategoriSlet = (Button) view.findViewById(R.id.btnkategoriSlet);
                     kategoriTitel.setVisibility(View.GONE);
+                    txthoejre.setVisibility(View.GONE);
+                    txtvenstre.setVisibility(View.GONE);
                     kategoriAendreTitel.setVisibility(View.VISIBLE);
                     kategoriAendreTitel.setText(kategoriTitel.getText());
+                    btnKategoriSlet.setVisibility(View.VISIBLE);
+                    btnKategoriSlet.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            kategoriTitel.setText(kategoriAendreTitel.getText());
+                            btnkategoriGem.setVisibility(View.GONE);
+                            btnKategoriSlet.setVisibility(View.GONE);
+                            kategoriAendreTitel.setVisibility(View.GONE);
+                            kategoriTitel.setVisibility(View.VISIBLE);
+                            txthoejre.setVisibility(View.VISIBLE);
+                            txtvenstre.setVisibility(View.VISIBLE);
+                            dl.getProjects().get(project).getCategoryList().remove(groupPosition);
+                            ViewPagerFragment.updateViewPagerList();
+                        }
+                    });
                     btnkategoriGem.setVisibility(View.VISIBLE);
                     btnkategoriGem.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -286,6 +280,8 @@ public class Fragment_Gantt extends Fragment{
                             btnkategoriGem.setVisibility(View.GONE);
                             kategoriAendreTitel.setVisibility(View.GONE);
                             kategoriTitel.setVisibility(View.VISIBLE);
+                            txthoejre.setVisibility(View.VISIBLE);
+                            txtvenstre.setVisibility(View.VISIBLE);
                             dl.getProjects().get(project).getCategoryList().get(groupPosition).setCategoryTitle(kategoriAendreTitel.getText().toString());
                         }
                     });
