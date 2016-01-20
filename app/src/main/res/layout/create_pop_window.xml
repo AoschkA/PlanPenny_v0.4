@@ -82,7 +82,7 @@
             android:onClick="OnBtnClicked"
             android:background="@drawable/button_gradient"
             android:layout_below="@+id/errorText"
-            android:layout_toRightOf="@+id/errorText" />
+            android:layout_marginLeft="10dp" />
     </RelativeLayout>
 
 </RelativeLayout>
