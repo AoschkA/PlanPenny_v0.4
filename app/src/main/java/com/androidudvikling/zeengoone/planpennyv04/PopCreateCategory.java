@@ -76,8 +76,8 @@ public class PopCreateCategory extends Activity  {
         double scaleHeight = 0.8;
         double scaleWidth = 0.8;
 
-        int width = (int) (320);
-        int height = (int) (640);
+        int width = (int) ((dpm.widthPixels) * scaleWidth);
+        int height = (int) ((dpm.heightPixels) * scaleHeight);
 
         //Sætter layout dimensionerne på pop
         getWindow().setLayout(width, height);

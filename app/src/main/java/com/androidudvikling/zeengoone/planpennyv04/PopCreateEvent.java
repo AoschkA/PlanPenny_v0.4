@@ -84,8 +84,9 @@ public class PopCreateEvent extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if (v.getId()==button_regret.getId()) {
-            googleEventCreater.setDelete(true);
-            googleEventCreater.execute();
+            // Test af slet events i kalender sværere end som så
+            //googleEventCreater.setDelete(true);
+            //googleEventCreater.execute();
             finish();
         }
         else if (v.getId()==button_ok.getId()) {

@@ -8,13 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -32,6 +29,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
+import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OfflineFilehandler;
 import com.androidudvikling.zeengoone.planpennyv04.logic.OnlineFilehandler;
@@ -43,6 +41,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,6 +56,7 @@ public class Fragment_Controller extends AppCompatActivity {
     public static DataLogic dc = new DataLogic();
     public static GoogleAccountCredential mCredential;
     public static com.google.api.services.calendar.Calendar mService = null;
+    public static Context ctx;
     ProgressDialog mProgress;
     private ListView projekt_liste_view;
     private DrawerLayout pennydrawerLayout;
@@ -68,9 +68,10 @@ public class Fragment_Controller extends AppCompatActivity {
     private Firebase uRef;
     private OfflineFilehandler off;
     private OnlineFilehandler onf;
-    private Context ctx;
     private Boolean landscape;
     private ArrayAdapter<String> adapter;
+    private Handler filehand = new Handler();
+    private ArrayList<Project> allProjects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +115,12 @@ public class Fragment_Controller extends AppCompatActivity {
 
             //Opsæt offline filehandler
             off = new OfflineFilehandler(ctx);
+
+            // Opsæt online filehandler
+            onf = new OnlineFilehandler(ctx);
+
+            //Lav et timestamp check
+            filehand.post(run);
 
             //Opsæt actionbar burgermenu og titel
             this.setTitle(getString(R.string.app_title));
@@ -174,11 +181,13 @@ public class Fragment_Controller extends AppCompatActivity {
         projekt_liste_view.setAdapter(adapter);
         return true;
     }
+
     public void opdaterDrawer(){
         // Sæt drawer elementer til ProjektVisning
         adapter.notifyDataSetChanged();
         projekt_liste_view.setAdapter(adapter);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if(!landscape){
@@ -209,7 +218,7 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void drawerFabClick(View v){
-        onf.getAllProjects(dc.getProjectsTitles());
+        onf.getAllProjects();
         // onf.getAllProjects(dc.getProjectsTitles());
 
         Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
@@ -257,9 +266,7 @@ public class Fragment_Controller extends AppCompatActivity {
         if (penny_Projekt_Drawer_Toggle.onOptionsItemSelected(item)) { return true; }
         return super.onOptionsItemSelected(item);
     }
-
-
-
+    
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -344,6 +351,20 @@ public class Fragment_Controller extends AppCompatActivity {
                 REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
     }
+
+    Runnable run = new Runnable() {
+        @Override
+        public void run()
+        {
+            if(onf.getTimeStamp() == null) {
+                onf.checkTimeStamp();
+                filehand.postDelayed(run,100);
+            }else{
+                System.out.println(onf.getTimeStamp());
+                off.checkUsedProject(onf.getTimeStamp());
+            }
+        }
+    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
