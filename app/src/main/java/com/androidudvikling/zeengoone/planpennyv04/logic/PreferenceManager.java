@@ -55,6 +55,21 @@ public class PreferenceManager {
         return appLocation;
     }
 
+    public void saveActivityLocation(String location) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("appLocation", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("activityLocation", location);
+        editor.apply();
+    }
+
+    public String loadActivityLocation() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("appLocation", Context.MODE_PRIVATE);
+
+        String location = sharedPreferences.getString("activityLocation", "");
+        return location;
+    }
+
     public void saveTabLocation(String projectName, int tabLocation) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(projectName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

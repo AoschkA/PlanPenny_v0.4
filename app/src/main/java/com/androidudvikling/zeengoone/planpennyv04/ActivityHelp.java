@@ -49,20 +49,20 @@ public class ActivityHelp extends Activity implements View.OnClickListener {
         else if (v.getId() == buttonWeb.getId()) {
             startActivity(new Intent(this, PopHomepage.class));
             // Gemmer nuværende lokation
+            /*
             Log.d("Location save", Integer.toString(-11) + " - (help - webview)");
             Fragment_Controller.pManager.saveAppLocation(-11);
+            */
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        /*
         if (Fragment_Controller.pManager.loadAppLocation()==-11) {
             startActivity(new Intent(this, PopHomepage.class));
         }
-        else {
-            Log.d("Location save", Integer.toString(-10) + " - (help)");
-            Fragment_Controller.pManager.saveAppLocation(-10);
-        }
+        */
     }
 }
