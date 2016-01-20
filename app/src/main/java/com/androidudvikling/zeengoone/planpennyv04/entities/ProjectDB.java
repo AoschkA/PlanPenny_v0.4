@@ -41,6 +41,10 @@ public class ProjectDB implements Serializable{
         projectList=projectlist;
     }
 
+    public void deleteProject(int projectNumber){
+        projectList.remove(projectNumber);
+    }
+
     public void clearList(){
         projectList.clear();
     }

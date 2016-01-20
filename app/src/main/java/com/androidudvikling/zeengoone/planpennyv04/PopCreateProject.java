@@ -62,7 +62,7 @@ public class PopCreateProject extends Activity  {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
         //Sætter stilen for pop
-        getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.border_style, null));
+        getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.google_style, null));
 
         // Top Text
         projectText = (TextView) findViewById(R.id.textNytProjekt);

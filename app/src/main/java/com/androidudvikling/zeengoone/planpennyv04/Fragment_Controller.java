@@ -13,6 +13,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
@@ -128,8 +130,6 @@ public class Fragment_Controller extends AppCompatActivity {
             else
                 dc.setProjectList(off.getAllProjects());
 
-
-
             //Opsæt actionbar burgermenu og titel
             this.setTitle(getString(R.string.app_title));
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -194,6 +194,16 @@ public class Fragment_Controller extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this,
                 R.layout.skuffe_projekt_liste_element, dc.getProjectsTitles());
         projekt_liste_view.setAdapter(adapter);
+        projekt_liste_view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                dc.deleteProject(position);
+                off.saveAllProjects(dc.getProjects());
+                return false;
+            }
+        });
+        adapter.notifyDataSetChanged();
+        projekt_liste_view.setAdapter(adapter);
         return true;
     }
 
@@ -244,9 +254,15 @@ public class Fragment_Controller extends AppCompatActivity {
         onf.getAllProjects();
         // onf.getAllProjects(dc.getProjectsTitles());
 
-        Intent CreateProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
-        startActivityForResult(CreateProject, 2);
+        Intent createProject = new Intent(Fragment_Controller.this,PopCreateProject.class);
+        startActivityForResult(createProject, 2);
 
+    }
+
+    public void mainFabClick(View v) {
+        int location = pManager.loadAppLocation();
+        dc.addCategory(dc.getProjects().get(location).getTitle(), "new");
+        Fragment_Gantt.notifyAdapter();
     }
 
     @Override
@@ -482,6 +498,7 @@ public class Fragment_Controller extends AppCompatActivity {
                             }
                         }
                         off.saveAllProjects(dc.getProjects());
+                        opdaterDrawer();
                     }
     }
 
