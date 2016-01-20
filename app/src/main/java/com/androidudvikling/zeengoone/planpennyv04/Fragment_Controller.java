@@ -70,22 +70,6 @@ public class Fragment_Controller extends AppCompatActivity {
     private Boolean landscape;
     private ArrayAdapter<String> adapter;
     private Handler filehand = new Handler();
-    Runnable run = new Runnable() {
-        @Override
-        public void run()
-        {
-            if(onf.getTimeStamp() == null) {
-                onf.checkTimeStamp();
-                filehand.postDelayed(run,100);
-            }else if(off.getUsedProject() == null){
-                System.out.println(onf.getTimeStamp());
-                off.checkUsedProject(onf.getTimeStamp());
-                filehand.postDelayed(run,100);
-            }else{
-                dc.setProjectList(off.getAllProjects(off.getUsedProject()));
-            }
-        }
-    };
     private ArrayList<Project> allProjects;
 
     // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
@@ -136,8 +120,9 @@ public class Fragment_Controller extends AppCompatActivity {
             // Opsæt online filehandler
             onf = new OnlineFilehandler(ctx);
 
-            //Lav et timestamp check
-            filehand.post(run);
+            //Henter filer fra filehandler
+            off.saveAllProjects(dc.getProjects());
+
 
             //Opsæt actionbar burgermenu og titel
             this.setTitle(getString(R.string.app_title));
@@ -146,9 +131,6 @@ public class Fragment_Controller extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setLogo(R.drawable.penny_logo);
             getSupportActionBar().setDisplayUseLogoEnabled(true);
-
-            //Opsæt online filehandler
-            onf = new OnlineFilehandler(ctx);
 
             // Instantiere credentials og service objekt
             SharedPreferences googleSettings = getPreferences(Context.MODE_PRIVATE);
@@ -493,6 +475,7 @@ public class Fragment_Controller extends AppCompatActivity {
                                 dc.addPlan(curProjectName,categoryList.get(i).toString(),start_date,end_date,"#ff6600", date_end[3]);
                             }
                         }
+                        off.saveAllProjects(dc.getProjects());
                     }
     }
 

@@ -36,10 +36,11 @@ public class OnlineFilehandler {
     String timestamp = null;
     boolean timestampchecked = false;
 
-
+    /*
     public boolean isTimestampchecked() {
         return timestampchecked;
     }
+    */
 
     public OnlineFilehandler(Context ctx){
         myFirebaseRef = new Firebase("https://planpenny.firebaseio.com/");
@@ -81,10 +82,10 @@ public class OnlineFilehandler {
             myFirebaseRef.child("Projects").child(Integer.toString(i)).setValue(projects.get(i));
         }
 
-        myFirebaseRef.child("VersionTimestamp").setValue(timeStamp);
         Toast.makeText(ctx, "Projekterne er lagt op på Firebase.", Toast.LENGTH_LONG).show();
     }
 
+    /* Bruges ikke
     public void checkTimeStamp(){
         myFirebaseRef.child("VersionTimestamp").addValueEventListener(new ValueEventListener() {
 
@@ -98,10 +99,8 @@ public class OnlineFilehandler {
 
         });
     }
+    */
 
-    public String getTimeStamp(){
-        return timestamp;
-    }
 
     public void getAllProjects(){
         //Får alle projekter på ny
@@ -233,7 +232,7 @@ public class OnlineFilehandler {
             });
     }
 
-
+    /* Bruges ikke
     public void getProject(String projectName){
         myFirebaseRef.child(projectName).addValueEventListener(new ValueEventListener() {
 
@@ -354,10 +353,11 @@ public class OnlineFilehandler {
     public Project getSpecificProject() {
         return project;
     }
+    */
 
     public ArrayList<Project> getAllProjectsArrayList() {
-        System.out.println(allProjects.get(0));
         return allProjects;
 
     }
+
 }
