@@ -1,8 +1,5 @@
 package com.androidudvikling.zeengoone.planpennyv04.logic;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -24,47 +21,44 @@ import java.util.ArrayList;
  * Created by jonasandreassen on 19/01/16.
  */
 public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
+    private static String currentProjectTitle;
     HttpTransport transport    = AndroidHttp.newCompatibleTransport();
     JacksonFactory jsonFactory = new JacksonFactory();
     private DataLogic dc = Fragment_Controller.dc;
     private com.google.api.services.calendar.Calendar service = Fragment_Controller.mService;
-    private String currentProjectTitle;
-    private String calendarID;
-    private boolean deleteCalendarProject = false;
-    private Context ctx;
+    //private boolean deleteCalendarProject = false;
+    //private Context ctx;
 
     public GoogleEventCreater(String currentProject) {
-        this.ctx = Fragment_Controller.ctx;
+        //this.ctx = Fragment_Controller.ctx;
         currentProjectTitle = currentProject;
         // Initialize Calendar service with valid OAuth credentials
         service = new com.google.api.services.calendar.Calendar.Builder(transport, jsonFactory, Fragment_Controller.mCredential)
                 .setApplicationName("applicationName").build();
     }
-
-    public static GoogleEventCreater newInstance(String currentProject) {
-        GoogleEventCreater event = new GoogleEventCreater(currentProject);
-
-        return event;
+    public static GoogleEventCreater newInstance(String currentProject){
+        currentProjectTitle = currentProject;
+        return new GoogleEventCreater(currentProjectTitle);
     }
 
     @Override
     protected Void doInBackground(Void... params) {
         Project project = dc.getProjectDB().getProject(currentProjectTitle);
         Log.d("Fragment_Controller", "testing createEvent i Google Event Creater");
-        if(deleteCalendarProject){
+        /*if(deleteCalendarProject){
             /*
                 Hjemmesider:
                 https://developers.google.com/google-apps/calendar/create-events
                 https://developers.google.com/gdata/javadoc/com/google/gdata/client/Service
-             */
-                /*try {
+
+                try {
                     service.events().insert("primary", event).execute();
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.out.println("GoogleEventCreator Exception!");
-                }*/
+                }
         }
-        else{
+        else{*/
             for (Category c: project.getCategoryList()) {
 
                 // Opretter Event
@@ -101,8 +95,8 @@ public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
                 // int eventId = FindEventId(currentProjectTitle);
                 // System.out.println("Test af eventID metode: " + eventId);
             }
-        }
-        this.deleteCalendarProject = false;
+       /* }
+        this.deleteCalendarProject = false;*/
         return null;
     }
 
@@ -120,14 +114,19 @@ public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
     }
 
     private Project findCurrentProject(String projectName) {
-        for (Project p : dc.getProjects())
-            if (p.getTitle().equals(projectName)) return p;
+        for (Project p : dc.getProjects()) if (p.getTitle().equals(projectName)) return p;
         return null;
     }
+    /*
+    Benyttes ikke lige nu, ikke implementeret
 
     public void setDelete(boolean delete){
         this.deleteCalendarProject = delete;
     }
+    */
+    /*
+    Benyttes ikke endnu, tiltænkt for at fjerne Events der er oprettet
+
     private int FindEventId(String eventtitle) {
 
         Uri eventUri;
@@ -157,4 +156,5 @@ public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
         }
         return result;
     }
+    */
 }
