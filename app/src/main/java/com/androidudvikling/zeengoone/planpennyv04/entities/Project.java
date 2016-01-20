@@ -116,7 +116,7 @@ public class Project implements Serializable{
 		ArrayList<Category> categoryFilter = new ArrayList<Category>();
 		ArrayList<Category> emptyCategories = new ArrayList<Category>();
 		for (Category c : getCategoryList()){
-			if (c.getPlanList()==null) emptyCategories.add(c);
+			if (c.getPlanList()==null || c.getPlanList().isEmpty()) emptyCategories.add(c);
 			else categoryFilter.add(c);
 		}
 
