@@ -243,8 +243,5 @@ public class DataLogic implements Serializable {
 		addProject("Preparing for marathon");
 		addCategory("Preparing for marathon", "Run training sessions");
 		addPlan("Preparing for marathon", "Run training sessions", new Date(2016, 2, 2), new Date(2016, 5, 28), color, "Løb");
-		
 	}
-	
-	
 }
