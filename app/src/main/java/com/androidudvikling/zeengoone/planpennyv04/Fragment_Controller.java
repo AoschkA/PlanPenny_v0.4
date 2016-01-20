@@ -13,6 +13,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.androidudvikling.zeengoone.planpennyv04.entities.Category;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.logic.DataLogic;
@@ -243,10 +245,9 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public void mainFabClick(View v) {
-        Intent createCategory = new Intent(Fragment_Controller.this,PopCreateCategory.class);
-        createCategory.putExtra("ProjectName", curProjectName);
-
-        startActivity(createCategory);
+        int location = pManager.loadAppLocation();
+        dc.addCategory(dc.getProjects().get(location).getTitle(), "new");
+        Fragment_Gantt.notifyAdapter();
     }
 
     @Override

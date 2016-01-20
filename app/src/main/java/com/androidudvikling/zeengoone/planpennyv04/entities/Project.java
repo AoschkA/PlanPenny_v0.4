@@ -113,7 +113,15 @@ public class Project implements Serializable{
 	}
 
 	public void sortCategories(int type) {
-		ArrayList<Category> newCategories = sortCategories(type, getCategoryList());
+		ArrayList<Category> categoryFilter = new ArrayList<Category>();
+		ArrayList<Category> emptyCategories = new ArrayList<Category>();
+		for (Category c : getCategoryList()){
+			if (c.getPlanList()==null) emptyCategories.add(c);
+			else categoryFilter.add(c);
+		}
+
+		ArrayList<Category> newCategories = sortCategories(type, categoryFilter);
+		newCategories.addAll(emptyCategories);
 		setCategoryList(newCategories);
 	}
 

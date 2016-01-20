@@ -140,7 +140,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         pManager.saveSettings(us);
                         logic.setSortType_project(1);
                         logic.sortProjects();
-                        Toast.makeText(ctx, "Sorteringstype 1 for projekt gemt", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ctx, "Sorteringstype 1 for projekter gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
                 button2.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +151,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         pManager.saveSettings(us);
                         logic.setSortType_project(2);
                         logic.sortProjects();
-                        Toast.makeText(ctx, "Sorteringstype 2 for projekt gemt", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ctx, "Sorteringstype 2 for projekter gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
                 button3.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +162,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         pManager.saveSettings(us);
                         logic.setSortType_project(3);
                         logic.sortProjects();
-                        Toast.makeText(ctx, "Sorteringstype 3 for projekt gemt", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ctx, "Sorteringstype 3 for projekter gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -198,7 +198,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         pManager.saveSettings(us);
                         logic.setSortType_category(1);
                         logic.sortProjects();
-                        Toast.makeText(ctx, "Sorteringstype 1 for kategori gemt", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ctx, "Sorteringstype 1 for kategorier gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
                 button5.setOnClickListener(new View.OnClickListener() {
@@ -210,7 +210,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         pManager.saveSettings(us);
                         logic.setSortType_category(2);
                         logic.sortProjects();
-                        Toast.makeText(ctx, "Sorteringstype 2 for kategori gemt", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ctx, "Sorteringstype 2 for kategorier gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
                 button6.setOnClickListener(new View.OnClickListener() {
@@ -222,7 +222,7 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         pManager.saveSettings(us);
                         logic.setSortType_category(3);
                         logic.sortProjects();
-                        Toast.makeText(ctx, "Sorteringstype 3 for kategori gemt", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ctx, "Sorteringstype 3 for kategorier gemt", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

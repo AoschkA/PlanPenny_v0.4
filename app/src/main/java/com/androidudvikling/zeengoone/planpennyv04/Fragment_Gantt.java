@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class Fragment_Gantt extends Fragment{
     protected EditText kategoriAendreTitel;
     protected Button btnkategoriGem, btnPlanGem;
     protected NumberPicker nbAar, nbMaaned, nbDag;
+    private static KategoriAdapter adapter;
     private Date currentMonth;
     private Date tabMonth;
     private String currentProject = "";
@@ -53,6 +55,10 @@ public class Fragment_Gantt extends Fragment{
     public static Date yearToTab(int tab){
         Date tempDate = new Date(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH) + 1, Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         return tempDate.setDateMonth(tab);
+    }
+
+    public static void notifyAdapter() {
+        adapter.notifyDataSetChanged();
     }
 
     public void setProject(String projectTitle){ currentProject = projectTitle; }
@@ -76,64 +82,73 @@ public class Fragment_Gantt extends Fragment{
         beregnMaanedOgAar(faneposition);
 
         // Læg listen ind i arrayadapteren for kategorier
-        KategoriAdapter adapter = new KategoriAdapter(getActivity(), currentProjectNumber) {
+        adapter = new KategoriAdapter(getActivity(), currentProjectNumber) {
 
             @Override
             public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
                 View view = super.getGroupView(groupPosition, isExpanded, convertView, parent);
-                if(dl.getCategoryForMonth(currentProject, groupPosition, tabMonth.getYear(), tabMonth.getMonth()).size() > 0) {
-                    TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
-                    TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
-                    txthoejre.setBackgroundResource(R.drawable.pil_ingen);
-                    txtvenstre.setBackgroundResource(R.drawable.pil_ingen);
-                    txthoejre.setText("");
-                    txtvenstre.setText("");
-                } else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate().after(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getEndDate().after(tabMonth) ) {
-                    TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
-                    TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
-                    txthoejre.setBackgroundResource(R.mipmap.pil_hoejre_ny);
-                    txtvenstre.setBackgroundResource(R.drawable.pil_ingen);
-                    final Date dato = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate();
-                    final int currentMonth = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).numberOfMonths(dato);
-                    txthoejre.setText(dato.getDay() + "/" + dato.getMonth() + "-" + dato.getTwoDigitYear());
-                    txtvenstre.setText("");
-                    txthoejre.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ViewPagerFragment.vpChangeCurrentItem(currentMonth);
-                        }
-                    });
-                }
-                else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate().before(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getEndDate().before(tabMonth)){
-                    TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
-                    TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
-                    txthoejre.setBackgroundResource(R.drawable.pil_ingen);
-                    txtvenstre.setBackgroundResource(R.mipmap.pil_venstre_ny);
-                    final Date dato = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate();
-                    final int currentMonth = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).numberOfMonths(dato);
-                    txthoejre.setText("");
-                    txtvenstre.setText(dato.getDay() + "/" + dato.getMonth() + "-" + dato.getTwoDigitYear());
-                    txtvenstre.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ViewPagerFragment.vpChangeCurrentItem(currentMonth);
-                        }
-                    });
-                }
-                else{
-                    TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
-                    TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
-                    txthoejre.setBackgroundResource(R.drawable.pil_ingen);
-                    txtvenstre.setBackgroundResource(R.drawable.pil_ingen);
-                    txthoejre.setText("");
-                    txtvenstre.setText("");
-                }
-                if(convertView == null){
+                dl = Fragment_Controller.dc;
+                if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList() == null ||
+                        dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getPlanList().isEmpty()) {
                     LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    convertView = inflater.inflate(R.layout.kategori_liste, parent, false);
+                    convertView = inflater.inflate(R.layout.kategori_liste_empty, parent, false);
+
+                    TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element2);
+                    kategori_element.setBackgroundColor(ContextCompat.getColor(ctx, R.color.accent));
+                    kategori_element.setText(dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
+                } else {
+                    if (dl.getCategoryForMonth(currentProject, groupPosition, tabMonth.getYear(), tabMonth.getMonth()).size() > 0) {
+                        TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
+                        TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
+                        txthoejre.setBackgroundResource(R.drawable.pil_ingen);
+                        txtvenstre.setBackgroundResource(R.drawable.pil_ingen);
+                        txthoejre.setText("");
+                        txtvenstre.setText("");
+                    } else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate().after(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getEndDate().after(tabMonth)) {
+                        TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
+                        TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
+                        txthoejre.setBackgroundResource(R.mipmap.pil_hoejre_ny);
+                        txtvenstre.setBackgroundResource(R.drawable.pil_ingen);
+                        final Date dato = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate();
+                        final int currentMonth = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).numberOfMonths(dato);
+                        txthoejre.setText(dato.getDay() + "/" + dato.getMonth() + "-" + dato.getTwoDigitYear());
+                        txtvenstre.setText("");
+                        txthoejre.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ViewPagerFragment.vpChangeCurrentItem(currentMonth);
+                            }
+                        });
+                    } else if (dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate().before(tabMonth) || dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getEndDate().before(tabMonth)) {
+                        TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
+                        TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
+                        txthoejre.setBackgroundResource(R.drawable.pil_ingen);
+                        txtvenstre.setBackgroundResource(R.mipmap.pil_venstre_ny);
+                        final Date dato = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getStartDate();
+                        final int currentMonth = dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).numberOfMonths(dato);
+                        txthoejre.setText("");
+                        txtvenstre.setText(dato.getDay() + "/" + dato.getMonth() + "-" + dato.getTwoDigitYear());
+                        txtvenstre.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ViewPagerFragment.vpChangeCurrentItem(currentMonth);
+                            }
+                        });
+                    } else {
+                        TextView txthoejre = (TextView) view.findViewById(R.id.txtHoejrePil);
+                        TextView txtvenstre = (TextView) view.findViewById(R.id.txtVenstrePil);
+                        txthoejre.setBackgroundResource(R.drawable.pil_ingen);
+                        txtvenstre.setBackgroundResource(R.drawable.pil_ingen);
+                        txthoejre.setText("");
+                        txtvenstre.setText("");
+                    }
+                    if (convertView == null) {
+                        LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        convertView = inflater.inflate(R.layout.kategori_liste, parent, false);
+                    }
+                    TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element);
+                    kategori_element.setText(dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
                 }
-                TextView kategori_element = (TextView) convertView.findViewById(R.id.kategori_liste_element);
-                kategori_element.setText(dl.getProjects().get(currentProjectNumber).getCategoryList().get(groupPosition).getCategoryTitle());
                 return view;
             }
         };

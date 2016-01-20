@@ -110,6 +110,9 @@ public class Category implements Serializable {
 	}
 
 	public Date getStartDate() {
+		if (planList==null) {
+			return null;
+		}
 		Date temp = planList.get(0).getStartDate();
 		for (Plan p : planList) {
 			if (p.getStartDate().before(temp)) temp=p.getStartDate();
