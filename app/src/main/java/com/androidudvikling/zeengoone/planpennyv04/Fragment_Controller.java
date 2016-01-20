@@ -203,13 +203,23 @@ public class Fragment_Controller extends AppCompatActivity {
         projekt_liste_view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                dc.getProjects().remove(position);
-                Bundle args = new Bundle();
-                args.putInt(Fragment_Gantt.POSITION_KEY, 0);
-                args.putInt(Fragment_Gantt.PROJECT_KEY, 0);
-                Fragment_Gantt.newInstance(args);
-                opdaterDrawer();
-                ViewPagerFragment.updateViewPagerList();
+                if(dc.getProjects().size() == 0){
+                    Toast.makeText(getApplicationContext(), "Du kan ikke slette alle projekter, tilføj et nyt først!", Toast.LENGTH_SHORT).show();
+                }
+                else if(dc.getProjects().size() == 1){
+                    Toast.makeText(getApplicationContext(), "Du kan ikke slette flere projekter før der er tilføjet flere!", Toast.LENGTH_SHORT).show();
+                }
+                else if(dc.getProjects().size() == 2 && dc.getProjects().size() == position){
+                    Toast.makeText(getApplicationContext(), "Du kan ikke stå i det projekt du skal slette!", Toast.LENGTH_SHORT).show();
+                }
+                else if(dc.getProjects().size() == position){
+                    Toast.makeText(getApplicationContext(), "Du kan ikke stå i det projekt du vil slette!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    dc.getProjects().remove(position);
+                    opdaterDrawer();
+                    ViewPagerFragment.updateViewPagerList();
+                }
                 return false;
             }
         });
