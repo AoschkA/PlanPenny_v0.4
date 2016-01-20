@@ -57,13 +57,12 @@
             android:layout_marginTop="2dp" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="222dp"
             android:layout_height="wrap_content"
             android:id="@+id/createEdit"
             android:background="@drawable/border_style_text"
             android:layout_below="@+id/planName"
             android:layout_alignLeft="@+id/planName"
-            android:layout_marginLeft="5dp"
             android:padding="5dp"
             android:inputType="textLongMessage"
             />

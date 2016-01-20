@@ -100,7 +100,6 @@ public class PopCreateCategory extends Activity  {
         //Content opret
         categoryname = (EditText) findViewById(R.id.createEdit);
         errorText = (TextView) findViewById(R.id.errorText);
-        categoryname.getLayoutParams().width = 330;
         categoryCreateBtn = (Button) findViewById(R.id.buttonCreateProject);
         categoryList = (ListView) findViewById(R.id.categoryList);
 

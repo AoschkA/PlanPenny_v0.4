@@ -101,7 +101,7 @@ public class OnlineFilehandler {
     }
     */
 
-
+    /* Vi getter ikke, den virker dog.
     public void getAllProjects(){
         //Får alle projekter på ny
 
@@ -231,6 +231,7 @@ public class OnlineFilehandler {
 
             });
     }
+    */
 
     /* Bruges ikke
     public void getProject(String projectName){
