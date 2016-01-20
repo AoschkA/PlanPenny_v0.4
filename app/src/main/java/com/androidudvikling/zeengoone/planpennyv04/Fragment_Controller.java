@@ -359,9 +359,12 @@ public class Fragment_Controller extends AppCompatActivity {
             if(onf.getTimeStamp() == null) {
                 onf.checkTimeStamp();
                 filehand.postDelayed(run,100);
-            }else{
+            }else if(off.getUsedProject() == null){
                 System.out.println(onf.getTimeStamp());
                 off.checkUsedProject(onf.getTimeStamp());
+                filehand.postDelayed(run,100);
+            }else{
+                dc.setProjectList(off.getAllProjects(off.getUsedProject()));
             }
         }
     };

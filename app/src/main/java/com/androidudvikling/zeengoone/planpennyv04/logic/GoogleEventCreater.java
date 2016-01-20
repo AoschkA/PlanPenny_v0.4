@@ -32,12 +32,15 @@ public class GoogleEventCreater extends AsyncTask<Void, Void, Void>{
     public GoogleEventCreater(String currentProject) {
         //this.ctx = Fragment_Controller.ctx;
         currentProjectTitle = currentProject;
-        // Initialize Calendar service with valid OAuth credentials
+
+        // Lav kalender med autorisering mCredential
         service = new com.google.api.services.calendar.Calendar.Builder(transport, jsonFactory, Fragment_Controller.mCredential)
                 .setApplicationName("applicationName").build();
     }
+
     public static GoogleEventCreater newInstance(String currentProject){
         currentProjectTitle = currentProject;
+
         return new GoogleEventCreater(currentProjectTitle);
     }
 
