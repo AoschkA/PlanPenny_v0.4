@@ -37,16 +37,22 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
     private static ViewPager viewPager;
     private ArrayList<String> tabMaaneder = new ArrayList<String>();
     private int currentMonth;
-    private int projectNumber;
+    private static int projectNumber;
     private Calendar cal = new GregorianCalendar();
-    private DataLogic dc = Fragment_Controller.dc;
+    private static DataLogic dc = Fragment_Controller.dc;
     private ViewPagerAdapter adapter;
     private long lastUpdate = 0;
 
     public static void vpChangeCurrentItem(int position){
         tabLayout.setScrollPosition(position, 0f, true);
         viewPager.setCurrentItem(position);
+
+        // Gemmer Tab location
+        Log.d("Location save", "TAB " + tabLocation);
+        Fragment_Controller.pManager.saveTabLocation(dc.getProjects().get(projectNumber).getTitle(), tabLocation);
+
     }
+
 
     public ViewPagerFragment newInstance(int position){
         ViewPagerFragment temp = new ViewPagerFragment();
@@ -55,6 +61,9 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         temp.setArguments(args);
 
         projectLocation = position;
+        // Gemmer nuværende lokation
+        Log.d("Location save", Integer.toString(projectLocation));
+        Fragment_Controller.pManager.saveAppLocation(projectLocation);
         return temp;
     }
 
@@ -108,6 +117,10 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
                 tabLocation = tab.getPosition();
+
+                // Gemmer Tab location
+                Log.d("Location save", "TAB " + tabLocation);
+                Fragment_Controller.pManager.saveTabLocation(dc.getProjects().get(projectNumber).getTitle(), tabLocation);
             }
 
             @Override
@@ -147,7 +160,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         long curTime = System.currentTimeMillis();
         // Opdater kun hvert sekund
-        if ((curTime - lastUpdate) > 1000) {
+        if ((curTime - lastUpdate) > 500) {
 
             // log hver update (ikke nødvendigt mere)
         /* Log.e("SENSOR UPDATE", "Type: "+ event.sensor.getType() + "\n"+
@@ -163,14 +176,14 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
             // Ændre if statements hvis den er for følsom, eller ikke følsom nok
             if (x > 4) {
                 Log.e("APP STATUS", "ORIENTATION: " + "LEFT");
-                int tabLocation = Fragment_Controller.pManager.loadTabLocation(dc.getProjects().get(projectNumber).getTitle());
-                Log.d("Tab flip (L)", Integer.toString(tabLocation - 1));
+                tabLocation = Fragment_Controller.pManager.loadTabLocation(dc.getProjects().get(projectNumber).getTitle());
+                Log.d("Tab flip (L)", Integer.toString(-1));
                 vpChangeCurrentItem(tabLocation - 1);
                 lastUpdate = curTime;
             } else if (x < -4) {
                 Log.e("APP STATUS", "ORIENTATION: " + "RIGHT");
-                int tabLocation = Fragment_Controller.pManager.loadTabLocation(dc.getProjects().get(projectNumber).getTitle());
-                Log.d("Tab flip (R)", Integer.toString(tabLocation + 1));
+                tabLocation = Fragment_Controller.pManager.loadTabLocation(dc.getProjects().get(projectNumber).getTitle());
+                Log.d("Tab flip (R)", Integer.toString(1));
                 vpChangeCurrentItem(tabLocation + 1);
                 lastUpdate = curTime;
             }
@@ -190,13 +203,6 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
 
         Log.d("SENSOR", "Sensor closed");
         sensorManager.unregisterListener(this);
-
-        // Gemmer nuværende lokation
-        Log.d("Location save", Integer.toString(projectLocation));
-        Fragment_Controller.pManager.saveAppLocation(projectLocation);
-        // Gemmer Tab location
-        Log.d("Location save", "TAB "+tabLocation);
-        Fragment_Controller.pManager.saveTabLocation(dc.getProjects().get(projectNumber).getTitle(), tabLocation);
     }
 
     @Override
@@ -206,6 +212,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
 
         Log.d("SENSOR", "Sensor opened");
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+
     }
 
 
@@ -216,13 +223,6 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
 
         Log.d("SENSOR", "Sensor closed");
         sensorManager.unregisterListener(this);
-
-        // Gemmer nuværende lokation
-        Log.d("Location save", Integer.toString(projectLocation));
-        Fragment_Controller.pManager.saveAppLocation(projectLocation);
-        // Gemmer Tab location
-        Log.d("Location save", "TAB "+tabLocation);
-        Fragment_Controller.pManager.saveTabLocation(dc.getProjects().get(projectNumber).getTitle(), tabLocation);
     }
 
     @Override
@@ -232,12 +232,5 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
 
         Log.d("SENSOR", "Sensor closed");
         sensorManager.unregisterListener(this);
-
-        // Gemmer nuværende lokation
-        Log.d("Location save", Integer.toString(projectLocation));
-        Fragment_Controller.pManager.saveAppLocation(projectLocation);
-        // Gemmer Tab location
-        Log.d("Location save", "TAB "+tabLocation);
-        Fragment_Controller.pManager.saveTabLocation(dc.getProjects().get(projectNumber).getTitle(), tabLocation);
     }
 }

@@ -137,7 +137,7 @@ public class Fragment_Controller extends AppCompatActivity {
             onf = new OnlineFilehandler(ctx);
 
             //Lav et timestamp check
-            filehand.post(run);
+            // filehand.post(run);
 
             //Opsæt actionbar burgermenu og titel
             this.setTitle(getString(R.string.app_title));
