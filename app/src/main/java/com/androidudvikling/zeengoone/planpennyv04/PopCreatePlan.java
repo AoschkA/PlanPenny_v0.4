@@ -3,6 +3,7 @@ package com.androidudvikling.zeengoone.planpennyv04;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.androidudvikling.zeengoone.planpennyv04.entities.Date;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -53,6 +55,10 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
     private String chosenCategory = "not set";
     private EditText planTitle;
     private String spinnerSelectedName;
+    private Button mDateButton;
+    public Calendar mCalendar;
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    DialogFragment dateFragment;
 
     private DatePickerDialog.OnDateSetListener dpickerListnerStart
             = new DatePickerDialog.OnDateSetListener() {
@@ -77,6 +83,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
 
             }
         };
+
 
     // Effekt til button
     public static void buttonEffect(View button){
@@ -112,6 +119,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
         for(int count = 0; count < curCategories.size(); count++)  {
             listOfPlansInCategories.add(new ArrayList<String>());
         }
+        mCalendar = Calendar.getInstance();
 
 
         // Sætter layout
@@ -292,7 +300,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
                }break;
 
            }
-        }
+       }
 
 
     public void createProject(){
@@ -305,7 +313,6 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
     }
 
 
-    @Override
     protected Dialog onCreateDialog(int id) {
         if (id == start) {
             DatePickerDialog sdpd = new DatePickerDialog(this, dpickerListnerStart, year_x, month_x, day_x);
@@ -321,6 +328,7 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
         return null;
 
     }
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -382,6 +390,42 @@ public class PopCreatePlan extends Activity implements OnItemSelectedListener{
         }
         return false;
     }
+
+   /* Skulle være implementeret istedet for showdialog da den er deprecated
+   public void showstartDatePickerDialog(View v) {
+        dateFragment = new StartDatePickerFragment();
+        dateFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    public void updateDateButtonText() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        String dateForButton = dateFormat.format(mCalendar.getTime());
+        startDateBtn.setText(dateForButton);
+    }
+
+    class StartDatePickerFragment extends DialogFragment implements
+            DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            mCalendar.set(Calendar.YEAR, year);
+            mCalendar.set(Calendar.MONTH, month);
+            mCalendar.set(Calendar.DAY_OF_MONTH, day);
+            updateDateButtonText();
+        }
+    }
+    */
 
 }
 
