@@ -575,6 +575,7 @@ public class Fragment_Controller extends AppCompatActivity {
     /* Sensor metoder
      * Kun onSensorChanged benyttes
      */
+    
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -585,4 +586,26 @@ public class Fragment_Controller extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, vpFragment, "viewpager").commit();
         }
     }
+
+    /* Ville have været brugt til at hente fra firebase, nåede ikke at blive implementeret 100% pga fejl.
+    Runnable run = new Runnable() {
+                @Override
+                public void run()
+                {
+                        // Find timestamp for online version såvel offline version
+                        if(onf.getTimeStamp() == null) {
+                                onf.checkTimeStamp();
+                                filehand.postDelayed(run,100);
+                                // Hvis et projekt ikke er blevet fundet, find det.
+                           }else if(off.getUsedProject() == null){
+                                System.out.println(onf.getTimeStamp());
+                                off.checkUsedProject(onf.getTimeStamp());
+                                filehand.postDelayed(run,100);
+                         }else{
+                         // Sæt projektlisten efter det brugte projekt.
+                            dc.setProjectList(off.getAllProjects(off.getUsedProject()));
+                         }
+                  }
+           };
+           */
 }
