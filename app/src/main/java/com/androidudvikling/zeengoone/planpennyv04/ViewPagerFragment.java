@@ -43,18 +43,25 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
     public static void vpChangeCurrentItem(int position){
         tabLayout.setScrollPosition(position, 0f, true);
         viewPager.setCurrentItem(position);
-
         // Gemmer Tab location
         Log.d("Location save", "TAB " + tabLocation);
         Fragment_Controller.pManager.saveTabLocation(dc.getProjects().get(projectNumber).getTitle(), tabLocation);
-
     }
 
     public static void updateViewPagerList(){
         dc = Fragment_Controller.dc;
         adapter.notifyDataSetChanged();
         viewPager.setAdapter(adapter);
+    }
 
+    private void setSensor(){
+        sensorManager = (SensorManager) getActivity().getSystemService(getActivity().SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (Fragment_Controller.pManager.loadSettings().getSyncSetting(2)) {
+            Log.d("SENSOR", "Sensor opened");
+            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+            if (adapter!=null) updateViewPagerList();
+        }
     }
 
     public ViewPagerFragment newInstance(int position){
@@ -74,13 +81,6 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         projectNumber = getArguments().getInt("Project_Number");
-        sensorManager = (SensorManager) getActivity().getSystemService(getActivity().SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        if (Fragment_Controller.pManager.loadSettings().getSyncSetting(2)) {
-            Log.d("SENSOR", "Sensor opened");
-            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-            if (adapter!=null) updateViewPagerList();
-        }
     }
 
     private Calendar addMonth() {
@@ -139,6 +139,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+        setSensor();
         return root;
     }
     @Override
@@ -221,7 +222,6 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
     public void onStart() {
         super.onStart();
         Log.d("VIEWPAGE", "onStart");
-
         if (Fragment_Controller.pManager.loadSettings().getSyncSetting(2)) {
             Log.d("SENSOR", "Sensor opened");
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);

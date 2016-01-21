@@ -136,6 +136,8 @@ public class Fragment_Controller extends AppCompatActivity {
                 // Instantiere ProgressDialog
                 mProgress = new ProgressDialog(this);
                 mProgress.setMessage("Calling Google Calendar API ...");
+            }else{
+                isFinalized = true;
             }
 
             //Henter filer fra filehandler
