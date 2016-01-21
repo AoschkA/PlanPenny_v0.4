@@ -79,7 +79,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         if (Fragment_Controller.pManager.loadSettings().getSyncSetting(2)) {
             Log.d("SENSOR", "Sensor opened");
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-            updateViewPagerList();
+            if (adapter!=null) updateViewPagerList();
         }
     }
 
@@ -149,7 +149,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         if (Fragment_Controller.pManager.loadSettings().getSyncSetting(2)) {
             Log.d("SENSOR", "Sensor opened");
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-            updateViewPagerList();
+            if (adapter!=null) updateViewPagerList();
         }
 
 
@@ -225,7 +225,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         if (Fragment_Controller.pManager.loadSettings().getSyncSetting(2)) {
             Log.d("SENSOR", "Sensor opened");
             sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-            updateViewPagerList();
+            if (adapter!=null) updateViewPagerList();
         }
     }
 
