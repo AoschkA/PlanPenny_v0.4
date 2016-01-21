@@ -50,15 +50,15 @@ public class UserSettings {
     }
 
     public boolean getSyncSetting(int type){
-        if (type==1) return syncSetting1;
-        if (type==2) return syncSetting2;
+        if (type==0) return syncSetting1;
+        if (type==1) return syncSetting2;
         else return syncSetting3;
     }
 
     public void setSyncSetting(int type, boolean setting) {
-        if (type==1) syncSetting1=setting;
-        else if (type==2) syncSetting2=setting;
-        else if (type==3) syncSetting3=setting;
+        if (type==0) syncSetting1=setting;
+        else if (type==1) syncSetting2=setting;
+        else if (type==2) syncSetting3=setting;
     }
 
     public boolean getSensorSettings1(){

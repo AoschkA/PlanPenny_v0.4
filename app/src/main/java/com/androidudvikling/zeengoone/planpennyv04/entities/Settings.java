@@ -28,6 +28,8 @@ public class Settings {
 
         ArrayList<String> synchronizeTypes = new ArrayList<>();
         synchronizeTypes.add(ctx.getString(R.string.syncsetting1));
+        synchronizeTypes.add(ctx.getString(R.string.syncsetting2));
+        synchronizeTypes.add(ctx.getString(R.string.syncsetting3));
 
         this.settingsList.put(ctx.getString(R.string.setting1), sortTypes);
         this.settingsList.put(ctx.getString(R.string.setting2), sortTypes);

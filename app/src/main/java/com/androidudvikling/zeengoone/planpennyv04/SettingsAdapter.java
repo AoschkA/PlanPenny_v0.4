@@ -233,26 +233,43 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                 convertView = inflater.inflate(R.layout.settings_sublist_sync, parent, false);
             Switch syncswitch = (Switch) convertView.findViewById(R.id.sync_switch);
             syncswitch.setText(getSettingsTitle(groupPosition,childPosition));
-            syncswitch.setChecked(us.getSyncSetting1());
+            syncswitch.setChecked(us.getSyncSetting(childPosition));
 
             syncswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    System.out.println("Google Calendar aktiveret: " + isChecked);
-                    UserSettings us = pManager.loadSettings();
-                    us.setSyncSetting1(isChecked);
-                    pManager.saveSettings(us);
-                    logic.setSync_google(isChecked);
-                    if (isChecked)
-                        Toast.makeText(ctx, "Synchronosering aktiveret for google calendar", Toast.LENGTH_SHORT).show();
-                    else
-                        Toast.makeText(ctx, "Synchronosering deaktiveret for google calendar", Toast.LENGTH_SHORT).show();
-
+                    if(childPosition == 0){
+                        System.out.println(R.string.syncsetting1 + " aktiveret: " + isChecked);
+                        UserSettings us = pManager.loadSettings();
+                        us.setSyncSetting(childPosition, isChecked);
+                        pManager.saveSettings(us);
+                        if (isChecked)
+                            Toast.makeText(ctx, "Synkronisering aktiveret for google calendar", Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(ctx, "Synkronisering deaktiveret for google calendar", Toast.LENGTH_SHORT).show();
+                    }else if(childPosition == 1){
+                        System.out.println(R.string.syncsetting1 + " aktiveret: " + isChecked);
+                        UserSettings us = pManager.loadSettings();
+                        us.setSyncSetting(childPosition, isChecked);
+                        pManager.saveSettings(us);
+                        if (isChecked)
+                            Toast.makeText(ctx, "Automatisk login til Google Konto aktiveret", Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(ctx, "Automatisk login til Google Konto de-aktiveret", Toast.LENGTH_SHORT).show();
+                    }else if(childPosition == 2){
+                        System.out.println(R.string.syncsetting1 + " aktiveret: " + isChecked);
+                        UserSettings us = pManager.loadSettings();
+                        us.setSyncSetting(childPosition, isChecked);
+                        pManager.saveSettings(us);
+                        if (isChecked)
+                            Toast.makeText(ctx, "Sensorer aktiveret", Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(ctx, "Sensorer de-aktiveret", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
         }
-
         return convertView;
     }
 

@@ -43,14 +43,6 @@ public class DataLogic implements Serializable {
 		sortType_category=sortType;
 	}
 
-	public boolean getSync_google() {
-		return sync_google;
-	}
-
-	public void setSync_google(boolean sync) {
-		sync_google=sync;
-	}
-
 	public void clearProjects(){
 		projectDB.clearList();
 	}

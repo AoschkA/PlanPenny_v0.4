@@ -8,4 +8,6 @@
     <string name="sortsetting3">Først planlagte først</string>
     <string name="sortsetting4">Først oprettet først</string>
     <string name="syncsetting1">Google Calendar</string>
+    <string name="syncsetting2">Google Konto</string>
+    <string name="syncsetting3">Sensorer</string>
 </resources>

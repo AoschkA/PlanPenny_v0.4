@@ -2,9 +2,7 @@ package com.androidudvikling.zeengoone.planpennyv04.logic;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
-import com.androidudvikling.zeengoone.planpennyv04.entities.Project;
 import com.androidudvikling.zeengoone.planpennyv04.entities.UserSettings;
 
 /**
@@ -39,7 +37,7 @@ public class PreferenceManager {
         int setting2 = sharedPreferences.getInt("setting2", 0);
         boolean setting3 = sharedPreferences.getBoolean("setting3", false);
         boolean setting4 = sharedPreferences.getBoolean("setting4", false);
-        boolean setting5 = sharedPreferences.getBoolean("setting4", false);
+        boolean setting5 = sharedPreferences.getBoolean("setting5", false);
         boolean setting_sensor = sharedPreferences.getBoolean("setting_sensor", false);
 
         userSettings = new UserSettings(setting1, setting2, setting3, setting4, setting5, setting_sensor);

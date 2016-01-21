@@ -83,7 +83,9 @@ public class Fragment_Controller extends AppCompatActivity {
     }
 
     public static void insertMainFab(){
-        isFinalized = false;
+        if(pManager.loadSettings().getSyncSetting(1)){
+            isFinalized = false;
+        }
         mainFab.setVisibility(View.VISIBLE);
     }
 
@@ -130,9 +132,11 @@ public class Fragment_Controller extends AppCompatActivity {
             // Onclick listener til projektlistemenuen
             projekt_liste_view.setOnItemClickListener(new DrawerItemClickListener());
 
-            // Instantiere ProgressDialog
-            mProgress = new ProgressDialog(this);
-            mProgress.setMessage("Calling Google Calendar API ...");
+            if(pManager.loadSettings().getSyncSetting(1)){
+                // Instantiere ProgressDialog
+                mProgress = new ProgressDialog(this);
+                mProgress.setMessage("Calling Google Calendar API ...");
+            }
 
             //Henter filer fra filehandler
 
@@ -178,8 +182,10 @@ public class Fragment_Controller extends AppCompatActivity {
    public void onResume(){
        super.onResume();
        Log.d("APP STATUS", "RESUMED");
-       if (isGooglePlayServicesAvailable()) {
-           refreshResults();
+       if(pManager.loadSettings().getSyncSetting(1)){
+           if (isGooglePlayServicesAvailable()) {
+               refreshResults();
+           }
        }
        // Mulighed for at gemme activiteter
        /*
@@ -203,22 +209,17 @@ public class Fragment_Controller extends AppCompatActivity {
         projekt_liste_view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if(dc.getProjects().size() == 0){
+                if (dc.getProjects().size() == 0) {
                     Toast.makeText(getApplicationContext(), "Du kan ikke slette alle projekter, tilføj et nyt først!", Toast.LENGTH_SHORT).show();
-                }
-                else if(dc.getProjects().size() == 1){
+                } else if (dc.getProjects().size() == 1) {
                     Toast.makeText(getApplicationContext(), "Du kan ikke slette flere projekter før der er tilføjet flere!", Toast.LENGTH_SHORT).show();
-                }
-                else if(dc.getProjects().size() == 2 && dc.getProjects().size() == position){
+                } else if (dc.getProjects().size() == 2 && dc.getProjects().size() == position) {
                     Toast.makeText(getApplicationContext(), "Du kan ikke stå i det projekt du skal slette!", Toast.LENGTH_SHORT).show();
-                }
-                else if(dc.getProjects().size() == position){
+                } else if (dc.getProjects().size() == position) {
                     Toast.makeText(getApplicationContext(), "Du kan ikke stå i det projekt du vil slette!", Toast.LENGTH_SHORT).show();
-                }
-                else if(position < dc.getProjects().size() && position == 0){
+                } else if (position < dc.getProjects().size() && position == 0) {
                     Toast.makeText(getApplicationContext(), "Du må kun slette projekter under første projekt!", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     dc.getProjects().remove(position);
                     opdaterDrawer();
                     ViewPagerFragment.updateViewPagerList();
@@ -226,7 +227,6 @@ public class Fragment_Controller extends AppCompatActivity {
                 return false;
             }
         });
-
         if (isFinalized)
             menu.getItem(1).setEnabled(false);
         return true;
@@ -395,8 +395,14 @@ public class Fragment_Controller extends AppCompatActivity {
      * account.
      */
     private void chooseAccount() {
-        startActivityForResult(
-                mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+        if(pManager.loadSettings().getSyncSetting(1)){
+            isFinalized = false;
+            startActivityForResult(
+                    mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+        }
+        else{
+            isFinalized = true;
+        }
     }
 
     // Forklaring fra google: https://developers.google.com/google-apps/calendar/quickstart/android
