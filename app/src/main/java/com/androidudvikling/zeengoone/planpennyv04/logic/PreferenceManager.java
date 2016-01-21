@@ -24,7 +24,10 @@ public class PreferenceManager {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("setting1", userSettings.getSortSetting1());
         editor.putInt("setting2", userSettings.getSortSetting2());
-        editor.putBoolean("setting3", userSettings.getSyncSetting1());
+        editor.putBoolean("setting3", userSettings.getSyncSetting(1));
+        editor.putBoolean("setting4", userSettings.getSyncSetting(2));
+        editor.putBoolean("setting5", userSettings.getSyncSetting(3));
+        editor.putBoolean("setting_sensor", userSettings.getSensorSettings1());
         editor.apply();
     }
 
@@ -35,8 +38,11 @@ public class PreferenceManager {
         int setting1 = sharedPreferences.getInt("setting1", 0);
         int setting2 = sharedPreferences.getInt("setting2", 0);
         boolean setting3 = sharedPreferences.getBoolean("setting3", false);
+        boolean setting4 = sharedPreferences.getBoolean("setting4", false);
+        boolean setting5 = sharedPreferences.getBoolean("setting4", false);
+        boolean setting_sensor = sharedPreferences.getBoolean("setting_sensor", false);
 
-        userSettings = new UserSettings(setting1, setting2, setting3);
+        userSettings = new UserSettings(setting1, setting2, setting3, setting4, setting5, setting_sensor);
         return userSettings;
     }
 

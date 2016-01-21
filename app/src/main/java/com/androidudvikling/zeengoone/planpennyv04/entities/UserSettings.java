@@ -8,11 +8,19 @@ public class UserSettings {
     int sortSetting1;
     int sortSetting2;
     boolean syncSetting1;
+    boolean syncSetting2;
+    boolean syncSetting3;
+    boolean sensorSetting1;
 
-    public UserSettings(int sortSetting1, int sortSetting2, boolean syncSetting1){
+    public UserSettings(int sortSetting1, int sortSetting2,
+                        boolean syncSetting1,boolean syncSetting2, boolean syncSetting3,
+                        boolean sensorSetting1){
         this.sortSetting1 = sortSetting1;
         this.sortSetting2 = sortSetting2;
         this.syncSetting1 = syncSetting1;
+        this.syncSetting2 = syncSetting2;
+        this.syncSetting3 = syncSetting3;
+        this.sensorSetting1 = sensorSetting1;
     }
 
     public void setSortSetting1(int setting) {
@@ -41,12 +49,24 @@ public class UserSettings {
         sortSetting2=Integer.parseInt(setting);
     }
 
-    public boolean getSyncSetting1(){
-        return syncSetting1;
+    public boolean getSyncSetting(int type){
+        if (type==1) return syncSetting1;
+        if (type==2) return syncSetting2;
+        else return syncSetting3;
     }
 
-    public void setSyncSetting1(String setting) {
-        syncSetting1 = Boolean.parseBoolean(setting);
+    public void setSyncSetting(int type, boolean setting) {
+        if (type==1) syncSetting1=setting;
+        else if (type==2) syncSetting2=setting;
+        else if (type==3) syncSetting3=setting;
+    }
+
+    public boolean getSensorSettings1(){
+        return sensorSetting1;
+    }
+
+    public void setSensorSetting1(boolean setting) {
+        sensorSetting1=setting;
     }
 
     public String getSortSetting1String() {
@@ -58,5 +78,7 @@ public class UserSettings {
     public String getSyncSetting1String() {
         return Boolean.toString(syncSetting1);
     }
-
+    public String getSensorSetting1String() {
+        return Boolean.toString(sensorSetting1);
+    }
 }
