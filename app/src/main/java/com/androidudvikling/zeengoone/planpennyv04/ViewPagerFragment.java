@@ -76,7 +76,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         projectNumber = getArguments().getInt("Project_Number");
         sensorManager = (SensorManager) getActivity().getSystemService(getActivity().SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        if (Fragment_Controller.pManager.loadSettings().getSensorSettings1()) sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     private Calendar addMonth() {
@@ -143,7 +143,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         Log.d("VIEWPAGE", "onResume");
         Fragment_Controller.insertMainFab();
         Log.d("SENSOR", "Sensor opened");
-        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        if (Fragment_Controller.pManager.loadSettings().getSensorSettings1()) sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         // Åbner det rigtige projekt
         int appLocation = Fragment_Controller.pManager.loadAppLocation();
@@ -215,7 +215,7 @@ public class ViewPagerFragment extends Fragment implements SensorEventListener {
         Log.d("VIEWPAGE", "onStart");
 
         Log.d("SENSOR", "Sensor opened");
-        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        if (Fragment_Controller.pManager.loadSettings().getSensorSettings1()) sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
