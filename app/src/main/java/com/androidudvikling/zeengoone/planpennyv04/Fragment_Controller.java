@@ -57,6 +57,7 @@ public class Fragment_Controller extends AppCompatActivity {
     public static com.google.api.services.calendar.Calendar mService = null;
     public static Context ctx;
     public static boolean isFinalized = false;
+    public static boolean reCreate = false;
     private static FloatingActionButton mainFab;
     private static OfflineFilehandler off;
     private static OnlineFilehandler onf;
@@ -189,6 +190,11 @@ public class Fragment_Controller extends AppCompatActivity {
                refreshResults();
            }
        }
+       if(pManager.loadSettings().getSyncSetting(1) && reCreate == true){
+           reCreate = false;
+           recreate();
+       }
+
        // Mulighed for at gemme activiteter
        /*
        int appLocation = pManager.loadAppLocation();

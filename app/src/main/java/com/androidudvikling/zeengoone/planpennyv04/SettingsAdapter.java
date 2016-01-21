@@ -252,10 +252,16 @@ public class SettingsAdapter extends BaseExpandableListAdapter {
                         UserSettings us = pManager.loadSettings();
                         us.setSyncSetting(childPosition, isChecked);
                         pManager.saveSettings(us);
-                        if (isChecked)
+                        if (isChecked){
+                            Fragment_Controller.reCreate = true;
                             Toast.makeText(ctx, "Automatisk login til Google Konto aktiveret", Toast.LENGTH_SHORT).show();
-                        else
+                        }
+
+                        else{
+                            Fragment_Controller.reCreate = false;
                             Toast.makeText(ctx, "Automatisk login til Google Konto de-aktiveret", Toast.LENGTH_SHORT).show();
+                        }
+
                     }else if(childPosition == 2){
                         System.out.println(R.string.syncsetting1 + " aktiveret: " + isChecked);
                         UserSettings us = pManager.loadSettings();
